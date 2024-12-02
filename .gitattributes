@@ -1,0 +1,6 @@
+*.dart linguist-detectable=true
+
+*.lock linguist-detectable=false
+*.json linguist-detectable=false
+*.yaml linguist-detectable=false
+*.md linguist-detectable=false
