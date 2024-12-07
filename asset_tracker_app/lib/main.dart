@@ -1,5 +1,3 @@
-import 'package:asset_tracker_app/view/homePageView.dart';
-import 'package:asset_tracker_app/view/loginPageView.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
@@ -16,7 +14,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      home: LoginPageView(),
       debugShowCheckedModeBanner: false,
     );
   }
