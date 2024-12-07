@@ -1,13 +1,12 @@
-import 'package:asset_tracker_app/view/home_view.dart';
-import 'package:asset_tracker_app/view/login_screen_view.dart';
-import 'package:asset_tracker_app/view/onboard_view.dart';
+import 'package:asset_tracker_app/services/firebase/firebase_options.dart';
+import 'package:asset_tracker_app/utils/constants.dart';
 import 'package:asset_tracker_app/view/splash_view.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const AssetTrackerMain());
 }
 
@@ -17,18 +16,13 @@ class AssetTrackerMain extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Asset Tracker',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        useMaterial3: true,
-      ),
-      home: const SplashScreenView(),
-      routes: {
-        '/onboarding': (context) => const OnboardingScreenView(),
-        '/login': (context) => const LoginScreenView(),
-        '/home': (context) => HomePageView(),
-      },
-    );
+        debugShowCheckedModeBanner: false,
+        title: 'Asset Tracker',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+          useMaterial3: true,
+        ),
+        home: const SplashScreenView(),
+        routes: AppRoutes.routes);
   }
 }
