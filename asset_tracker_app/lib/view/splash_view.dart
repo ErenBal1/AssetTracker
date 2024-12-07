@@ -1,3 +1,4 @@
+import 'package:asset_tracker_app/utils/constants.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreenView extends StatefulWidget {
@@ -22,9 +23,9 @@ class _SplashScreenViewState extends State<SplashScreenView> {
     if (!mounted) return;
 
     if (isFirstTime) {
-      Navigator.pushReplacementNamed(context, '/onboarding');
+      Navigator.pushReplacementNamed(context, ToScreen.onboardPage);
     } else {
-      Navigator.pushReplacementNamed(context, '/login');
+      Navigator.pushReplacementNamed(context, ToScreen.loginPage);
     }
   }
 
