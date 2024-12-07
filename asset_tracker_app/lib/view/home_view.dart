@@ -1,4 +1,5 @@
-import 'package:asset_tracker_app/services/auth_service.dart';
+import 'package:asset_tracker_app/services/firebase/auth_service.dart';
+import 'package:asset_tracker_app/utils/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -13,14 +14,14 @@ class HomePageView extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Hoş Geldin ${user?.displayName ?? 'Kullanıcı'}'),
+        title: const Text('Welcome'),
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),
             onPressed: () async {
               await _authService.signOut();
               if (context.mounted) {
-                Navigator.pushReplacementNamed(context, '/login');
+                Navigator.pushReplacementNamed(context, ToScreen.loginPage);
               }
             },
           ),
@@ -32,7 +33,7 @@ class HomePageView extends StatelessWidget {
           children: [
             Text('Email: ${user?.email ?? ''}'),
             const SizedBox(height: 16),
-            const Text('Asset Tracker\'a Hoş Geldiniz!'),
+            const Text('Welcome to Asset Tracker!'),
           ],
         ),
       ),
