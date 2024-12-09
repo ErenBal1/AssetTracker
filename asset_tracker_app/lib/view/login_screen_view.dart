@@ -1,5 +1,6 @@
 import 'package:asset_tracker_app/services/firebase/auth_service.dart';
 import 'package:asset_tracker_app/utils/constants.dart';
+import 'package:asset_tracker_app/utils/mixin/validator_mixin.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreenView extends StatefulWidget {
@@ -9,7 +10,7 @@ class LoginScreenView extends StatefulWidget {
   State<LoginScreenView> createState() => _LoginScreenViewState();
 }
 
-class _LoginScreenViewState extends State<LoginScreenView> {
+class _LoginScreenViewState extends State<LoginScreenView> with ValidatorMixin {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -116,15 +117,7 @@ class _LoginScreenViewState extends State<LoginScreenView> {
                     border: OutlineInputBorder(),
                     prefixIcon: Icon(Icons.email),
                   ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your email address.';
-                    }
-                    if (!value.contains('@')) {
-                      return 'Enter a valid email address.';
-                    }
-                    return null;
-                  },
+                  validator: (emailText) => checkEmail(emailText),
                 ),
                 const SizedBox(height: 16),
                 TextFormField(
@@ -147,15 +140,7 @@ class _LoginScreenViewState extends State<LoginScreenView> {
                       },
                     ),
                   ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your password';
-                    }
-                    if (value.length < 6) {
-                      return 'Password must be at least 6 characters';
-                    }
-                    return null;
-                  },
+                  validator: (passwordText) => checkPassword(passwordText),
                 ),
                 const SizedBox(height: 24),
                 ElevatedButton(
