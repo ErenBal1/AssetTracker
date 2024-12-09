@@ -12,7 +12,12 @@
           "package_name": "com.example.asset_tracker_app"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "1001077070724-h7uhhajfst6v3udsm79j8b1shnd85ho0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyD0vEDuBND-Bp99K9J7eefH4dPILGC3eho"
@@ -20,7 +25,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1001077070724-h7uhhajfst6v3udsm79j8b1shnd85ho0.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1001077070724-ohsf275pniunr5j2ftha45dejfasan0r.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.assetTrackerApp"
+              }
+            }
+          ]
         }
       }
     }
