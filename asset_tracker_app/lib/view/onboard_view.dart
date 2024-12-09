@@ -1,5 +1,4 @@
 import 'package:asset_tracker_app/utils/constants.dart';
-import 'package:asset_tracker_app/widgets/onboard_view/onboard_page_widget.dart';
 import 'package:flutter/material.dart';
 
 class OnboardingScreenView extends StatefulWidget {
@@ -10,36 +9,17 @@ class OnboardingScreenView extends StatefulWidget {
 }
 
 class _OnboardingScreenViewState extends State<OnboardingScreenView> {
-  final PageController _pageController = PageController();
   int _currentPage = 0;
-
-  final List<OnboardingPage> _pages = [
-    const OnboardingPage(
-      title: 'Track Your Assets',
-      description: 'Easily manage and track all your assets in one place',
-      icon: Icons.track_changes,
-    ),
-    const OnboardingPage(
-      title: 'Real-time Updates',
-      description: 'Get instant notifications about your asset status',
-      icon: Icons.update,
-    ),
-    const OnboardingPage(
-      title: 'Detailed Analytics',
-      description: 'View comprehensive reports and analytics',
-      icon: Icons.analytics,
-    ),
-  ];
 
   @override
   void dispose() {
-    _pageController.dispose();
+    pageController.dispose();
     super.dispose();
   }
 
   void _onNextPressed() {
-    if (_currentPage < _pages.length - 1) {
-      _pageController.nextPage(
+    if (_currentPage < OnboardingPages.pages.length - 1) {
+      pageController.nextPage(
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
       );
@@ -56,14 +36,14 @@ class _OnboardingScreenViewState extends State<OnboardingScreenView> {
           children: [
             Expanded(
               child: PageView.builder(
-                controller: _pageController,
-                itemCount: _pages.length,
+                controller: pageController,
+                itemCount: OnboardingPages.pages.length,
                 onPageChanged: (index) {
                   setState(() {
                     _currentPage = index;
                   });
                 },
-                itemBuilder: (context, index) => _pages[index],
+                itemBuilder: (context, index) => OnboardingPages.pages[index],
               ),
             ),
             Padding(
@@ -73,7 +53,7 @@ class _OnboardingScreenViewState extends State<OnboardingScreenView> {
                 children: [
                   Row(
                     children: List.generate(
-                      _pages.length,
+                      OnboardingPages.pages.length,
                       (index) => Container(
                         margin: const EdgeInsets.symmetric(horizontal: 4),
                         width: 8,
@@ -90,7 +70,7 @@ class _OnboardingScreenViewState extends State<OnboardingScreenView> {
                   ElevatedButton(
                     onPressed: _onNextPressed,
                     child: Text(
-                      _currentPage == _pages.length - 1
+                      _currentPage == OnboardingPages.pages.length - 1
                           ? 'Get Started'
                           : 'Next',
                     ),
