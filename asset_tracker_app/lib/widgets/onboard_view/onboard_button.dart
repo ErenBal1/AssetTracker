@@ -1,3 +1,4 @@
+import 'package:asset_tracker_app/utils/constants/app_size_constants.dart';
 import 'package:flutter/material.dart';
 
 class OnboardingButton extends StatelessWidget {
@@ -27,7 +28,7 @@ class OnboardingButton extends StatelessWidget {
       child: Text(
         text,
         style: const TextStyle(
-          fontSize: 16,
+          fontSize: AppSize.textLarge,
           fontWeight: FontWeight.bold,
         ),
       ),

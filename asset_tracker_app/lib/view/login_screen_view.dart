@@ -1,4 +1,5 @@
 import 'package:asset_tracker_app/localization/strings.dart';
+import 'package:asset_tracker_app/utils/constants/app_size_constants.dart';
 import 'package:asset_tracker_app/utils/constants/empty_size.dart';
 import 'package:asset_tracker_app/utils/mixins/login_screen_mixin.dart';
 import 'package:asset_tracker_app/widgets/login_screen/email_input_field.dart';
@@ -29,14 +30,14 @@ class _LoginScreenViewState extends State<LoginScreenView>
                 const EmptySize.big(),
                 Icon(
                   Icons.inventory,
-                  size: 80,
+                  size: AppSize.iconXXL,
                   color: Theme.of(context).primaryColor,
                 ),
                 const EmptySize.medium(),
                 const Text(
                   LocalStrings.welcome,
                   style: TextStyle(
-                    fontSize: 28,
+                    fontSize: AppSize.textXXL,
                     fontWeight: FontWeight.bold,
                   ),
                   textAlign: TextAlign.center,
