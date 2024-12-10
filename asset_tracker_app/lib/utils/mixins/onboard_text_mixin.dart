@@ -1,12 +1,12 @@
+import 'package:asset_tracker_app/localization/strings.dart';
+
 mixin OnboardingTextMixin {
-  final trackAssetsTitle = 'Track Your Assets';
-  final trackAssetsDescription =
-      'Easily manage and track all your assets in one place';
+  final trackAssetsTitle = LocalStrings.trackAssetsTitle;
+  final trackAssetsDescription = LocalStrings.trackAssetsDescription;
 
-  final realTimeTitle = 'Real-time Display';
-  final realTimeDescription =
-      'View the status of your assets and how much profit or loss you have made';
+  final realTimeTitle = LocalStrings.realTimeTitle;
+  final realTimeDescription = LocalStrings.realTimeDescription;
 
-  final analyticsTitle = 'Detailed Analytics';
-  final analyticsDescription = 'View comprehensive reports and analytics';
+  final analyticsTitle = LocalStrings.analyticsTitle;
+  final analyticsDescription = LocalStrings.analyticsDescription;
 }

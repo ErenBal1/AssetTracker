@@ -1,4 +1,4 @@
-import 'package:asset_tracker_app/utils/constants/sizedbox_constants.dart';
+import 'package:asset_tracker_app/utils/constants/empty_size.dart';
 import 'package:flutter/material.dart';
 
 class OnboardingPage extends StatelessWidget {
@@ -26,7 +26,7 @@ class OnboardingPage extends StatelessWidget {
               size: 100,
               color: Theme.of(context).primaryColor,
             ),
-            SizedboxConstants.sizedBoxMediumLarge,
+            const EmptySize.mediumLarge(),
             Text(
               title,
               style: const TextStyle(
@@ -35,7 +35,7 @@ class OnboardingPage extends StatelessWidget {
               ),
               textAlign: TextAlign.center,
             ),
-            SizedboxConstants.sizedBoxSmall,
+            const EmptySize.small(),
             Text(
               description,
               style: const TextStyle(
