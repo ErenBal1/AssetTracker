@@ -2,12 +2,12 @@ import 'package:asset_tracker_app/localization/strings.dart';
 import 'package:asset_tracker_app/utils/enums/auth_service_error_enum.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-abstract class IAuthService {
+abstract class IFirebaseAuthService {
   Future<bool> signIn(String email, String password);
   Future<void> signOut();
 }
 
-class AuthService implements IAuthService {
+class FirebaseAuthService implements IFirebaseAuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override

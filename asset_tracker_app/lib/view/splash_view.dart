@@ -1,6 +1,6 @@
 import 'package:asset_tracker_app/localization/strings.dart';
 import 'package:asset_tracker_app/utils/constants/app_routes_constants.dart';
-import 'package:asset_tracker_app/utils/constants/sizedbox_constants.dart';
+import 'package:asset_tracker_app/utils/constants/empty_size.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreenView extends StatefulWidget {
@@ -49,7 +49,7 @@ class _SplashScreenViewState extends State<SplashScreenView> {
               size: 100,
               color: Theme.of(context).primaryColor,
             ),
-            SizedboxConstants.sizedBoxMedium,
+            const EmptySize.medium(),
             const Text(
               LocalStrings.appLabel,
               style: TextStyle(
