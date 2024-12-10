@@ -1,6 +1,6 @@
 import 'package:asset_tracker_app/localization/strings.dart';
 import 'package:asset_tracker_app/utils/constants/app_routes_constants.dart';
-import 'package:asset_tracker_app/utils/constants/sizedBox_constants.dart';
+import 'package:asset_tracker_app/utils/constants/sizedbox_constants.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreenView extends StatefulWidget {
