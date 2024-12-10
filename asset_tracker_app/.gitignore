@@ -43,5 +43,4 @@ app.*.map.json
 /android/app/release
 
 # Project specific
-asset_tracker_app/android/app/google-services.json
-asset_tracker_app/lib/services/firebase/firebase_options.dart
+
