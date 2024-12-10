@@ -1,4 +1,8 @@
-import 'package:asset_tracker_app/utils/constants.dart';
+import 'package:asset_tracker_app/localization/strings.dart';
+import 'package:asset_tracker_app/utils/constants/app_routes_constants.dart';
+import 'package:asset_tracker_app/utils/constants/controllers.dart';
+import 'package:asset_tracker_app/utils/constants/onboarding_page_list.dart';
+import 'package:asset_tracker_app/widgets/onboard_view/dot_indicator_widget.dart';
 import 'package:flutter/material.dart';
 
 class OnboardingScreenView extends StatefulWidget {
@@ -10,6 +14,7 @@ class OnboardingScreenView extends StatefulWidget {
 
 class _OnboardingScreenViewState extends State<OnboardingScreenView> {
   int _currentPage = 0;
+  final onboardingData = OnboardingData();
 
   @override
   void dispose() {
@@ -18,7 +23,7 @@ class _OnboardingScreenViewState extends State<OnboardingScreenView> {
   }
 
   void _onNextPressed() {
-    if (_currentPage < OnboardingPages.pages.length - 1) {
+    if (_currentPage < onboardingData.pages.length - 1) {
       pageController.nextPage(
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
@@ -37,13 +42,13 @@ class _OnboardingScreenViewState extends State<OnboardingScreenView> {
             Expanded(
               child: PageView.builder(
                 controller: pageController,
-                itemCount: OnboardingPages.pages.length,
+                itemCount: onboardingData.pages.length,
                 onPageChanged: (index) {
                   setState(() {
                     _currentPage = index;
                   });
                 },
-                itemBuilder: (context, index) => OnboardingPages.pages[index],
+                itemBuilder: (context, index) => onboardingData.pages[index],
               ),
             ),
             Padding(
@@ -53,26 +58,19 @@ class _OnboardingScreenViewState extends State<OnboardingScreenView> {
                 children: [
                   Row(
                     children: List.generate(
-                      OnboardingPages.pages.length,
-                      (index) => Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 4),
-                        width: 8,
-                        height: 8,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: _currentPage == index
-                              ? Theme.of(context).primaryColor
-                              : Colors.grey,
-                        ),
+                      onboardingData.pages.length,
+                      (index) => OnBoardingDotIndicator(
+                        currentPage: _currentPage,
+                        index: index,
                       ),
                     ),
                   ),
                   ElevatedButton(
                     onPressed: _onNextPressed,
                     child: Text(
-                      _currentPage == OnboardingPages.pages.length - 1
-                          ? 'Get Started'
-                          : 'Next',
+                      _currentPage == onboardingData.pages.length - 1
+                          ? LocalStrings.getStartedButton
+                          : LocalStrings.nextButton,
                     ),
                   ),
                 ],

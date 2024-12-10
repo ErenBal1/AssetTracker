@@ -1,4 +1,6 @@
-import 'package:asset_tracker_app/utils/constants.dart';
+import 'package:asset_tracker_app/localization/strings.dart';
+import 'package:asset_tracker_app/utils/constants/app_routes_constants.dart';
+import 'package:asset_tracker_app/utils/constants/sizedBox_constants.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreenView extends StatefulWidget {
@@ -9,6 +11,7 @@ class SplashScreenView extends StatefulWidget {
 }
 
 class _SplashScreenViewState extends State<SplashScreenView> {
+  final int splashDurationValue = 3;
   @override
   void initState() {
     super.initState();
@@ -16,7 +19,7 @@ class _SplashScreenViewState extends State<SplashScreenView> {
   }
 
   Future<void> _navigateToNextScreen() async {
-    await Future.delayed(const Duration(seconds: 3));
+    await Future.delayed(Duration(seconds: splashDurationValue));
     if (!mounted) return;
 
     final bool isFirstTime = await _isFirstTimeUser();
@@ -46,9 +49,9 @@ class _SplashScreenViewState extends State<SplashScreenView> {
               size: 100,
               color: Theme.of(context).primaryColor,
             ),
-            const SizedBox(height: 24),
+            SizedboxConstants.sizedBoxMedium,
             const Text(
-              'Asset Tracker',
+              LocalStrings.appLabel,
               style: TextStyle(
                 fontSize: 32,
                 fontWeight: FontWeight.bold,
