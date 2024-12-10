@@ -1,5 +1,6 @@
 import 'package:asset_tracker_app/localization/strings.dart';
 import 'package:asset_tracker_app/utils/constants/app_routes_constants.dart';
+import 'package:asset_tracker_app/utils/constants/app_size_constants.dart';
 import 'package:asset_tracker_app/utils/constants/empty_size.dart';
 import 'package:flutter/material.dart';
 
@@ -46,14 +47,14 @@ class _SplashScreenViewState extends State<SplashScreenView> {
           children: [
             Icon(
               Icons.inventory,
-              size: 100,
+              size: AppSize.iconXXXL,
               color: Theme.of(context).primaryColor,
             ),
             const EmptySize.medium(),
             const Text(
               LocalStrings.appLabel,
               style: TextStyle(
-                fontSize: 32,
+                fontSize: AppSize.textXXXL,
                 fontWeight: FontWeight.bold,
               ),
             ),

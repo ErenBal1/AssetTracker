@@ -1,3 +1,4 @@
+import 'package:asset_tracker_app/utils/constants/app_size_constants.dart';
 import 'package:asset_tracker_app/utils/constants/empty_size.dart';
 import 'package:flutter/material.dart';
 
@@ -23,14 +24,14 @@ class OnboardingPage extends StatelessWidget {
           children: [
             Icon(
               icon,
-              size: 100,
+              size: AppSize.iconXXXL,
               color: Theme.of(context).primaryColor,
             ),
             const EmptySize.mediumLarge(),
             Text(
               title,
               style: const TextStyle(
-                fontSize: 24,
+                fontSize: AppSize.textXXL,
                 fontWeight: FontWeight.bold,
               ),
               textAlign: TextAlign.center,
@@ -39,7 +40,7 @@ class OnboardingPage extends StatelessWidget {
             Text(
               description,
               style: const TextStyle(
-                fontSize: 16,
+                fontSize: AppSize.textLarge,
                 color: Colors.grey,
               ),
               textAlign: TextAlign.center,
