@@ -1,5 +1,5 @@
 import 'package:asset_tracker_app/services/firebase/firebase_options.dart';
-import 'package:asset_tracker_app/utils/constants.dart';
+import 'package:asset_tracker_app/utils/constants/app_routes_constants.dart';
 import 'package:asset_tracker_app/view/splash_view.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';

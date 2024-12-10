@@ -1,9 +1,16 @@
+import 'package:asset_tracker_app/localization/strings.dart';
+import 'package:asset_tracker_app/utils/enums/auth_service_error_enum.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class AuthService {
+abstract class IAuthService {
+  Future<bool> signIn(String email, String password);
+  Future<void> signOut();
+}
+
+class AuthService implements IAuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  // Sign in.
+  @override
   Future<bool> signIn(String email, String password) async {
     try {
       await _auth.signInWithEmailAndPassword(
@@ -12,67 +19,24 @@ class AuthService {
       );
       return true;
     } on FirebaseAuthException catch (e) {
-      throw _handleAuthError2(e);
+      throw handleAuthError(e);
     } catch (e) {
       if (_auth.currentUser != null) {
         return true;
       }
-      throw "There was an error logging in. Please try again.";
+      throw LocalStrings.loginError;
     }
   }
 
-  String _handleAuthError2(FirebaseAuthException e) {
-    switch (e.code) {
-      case 'user-not-found':
-        return 'No users registered with this email.';
-      case 'wrong-password':
-        return 'You entered an incorrect password.';
-      case 'user-disabled':
-        return 'This account has been deactivated.';
-      case 'invalid-email':
-        return 'Invalid email address.';
-      case 'invalid-credential':
-        return 'Email or password incorrect.';
-      case 'too-many-requests':
-        return 'You have made too many failed login attempts. Please try again later.';
-      default:
-        return 'An error occurred: ${e.message}';
-    }
+  String handleAuthError(FirebaseAuthException e) {
+    final error = FirebaseAuthError.fromCode(e.code);
+    return error == FirebaseAuthError.unknown
+        ? '${error.message}${e.message}'
+        : error.message;
   }
 
-  // Sign up.
-  Future<bool> signUp(String email, String password) async {
-    try {
-      await _auth.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-      return true;
-    } on FirebaseAuthException catch (e) {
-      throw _handleAuthError(e);
-    } catch (e) {
-      return true;
-    }
-  }
-
-  // Sign out.
+  @override
   Future<void> signOut() async {
     await _auth.signOut();
-  }
-
-  // Handling errors.
-  String _handleAuthError(FirebaseAuthException e) {
-    switch (e.code) {
-      case 'weak-password':
-        return 'The password is too weak. Use at least 6 characters.';
-      case 'email-already-in-use':
-        return 'This email address is already in use.';
-      case 'invalid-email':
-        return 'Invalid email address.';
-      case 'operation-not-allowed':
-        return 'Email/password login is not active.';
-      default:
-        return 'An error has occurred: ${e.message}';
-    }
   }
 }

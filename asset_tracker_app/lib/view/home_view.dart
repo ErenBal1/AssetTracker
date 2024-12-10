@@ -1,7 +1,9 @@
 import 'package:asset_tracker_app/services/firebase/auth_service.dart';
-import 'package:asset_tracker_app/utils/constants.dart';
+import 'package:asset_tracker_app/utils/constants/app_routes_constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
+//bu sayfa komple degisecek gecici olarak yaptim
 
 class HomePageView extends StatelessWidget {
   final AuthService _authService = AuthService();

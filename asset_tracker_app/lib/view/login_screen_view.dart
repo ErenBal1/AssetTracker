@@ -1,5 +1,9 @@
+import 'package:asset_tracker_app/localization/strings.dart';
 import 'package:asset_tracker_app/services/firebase/auth_service.dart';
-import 'package:asset_tracker_app/utils/constants.dart';
+import 'package:asset_tracker_app/utils/constants/app_routes_constants.dart';
+import 'package:asset_tracker_app/utils/constants/sizedBox_constants.dart';
+import 'package:asset_tracker_app/widgets/login_screen/email_input_field.dart';
+import 'package:asset_tracker_app/widgets/login_screen/password_input_field.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreenView extends StatefulWidget {
@@ -10,13 +14,20 @@ class LoginScreenView extends StatefulWidget {
 }
 
 class _LoginScreenViewState extends State<LoginScreenView> {
-  final _formKey = GlobalKey<FormState>();
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
-  final _authService = AuthService();
-  bool _isPasswordVisible = false;
+  late GlobalKey<FormState> _formKey;
+  late TextEditingController _emailController;
+  late TextEditingController _passwordController;
+  late AuthService _authService;
   bool _isLoading = false;
-  bool _isLogin = true; // true = login, false = signup
+
+  @override
+  void initState() {
+    super.initState();
+    _formKey = GlobalKey<FormState>();
+    _emailController = TextEditingController();
+    _passwordController = TextEditingController();
+    _authService = AuthService();
+  }
 
   @override
   void dispose() {
@@ -25,59 +36,52 @@ class _LoginScreenViewState extends State<LoginScreenView> {
     super.dispose();
   }
 
-  Future<void> _submitForm() async {
-    if (_formKey.currentState?.validate() ?? false) {
-      setState(() => _isLoading = true);
-      try {
-        if (_isLogin) {
-          final success = await _authService.signIn(
-            _emailController.text,
-            _passwordController.text,
-          );
+  bool _validateForm() {
+    return _formKey.currentState?.validate() ?? false;
+  }
 
-          if (mounted && success) {
-            Navigator.pushReplacementNamed(context, ToScreen.homePage);
-          }
-        } else {
-          final success = await _authService.signUp(
-            _emailController.text,
-            _passwordController.text,
-          );
+  void _updateLoadingState(bool isLoading) {
+    if (mounted) {
+      setState(() => _isLoading = isLoading);
+    }
+  }
 
-          if (mounted && success) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('You have successfully registered.'),
-                backgroundColor: Colors.green,
-                duration: Duration(seconds: 2),
-              ),
-            );
+  void _navigateToHome() {
+    if (mounted) {
+      Navigator.pushReplacementNamed(context, ToScreen.homePage);
+    }
+  }
 
-            await Future.delayed(const Duration(seconds: 2));
-            if (mounted) {
-              setState(() {
-                _isLogin = true;
-                _emailController.clear();
-                _passwordController.clear();
-              });
-            }
-          }
-        }
-      } catch (e) {
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(e.toString()),
-              backgroundColor: Colors.red,
-              duration: const Duration(seconds: 3),
-            ),
-          );
-        }
-      } finally {
-        if (mounted) {
-          setState(() => _isLoading = false);
-        }
+  void _showErrorMessage(String message) {
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(message),
+          backgroundColor: Colors.red,
+          duration: const Duration(seconds: 3),
+        ),
+      );
+    }
+  }
+
+  Future<void> _handleLogin() async {
+    if (!_validateForm()) return;
+
+    _updateLoadingState(true);
+
+    try {
+      final success = await _authService.signIn(
+        _emailController.text,
+        _passwordController.text,
+      );
+
+      if (success) {
+        _navigateToHome();
       }
+    } catch (e) {
+      _showErrorMessage(e.toString());
+    } finally {
+      _updateLoadingState(false);
     }
   }
 
@@ -92,94 +96,36 @@ class _LoginScreenViewState extends State<LoginScreenView> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const SizedBox(height: 48),
+                SizedboxConstants.sizedBoxBig,
                 Icon(
                   Icons.inventory,
                   size: 80,
                   color: Theme.of(context).primaryColor,
                 ),
-                const SizedBox(height: 24),
-                Text(
-                  _isLogin ? 'Welcome' : 'Sign Up',
-                  style: const TextStyle(
+                SizedboxConstants.sizedBoxMedium,
+                const Text(
+                  LocalStrings.welcome,
+                  style: TextStyle(
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
                   ),
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 48),
-                TextFormField(
-                  controller: _emailController,
-                  keyboardType: TextInputType.emailAddress,
-                  decoration: const InputDecoration(
-                    labelText: 'Email',
-                    border: OutlineInputBorder(),
-                    prefixIcon: Icon(Icons.email),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your email address.';
-                    }
-                    if (!value.contains('@')) {
-                      return 'Enter a valid email address.';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 16),
-                TextFormField(
-                  controller: _passwordController,
-                  obscureText: !_isPasswordVisible,
-                  decoration: InputDecoration(
-                    labelText: 'Password',
-                    border: const OutlineInputBorder(),
-                    prefixIcon: const Icon(Icons.lock),
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        _isPasswordVisible
-                            ? Icons.visibility
-                            : Icons.visibility_off,
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          _isPasswordVisible = !_isPasswordVisible;
-                        });
-                      },
-                    ),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your password';
-                    }
-                    if (value.length < 6) {
-                      return 'Password must be at least 6 characters';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 24),
+                SizedboxConstants.sizedBoxBig,
+                EmailInputField(controller: _emailController),
+                SizedboxConstants.sizedBoxSmall,
+                PasswordInputField(controller: _passwordController),
+                SizedboxConstants.sizedBoxMedium,
                 ElevatedButton(
-                  onPressed: _isLoading ? null : _submitForm,
+                  onPressed: _isLoading ? null : _handleLogin,
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 16),
                   ),
                   child: _isLoading
                       ? const CircularProgressIndicator()
-                      : Text(_isLogin ? 'Sign In' : 'Sign Up'),
+                      : const Text(LocalStrings.signIn),
                 ),
-                const SizedBox(height: 16),
-                TextButton(
-                  onPressed: () {
-                    setState(() {
-                      _isLogin = !_isLogin;
-                    });
-                  },
-                  child: Text(
-                    _isLogin
-                        ? 'Don\'t have an account? Sign up'
-                        : 'Already have an account? Sign in',
-                  ),
-                ),
+                SizedboxConstants.sizedBoxSmall,
               ],
             ),
           ),
