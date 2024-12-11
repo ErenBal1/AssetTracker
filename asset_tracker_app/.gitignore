@@ -45,4 +45,4 @@ app.*.map.json
 # Project specific
 android/app/google-services.json
 lib/services/firebase/firebase_options.dart
-
+firepit-log.txt

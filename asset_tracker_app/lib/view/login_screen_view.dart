@@ -1,6 +1,8 @@
 import 'package:asset_tracker_app/localization/strings.dart';
-import 'package:asset_tracker_app/utils/constants/app_size_constants.dart';
-import 'package:asset_tracker_app/utils/constants/empty_size.dart';
+import 'package:asset_tracker_app/utils/constants/theme/constant_icons.dart';
+import 'package:asset_tracker_app/utils/constants/theme/constant_paddings.dart';
+import 'package:asset_tracker_app/utils/constants/theme/constant_gap_sizes.dart';
+import 'package:asset_tracker_app/utils/constants/theme/constant_texts_and_styles.dart';
 import 'package:asset_tracker_app/utils/mixins/login_screen_mixin.dart';
 import 'package:asset_tracker_app/widgets/login_screen/email_input_field.dart';
 import 'package:asset_tracker_app/widgets/login_screen/login_button.dart';
@@ -21,32 +23,21 @@ class _LoginScreenViewState extends State<LoginScreenView>
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(24.0),
+          padding: ConstantPaddings.allXL,
           child: Form(
             key: formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const EmptySize.big(),
-                Icon(
-                  Icons.inventory,
-                  size: AppSize.iconXXL,
-                  color: Theme.of(context).primaryColor,
-                ),
-                const EmptySize.medium(),
-                const Text(
-                  LocalStrings.welcome,
-                  style: TextStyle(
-                    fontSize: AppSize.textXXL,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                const EmptySize.big(),
+                const GapSize.big(),
+                ConstantIcons.getLoginPageIcon(context),
+                const GapSize.medium(),
+                ConstantTextsAndStyles.welcome,
+                const GapSize.big(),
                 EmailInputField(controller: emailController),
-                const EmptySize.small(),
+                const GapSize.small(),
                 PasswordInputField(controller: passwordController),
-                const EmptySize.medium(),
+                const GapSize.medium(),
                 LoginButton(
                   onPressed: isLoading ? null : handleLogin,
                   isLoading: isLoading,

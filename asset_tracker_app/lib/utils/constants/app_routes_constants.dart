@@ -11,8 +11,8 @@ class ToScreen {
 
 class AppRoutes {
   static Map<String, Widget Function(BuildContext)> routes = {
-    '/onboarding': (context) => const OnboardingScreenView(),
-    '/login': (context) => const LoginScreenView(),
-    '/home': (context) => HomePageView(),
+    ToScreen.onboardPage: (context) => const OnboardingScreenView(),
+    ToScreen.loginPage: (context) => const LoginScreenView(),
+    ToScreen.homePage: (context) => HomePageView(),
   };
 }
