@@ -2,12 +2,12 @@ import 'package:asset_tracker_app/localization/strings.dart';
 import 'package:asset_tracker_app/utils/enums/auth_service_error_enum.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-abstract class IFirebaseAuthService {
+abstract class IAuthService {
   Future<bool> signIn(String email, String password);
   Future<void> signOut();
 }
 
-class FirebaseAuthService implements IFirebaseAuthService {
+class FirebaseAuthService implements IAuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
@@ -19,7 +19,7 @@ class FirebaseAuthService implements IFirebaseAuthService {
       );
       return true;
     } on FirebaseAuthException catch (e) {
-      throw handleAuthError(e);
+      throw _handleAuthError(e);
     } catch (e) {
       if (_auth.currentUser != null) {
         return true;
@@ -28,7 +28,7 @@ class FirebaseAuthService implements IFirebaseAuthService {
     }
   }
 
-  String handleAuthError(FirebaseAuthException e) {
+  String _handleAuthError(FirebaseAuthException e) {
     final error = FirebaseAuthError.fromCode(e.code);
     return error == FirebaseAuthError.unknown
         ? '${error.message}${e.message}'

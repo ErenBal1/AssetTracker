@@ -1,9 +1,12 @@
-import 'package:asset_tracker_app/utils/constants/app_size_constants.dart';
+import 'package:asset_tracker_app/utils/constants/theme/constant_paddings.dart';
+import 'package:asset_tracker_app/utils/constants/theme/constant_texts_and_styles.dart';
 import 'package:flutter/material.dart';
 
 class OnboardingButton extends StatelessWidget {
   final VoidCallback onPressed;
   final String text;
+  final double _elevation = 2.0;
+  final double _onBoardButtonBorderRadius = 12.0;
 
   const OnboardingButton({
     super.key,
@@ -14,24 +17,14 @@ class OnboardingButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: onPressed,
-      style: ElevatedButton.styleFrom(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 24,
-          vertical: 12,
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          padding: ConstantPaddings.onBoardingButtonPadding,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(_onBoardButtonBorderRadius),
+          ),
+          elevation: _elevation,
         ),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-        elevation: 2,
-      ),
-      child: Text(
-        text,
-        style: const TextStyle(
-          fontSize: AppSize.textLarge,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-    );
+        child: ConstantTextsAndStyles.getOnboardPageButtonText(text));
   }
 }

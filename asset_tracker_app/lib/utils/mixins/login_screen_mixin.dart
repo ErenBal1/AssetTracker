@@ -8,6 +8,7 @@ mixin LoginScreenMixin<T extends StatefulWidget> on State<T> {
   final TextEditingController passwordController = TextEditingController();
   final FirebaseAuthService authService = FirebaseAuthService();
   bool isLoading = false;
+  final int _errorMessageDuration = 3;
 
   @override
   void dispose() {
@@ -38,7 +39,7 @@ mixin LoginScreenMixin<T extends StatefulWidget> on State<T> {
         SnackBar(
           content: Text(message),
           backgroundColor: Colors.red,
-          duration: const Duration(seconds: 3),
+          duration: Duration(seconds: _errorMessageDuration),
         ),
       );
     }

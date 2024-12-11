@@ -1,5 +1,7 @@
-import 'package:asset_tracker_app/utils/constants/app_size_constants.dart';
-import 'package:asset_tracker_app/utils/constants/empty_size.dart';
+import 'package:asset_tracker_app/utils/constants/theme/constant_icons.dart';
+import 'package:asset_tracker_app/utils/constants/theme/constant_paddings.dart';
+import 'package:asset_tracker_app/utils/constants/theme/constant_gap_sizes.dart';
+import 'package:asset_tracker_app/utils/constants/theme/constant_texts_and_styles.dart';
 import 'package:flutter/material.dart';
 
 class OnboardingPage extends StatelessWidget {
@@ -18,33 +20,15 @@ class OnboardingPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.all(24.0),
+        padding: ConstantPaddings.allXXL,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              icon,
-              size: AppSize.iconXXXL,
-              color: Theme.of(context).primaryColor,
-            ),
-            const EmptySize.mediumLarge(),
-            Text(
-              title,
-              style: const TextStyle(
-                fontSize: AppSize.textXXL,
-                fontWeight: FontWeight.bold,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            const EmptySize.small(),
-            Text(
-              description,
-              style: const TextStyle(
-                fontSize: AppSize.textLarge,
-                color: Colors.grey,
-              ),
-              textAlign: TextAlign.center,
-            ),
+            ConstantIcons.getOnboardPagesIcons(icon, context),
+            const GapSize.mediumLarge(),
+            ConstantTextsAndStyles.getOnboardPageTitle(title),
+            const GapSize.small(),
+            ConstantTextsAndStyles.getOnboardPageDescription(description),
           ],
         ),
       ),

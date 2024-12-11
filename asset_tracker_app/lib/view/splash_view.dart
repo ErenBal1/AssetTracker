@@ -1,7 +1,7 @@
-import 'package:asset_tracker_app/localization/strings.dart';
-import 'package:asset_tracker_app/utils/constants/app_routes_constants.dart';
-import 'package:asset_tracker_app/utils/constants/app_size_constants.dart';
-import 'package:asset_tracker_app/utils/constants/empty_size.dart';
+import 'package:asset_tracker_app/utils/constants/theme/constant_icons.dart';
+import 'package:asset_tracker_app/utils/constants/theme/constant_texts_and_styles.dart';
+import 'package:asset_tracker_app/utils/constants/theme/constant_gap_sizes.dart';
+import 'package:asset_tracker_app/utils/mixins/splash_screen_mixin.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreenView extends StatefulWidget {
@@ -11,33 +11,8 @@ class SplashScreenView extends StatefulWidget {
   State<SplashScreenView> createState() => _SplashScreenViewState();
 }
 
-class _SplashScreenViewState extends State<SplashScreenView> {
-  final int splashDurationValue = 3;
-  @override
-  void initState() {
-    super.initState();
-    _navigateToNextScreen();
-  }
-
-  Future<void> _navigateToNextScreen() async {
-    await Future.delayed(Duration(seconds: splashDurationValue));
-    if (!mounted) return;
-
-    final bool isFirstTime = await _isFirstTimeUser();
-    if (!mounted) return;
-
-    if (isFirstTime) {
-      Navigator.pushReplacementNamed(context, ToScreen.onboardPage);
-    } else {
-      Navigator.pushReplacementNamed(context, ToScreen.loginPage);
-    }
-  }
-
-  Future<bool> _isFirstTimeUser() async {
-    //
-    return true;
-  }
-
+class _SplashScreenViewState extends State<SplashScreenView>
+    with SplashScreenMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,19 +20,9 @@ class _SplashScreenViewState extends State<SplashScreenView> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              Icons.inventory,
-              size: AppSize.iconXXXL,
-              color: Theme.of(context).primaryColor,
-            ),
-            const EmptySize.medium(),
-            const Text(
-              LocalStrings.appLabel,
-              style: TextStyle(
-                fontSize: AppSize.textXXXL,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+            ConstantIcons.getSplashScreenIcon(context),
+            const GapSize.medium(),
+            ConstantTextsAndStyles.splashAppLabelText
           ],
         ),
       ),

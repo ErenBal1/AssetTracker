@@ -1,5 +1,5 @@
-import 'package:asset_tracker_app/utils/constants/app_size_constants.dart';
-import 'package:asset_tracker_app/utils/constants/empty_size.dart';
+import 'package:asset_tracker_app/utils/constants/theme/constant_gap_sizes.dart';
+import 'package:asset_tracker_app/utils/constants/theme/constant_texts_and_styles.dart';
 import 'package:flutter/material.dart';
 
 class LoginButton extends StatelessWidget {
@@ -13,37 +13,34 @@ class LoginButton extends StatelessWidget {
     required this.isLoading,
     required this.text,
   });
+  final double _elevation = 2.0;
+  final double _indicatorSquareGapSize = 24;
+  final double _loginButtonSizedBoxHeight = 48;
+  final double _loginButtonBorderRadius = 8;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: AppSize.loginButtonHeight,
+      height: _loginButtonSizedBoxHeight,
       child: ElevatedButton(
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
+          onPressed: onPressed,
+          style: ElevatedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(_loginButtonBorderRadius),
+            ),
+            elevation: _elevation,
+            backgroundColor: Theme.of(context).primaryColor,
+            foregroundColor: Colors.white,
           ),
-          elevation: 2,
-          backgroundColor: Theme.of(context).primaryColor,
-          foregroundColor: Colors.white,
-        ),
-        child: isLoading
-            ? const EmptySize.square(
-                size: 24,
-                child: CircularProgressIndicator(
-                  strokeWidth: 2,
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                ),
-              )
-            : Text(
-                text,
-                style: const TextStyle(
-                  fontSize: AppSize.textLarge,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-      ),
+          child: isLoading
+              ? GapSize.square(
+                  size: _indicatorSquareGapSize,
+                  child: const CircularProgressIndicator(
+                    strokeWidth: 2,
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                  ),
+                )
+              : ConstantTextsAndStyles.getLoginPageButtonText(text)),
     );
   }
 }

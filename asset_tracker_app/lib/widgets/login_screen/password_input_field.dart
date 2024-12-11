@@ -15,6 +15,7 @@ class PasswordInputField extends StatefulWidget {
 
 class _PasswordInputFieldState extends State<PasswordInputField> {
   bool _isPasswordVisible = false;
+  final int _atLeast6characters = 6;
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +41,7 @@ class _PasswordInputFieldState extends State<PasswordInputField> {
         if (value == null || value.isEmpty) {
           return LocalStrings.enterPassword;
         }
-        if (value.length < 6) {
+        if (value.length < _atLeast6characters) {
           return LocalStrings.atLeast6characters;
         }
         return null;
