@@ -29,7 +29,7 @@ class FirebaseAuthService implements IAuthService {
   }
 
   String _handleAuthError(FirebaseAuthException e) {
-    final error = FirebaseAuthError.fromCode(e.code);
+    final error = e.code.toFirebaseAuthError();
     return error == FirebaseAuthError.unknown
         ? '${error.message}${e.message}'
         : error.message;

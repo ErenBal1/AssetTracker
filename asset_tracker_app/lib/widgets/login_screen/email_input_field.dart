@@ -1,7 +1,8 @@
 import 'package:asset_tracker_app/localization/strings.dart';
+import 'package:asset_tracker_app/utils/mixins/validation_mixin.dart';
 import 'package:flutter/material.dart';
 
-class EmailInputField extends StatelessWidget {
+class EmailInputField extends StatelessWidget with ValidationMixin {
   final TextEditingController controller;
 
   const EmailInputField({
@@ -12,22 +13,13 @@ class EmailInputField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      controller: controller,
-      keyboardType: TextInputType.emailAddress,
-      decoration: const InputDecoration(
-        labelText: LocalStrings.emailLabel,
-        border: OutlineInputBorder(),
-        prefixIcon: Icon(Icons.email),
-      ),
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return LocalStrings.enterEmail;
-        }
-        if (!value.contains('@')) {
-          return LocalStrings.enterValidEmail;
-        }
-        return null;
-      },
-    );
+        controller: controller,
+        keyboardType: TextInputType.emailAddress,
+        decoration: const InputDecoration(
+          labelText: LocalStrings.emailLabel,
+          border: OutlineInputBorder(),
+          prefixIcon: Icon(Icons.email),
+        ),
+        validator: validateEmail);
   }
 }

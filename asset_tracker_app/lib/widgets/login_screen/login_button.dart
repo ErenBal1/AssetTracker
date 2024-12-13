@@ -1,5 +1,5 @@
 import 'package:asset_tracker_app/utils/constants/theme/constant_gap_sizes.dart';
-import 'package:asset_tracker_app/utils/constants/theme/constant_texts_and_styles.dart';
+import 'package:asset_tracker_app/utils/constants/theme/constant_text_styles.dart';
 import 'package:flutter/material.dart';
 
 class LoginButton extends StatelessWidget {
@@ -40,7 +40,7 @@ class LoginButton extends StatelessWidget {
                     valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                   ),
                 )
-              : ConstantTextsAndStyles.getLoginPageButtonText(text)),
+              : Text(text, style: ConstantTextStyles.buttonText)),
     );
   }
 }

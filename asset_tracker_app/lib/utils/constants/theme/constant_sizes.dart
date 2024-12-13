@@ -38,4 +38,40 @@ class ConstantSizes {
 
   /// 32.0
   static const double textXXXL = 32.0;
+
+  ///Sizedbox gap sizes
+
+  /// 16.0
+  static const double gapSmall = 16.0;
+
+  /// 24.0
+  static const double gapMedium = 24.0;
+
+  /// 32.0
+  static const double gapLarge = 32.0;
+
+  /// 48.0
+  static const double gapXL = 48.0;
+
+  // Base padding values
+  /// 4.0
+  static const double paddingXXS = 4;
+
+  /// 8.0
+  static const double paddingXS = 8;
+
+  /// 12.0
+  static const double paddingS = 12;
+
+  /// 16.0
+  static const double paddingM = 16;
+
+  /// 20.0
+  static const double paddingL = 20;
+
+  /// 24.0
+  static const double paddingXL = 24;
+
+  /// 32.0
+  static const double paddingXXL = 32;
 }

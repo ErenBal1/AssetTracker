@@ -1,4 +1,5 @@
 import 'package:asset_tracker_app/localization/strings.dart';
+import 'package:asset_tracker_app/utils/mixins/validation_mixin.dart';
 import 'package:flutter/material.dart';
 
 class PasswordInputField extends StatefulWidget {
@@ -13,39 +14,30 @@ class PasswordInputField extends StatefulWidget {
   State<PasswordInputField> createState() => _PasswordInputFieldState();
 }
 
-class _PasswordInputFieldState extends State<PasswordInputField> {
+class _PasswordInputFieldState extends State<PasswordInputField>
+    with ValidationMixin {
   bool _isPasswordVisible = false;
-  final int _atLeast6characters = 6;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      controller: widget.controller,
-      obscureText: !_isPasswordVisible,
-      decoration: InputDecoration(
-        labelText: LocalStrings.passwordLabel,
-        border: const OutlineInputBorder(),
-        prefixIcon: const Icon(Icons.lock),
-        suffixIcon: IconButton(
-          icon: Icon(
-            _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+        controller: widget.controller,
+        obscureText: !_isPasswordVisible,
+        decoration: InputDecoration(
+          labelText: LocalStrings.passwordLabel,
+          border: const OutlineInputBorder(),
+          prefixIcon: const Icon(Icons.lock),
+          suffixIcon: IconButton(
+            icon: Icon(
+              _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+            ),
+            onPressed: () {
+              setState(() {
+                _isPasswordVisible = !_isPasswordVisible;
+              });
+            },
           ),
-          onPressed: () {
-            setState(() {
-              _isPasswordVisible = !_isPasswordVisible;
-            });
-          },
         ),
-      ),
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return LocalStrings.enterPassword;
-        }
-        if (value.length < _atLeast6characters) {
-          return LocalStrings.atLeast6characters;
-        }
-        return null;
-      },
-    );
+        validator: validatePassword);
   }
 }
