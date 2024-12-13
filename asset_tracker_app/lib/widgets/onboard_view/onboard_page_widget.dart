@@ -1,7 +1,7 @@
-import 'package:asset_tracker_app/utils/constants/theme/constant_icons.dart';
 import 'package:asset_tracker_app/utils/constants/theme/constant_paddings.dart';
 import 'package:asset_tracker_app/utils/constants/theme/constant_gap_sizes.dart';
-import 'package:asset_tracker_app/utils/constants/theme/constant_texts_and_styles.dart';
+import 'package:asset_tracker_app/utils/constants/theme/constant_text_styles.dart';
+import 'package:asset_tracker_app/widgets/custom_icon_widget.dart';
 import 'package:flutter/material.dart';
 
 class OnboardingPage extends StatelessWidget {
@@ -24,11 +24,19 @@ class OnboardingPage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            ConstantIcons.getOnboardPagesIcons(icon, context),
+            CustomIcon(icon: icon),
             const GapSize.mediumLarge(),
-            ConstantTextsAndStyles.getOnboardPageTitle(title),
+            Text(
+              title,
+              style: ConstantTextStyles.headlineMedium,
+              textAlign: TextAlign.center,
+            ),
             const GapSize.small(),
-            ConstantTextsAndStyles.getOnboardPageDescription(description),
+            Text(
+              description,
+              style: ConstantTextStyles.bodyLargeGrey,
+              textAlign: TextAlign.center,
+            ),
           ],
         ),
       ),

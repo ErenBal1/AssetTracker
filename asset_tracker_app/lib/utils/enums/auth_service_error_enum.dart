@@ -11,14 +11,9 @@ enum FirebaseAuthError {
 
   final String code;
   const FirebaseAuthError(this.code);
+}
 
-  static FirebaseAuthError fromCode(String code) {
-    return FirebaseAuthError.values.firstWhere(
-      (error) => error.code == code,
-      orElse: () => FirebaseAuthError.unknown,
-    );
-  }
-
+extension FirebaseAuthErrorX on FirebaseAuthError {
   String get message {
     switch (this) {
       case FirebaseAuthError.userNotFound:
@@ -36,5 +31,14 @@ enum FirebaseAuthError {
       case FirebaseAuthError.unknown:
         return LocalStrings.defaultError;
     }
+  }
+}
+
+extension StringFirebaseAuthErrorX on String {
+  FirebaseAuthError toFirebaseAuthError() {
+    return FirebaseAuthError.values.firstWhere(
+      (error) => error.code == this,
+      orElse: () => FirebaseAuthError.unknown,
+    );
   }
 }

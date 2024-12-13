@@ -1,69 +1,93 @@
+import 'package:asset_tracker_app/utils/constants/theme/constant_sizes.dart';
 import 'package:flutter/material.dart';
 
+/// Available padding values:
+/// XXS: 4.0
+/// XS:  8.0
+/// S:   12.0
+/// M:   16.0
+/// L:   20.0
+/// XL:  24.0
+/// XXL: 32.0
+///
+/// Types:
+/// - all: Applies padding to all sides
+/// - horizontal: Applies padding horizontally
+/// - vertical: Applies padding vertically
 class ConstantPaddings {
   /// Alls
-  ///
-  /// 4
-  static const EdgeInsets allXXS = EdgeInsets.all(4);
+  /// padding: 4.0
+  static const EdgeInsets allXXS = EdgeInsets.all(ConstantSizes.paddingXXS);
 
-  /// 8
-  static const EdgeInsets allXS = EdgeInsets.all(8);
+  /// padding: 8.0
+  static const EdgeInsets allXS = EdgeInsets.all(ConstantSizes.paddingXS);
 
-  /// 12
-  static const EdgeInsets allS = EdgeInsets.all(12);
+  /// padding: 12.0
+  static const EdgeInsets allS = EdgeInsets.all(ConstantSizes.paddingS);
 
-  /// 16
-  static const EdgeInsets allM = EdgeInsets.all(16);
+  /// padding: 16.0
+  static const EdgeInsets allM = EdgeInsets.all(ConstantSizes.paddingM);
 
-  /// 20
-  static const EdgeInsets allL = EdgeInsets.all(20);
+  /// padding: 20.0
+  static const EdgeInsets allL = EdgeInsets.all(ConstantSizes.paddingL);
 
-  /// 24
-  static const EdgeInsets allXL = EdgeInsets.all(24);
+  /// padding: 24.0
+  static const EdgeInsets allXL = EdgeInsets.all(ConstantSizes.paddingXL);
 
-  /// 32
-  static const EdgeInsets allXXL = EdgeInsets.all(32);
+  /// padding: 32.0
+  static const EdgeInsets allXXL = EdgeInsets.all(ConstantSizes.paddingXXL);
 
   /// Horizontals
-  ///
-  /// 4
-  static const EdgeInsets horizontalXXS = EdgeInsets.symmetric(horizontal: 4);
+  /// horizontal padding: 4.0
+  static const EdgeInsets horizontalXXS =
+      EdgeInsets.symmetric(horizontal: ConstantSizes.paddingXXS);
 
-  /// 8
-  static const EdgeInsets horizontalXS = EdgeInsets.symmetric(horizontal: 8);
+  /// horizontal padding: 8.0
+  static const EdgeInsets horizontalXS =
+      EdgeInsets.symmetric(horizontal: ConstantSizes.paddingXS);
 
-  /// 12
-  static const EdgeInsets horizontalS = EdgeInsets.symmetric(horizontal: 12);
+  /// horizontal padding: 12.0
+  static const EdgeInsets horizontalS =
+      EdgeInsets.symmetric(horizontal: ConstantSizes.paddingS);
 
-  /// 16
-  static const EdgeInsets horizontalM = EdgeInsets.symmetric(horizontal: 16);
+  /// horizontal padding: 16.0
+  static const EdgeInsets horizontalM =
+      EdgeInsets.symmetric(horizontal: ConstantSizes.paddingM);
 
-  /// 20
-  static const EdgeInsets horizontalL = EdgeInsets.symmetric(horizontal: 20);
+  /// horizontal padding: 20.0
+  static const EdgeInsets horizontalL =
+      EdgeInsets.symmetric(horizontal: ConstantSizes.paddingL);
 
-  /// 24
-  static const EdgeInsets horizontalXL = EdgeInsets.symmetric(horizontal: 24);
+  /// horizontal padding: 24.0
+  static const EdgeInsets horizontalXL =
+      EdgeInsets.symmetric(horizontal: ConstantSizes.paddingXL);
 
   /// Verticals
-  ///
-  /// 4
-  static const EdgeInsets verticalXXS = EdgeInsets.symmetric(vertical: 4);
+  /// vertical padding: 4.0
+  static const EdgeInsets verticalXXS =
+      EdgeInsets.symmetric(vertical: ConstantSizes.paddingXXS);
 
-  /// 8
-  static const EdgeInsets verticalXS = EdgeInsets.symmetric(vertical: 8);
+  /// vertical padding: 8.0
+  static const EdgeInsets verticalXS =
+      EdgeInsets.symmetric(vertical: ConstantSizes.paddingXS);
 
-  /// 12
-  static const EdgeInsets verticalS = EdgeInsets.symmetric(vertical: 12);
+  /// vertical padding: 12.0
+  static const EdgeInsets verticalS =
+      EdgeInsets.symmetric(vertical: ConstantSizes.paddingS);
 
-  /// 16
-  static const EdgeInsets verticalM = EdgeInsets.symmetric(vertical: 16);
+  /// vertical padding: 16.0
+  static const EdgeInsets verticalM =
+      EdgeInsets.symmetric(vertical: ConstantSizes.paddingM);
 
-  /// 20
-  static const EdgeInsets verticalL = EdgeInsets.symmetric(vertical: 20);
+  /// vertical padding: 20.0
+  static const EdgeInsets verticalL =
+      EdgeInsets.symmetric(vertical: ConstantSizes.paddingL);
 
-  /// 24
-  static const EdgeInsets verticalXL = EdgeInsets.symmetric(vertical: 24);
+  /// vertical padding: 24.0
+  static const EdgeInsets verticalXL =
+      EdgeInsets.symmetric(vertical: ConstantSizes.paddingXL);
 
+  /// Creates custom padding based on provided values
   static EdgeInsets custom({
     double? all,
     double? horizontal,
@@ -85,10 +109,10 @@ class ConstantPaddings {
     );
   }
 
-  /// For Special Ones
-  /// Horizontal: 24, Vertical: 12
+  /// Special Cases
+  /// horizontal: 24.0, vertical: 12.0
   static const EdgeInsets onBoardingButtonPadding = EdgeInsets.symmetric(
-    horizontal: 24,
-    vertical: 12,
+    horizontal: ConstantSizes.paddingXL, // 24
+    vertical: ConstantSizes.paddingS, // 12
   );
 }

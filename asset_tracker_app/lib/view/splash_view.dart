@@ -1,7 +1,9 @@
-import 'package:asset_tracker_app/utils/constants/theme/constant_icons.dart';
-import 'package:asset_tracker_app/utils/constants/theme/constant_texts_and_styles.dart';
+import 'package:asset_tracker_app/localization/strings.dart';
+import 'package:asset_tracker_app/utils/constants/theme/constant_sizes.dart';
+import 'package:asset_tracker_app/utils/constants/theme/constant_text_styles.dart';
 import 'package:asset_tracker_app/utils/constants/theme/constant_gap_sizes.dart';
 import 'package:asset_tracker_app/utils/mixins/splash_screen_mixin.dart';
+import 'package:asset_tracker_app/widgets/custom_icon_widget.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreenView extends StatefulWidget {
@@ -15,14 +17,17 @@ class _SplashScreenViewState extends State<SplashScreenView>
     with SplashScreenMixin {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            ConstantIcons.getSplashScreenIcon(context),
-            const GapSize.medium(),
-            ConstantTextsAndStyles.splashAppLabelText
+            CustomIcon(icon: Icons.inventory, size: ConstantSizes.iconXXXL),
+            GapSize.medium(),
+            Text(
+              LocalStrings.appLabel,
+              style: ConstantTextStyles.headlineLarge,
+            )
           ],
         ),
       ),

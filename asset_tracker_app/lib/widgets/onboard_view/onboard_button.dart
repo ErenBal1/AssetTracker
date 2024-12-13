@@ -1,5 +1,5 @@
 import 'package:asset_tracker_app/utils/constants/theme/constant_paddings.dart';
-import 'package:asset_tracker_app/utils/constants/theme/constant_texts_and_styles.dart';
+import 'package:asset_tracker_app/utils/constants/theme/constant_text_styles.dart';
 import 'package:flutter/material.dart';
 
 class OnboardingButton extends StatelessWidget {
@@ -25,6 +25,6 @@ class OnboardingButton extends StatelessWidget {
           ),
           elevation: _elevation,
         ),
-        child: ConstantTextsAndStyles.getOnboardPageButtonText(text));
+        child: Text(text, style: ConstantTextStyles.buttonText));
   }
 }
