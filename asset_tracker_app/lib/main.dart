@@ -1,12 +1,10 @@
-import 'package:asset_tracker_app/services/firebase/firebase_options.dart';
+import 'package:asset_tracker_app/init/app_init.dart';
 import 'package:asset_tracker_app/utils/constants/app_routes_constants.dart';
 import 'package:asset_tracker_app/view/splash_view.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  AppInit();
   runApp(const AssetTrackerMain());
 }
 
