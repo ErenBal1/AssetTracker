@@ -3,10 +3,12 @@ import 'package:asset_tracker_app/bloc/splash/splash_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SplashBloc extends Bloc<SplashEvent, SplashState> {
+  final int _splashDurationValue = 3;
+
   SplashBloc() : super(SplashInitial()) {
     on<CheckFirstTime>((event, emit) async {
       emit(SplashLoading());
-      await Future.delayed(const Duration(seconds: 3));
+      await Future.delayed(Duration(seconds: _splashDurationValue));
 
       final bool isFirstTime = await _isFirstTimeUser();
 
