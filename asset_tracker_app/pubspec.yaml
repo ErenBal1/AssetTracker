@@ -12,9 +12,14 @@ dependencies:
     sdk: flutter
 
   cupertino_icons: ^1.0.8
-  #FOR FIREBASE
+
+  #FIREBASE
   firebase_core: ^2.32.0
   firebase_auth: ^4.16.0
+
+  #BLOC
+  equatable: ^2.0.7
+  flutter_bloc: ^8.1.6
 
 
 dev_dependencies:
