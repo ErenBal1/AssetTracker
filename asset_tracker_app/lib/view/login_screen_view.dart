@@ -1,5 +1,4 @@
 import 'package:asset_tracker_app/bloc/auth/auth_bloc.dart';
-import 'package:asset_tracker_app/bloc/auth/auth_event.dart';
 import 'package:asset_tracker_app/bloc/auth/auth_state.dart';
 import 'package:asset_tracker_app/localization/strings.dart';
 import 'package:asset_tracker_app/services/firebase/firebase_auth_service.dart';
@@ -60,18 +59,9 @@ class _LoginScreenViewState extends State<LoginScreenView>
                       PasswordInputField(controller: passwordController),
                       const GapSize.medium(),
                       LoginButton(
-                        onPressed: state is AuthLoading
-                            ? null
-                            : () {
-                                if (validateForm()) {
-                                  context.read<AuthBloc>().add(
-                                        SignInRequested(
-                                          emailController.text,
-                                          passwordController.text,
-                                        ),
-                                      );
-                                }
-                              },
+                        onPressed: isButtonEnabled(state)
+                            ? () => handleLoginButtonPress(context, state)
+                            : null,
                         isLoading: state is AuthLoading,
                         text: LocalStrings.signIn,
                       ),
