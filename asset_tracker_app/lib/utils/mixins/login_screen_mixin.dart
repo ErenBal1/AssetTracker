@@ -1,14 +1,15 @@
-import 'package:asset_tracker_app/services/firebase/firebase_auth_service.dart';
-import 'package:asset_tracker_app/utils/constants/app_routes_constants.dart';
+import 'package:asset_tracker_app/bloc/auth/auth_bloc.dart';
+import 'package:asset_tracker_app/bloc/auth/auth_event.dart';
+import 'package:asset_tracker_app/bloc/auth/auth_state.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-mixin LoginScreenMixin<T extends StatefulWidget> on State<T> {
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-  final FirebaseAuthService authService = FirebaseAuthService();
-  bool isLoading = false;
-  final int _errorMessageDuration = 3;
+mixin LoginScreenMixin<LoginScreenState extends StatefulWidget>
+    on State<LoginScreenState> {
+  final formKey = GlobalKey<FormState>();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  final _errorMessageDuration = 3;
 
   @override
   void dispose() {
@@ -17,21 +18,7 @@ mixin LoginScreenMixin<T extends StatefulWidget> on State<T> {
     super.dispose();
   }
 
-  bool validateForm() {
-    return formKey.currentState?.validate() ?? false;
-  }
-
-  void updateLoadingState(bool loading) {
-    if (mounted) {
-      setState(() => isLoading = loading);
-    }
-  }
-
-  void navigateToHome() {
-    if (mounted) {
-      Navigator.pushReplacementNamed(context, ToScreen.homePage);
-    }
-  }
+  bool validateForm() => formKey.currentState?.validate() ?? false;
 
   void showErrorMessage(String message) {
     if (mounted) {
@@ -45,24 +32,18 @@ mixin LoginScreenMixin<T extends StatefulWidget> on State<T> {
     }
   }
 
-  Future<void> handleLogin() async {
-    if (!validateForm()) return;
-
-    updateLoadingState(true);
-
-    try {
-      final success = await authService.signIn(
-        emailController.text,
-        passwordController.text,
-      );
-
-      if (success) {
-        navigateToHome();
-      }
-    } catch (e) {
-      showErrorMessage(e.toString());
-    } finally {
-      updateLoadingState(false);
+  void handleLoginButtonPress(BuildContext context, AuthState state) {
+    if (validateForm()) {
+      context.read<AuthBloc>().add(
+            SignInRequested(
+              emailController.text,
+              passwordController.text,
+            ),
+          );
     }
+  }
+
+  bool isButtonEnabled(AuthState state) {
+    return state is AuthLoading ? false : true;
   }
 }
