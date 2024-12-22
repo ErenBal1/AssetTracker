@@ -1,6 +1,11 @@
+import 'package:asset_tracker_app/bloc/auth/auth_bloc.dart';
+import 'package:asset_tracker_app/bloc/auth/auth_event.dart';
+import 'package:asset_tracker_app/bloc/auth/auth_state.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-mixin LoginScreenMixin<T extends StatefulWidget> on State<T> {
+mixin LoginScreenMixin<LoginScreenState extends StatefulWidget>
+    on State<LoginScreenState> {
   final formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -25,5 +30,20 @@ mixin LoginScreenMixin<T extends StatefulWidget> on State<T> {
         ),
       );
     }
+  }
+
+  void handleLoginButtonPress(BuildContext context, AuthState state) {
+    if (validateForm()) {
+      context.read<AuthBloc>().add(
+            SignInRequested(
+              emailController.text,
+              passwordController.text,
+            ),
+          );
+    }
+  }
+
+  bool isButtonEnabled(AuthState state) {
+    return state is AuthLoading ? false : true;
   }
 }

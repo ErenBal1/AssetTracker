@@ -1,4 +1,3 @@
-import 'package:asset_tracker_app/localization/strings.dart';
 import 'package:asset_tracker_app/utils/constants/app_routes_constants.dart';
 import 'package:asset_tracker_app/utils/mixins/onboard_screen_mixin.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -62,21 +61,9 @@ class _OnboardingScreenViewState extends State<OnboardingScreenView>
                       children: [
                         _buildDotIndicators(),
                         OnboardingButton(
-                          onPressed: () {
-                            if (currentPage < onboardingData.pages.length - 1) {
-                              navigateToNextPage();
-                            }
-                            context.read<OnboardingBloc>().add(
-                                  NextButtonPressed(
-                                    currentPage: currentPage,
-                                    totalPages: onboardingData.pages.length,
-                                  ),
-                                );
-                          },
-                          text: state is OnboardingPageChanged &&
-                                  state.currentPage == state.totalPages - 1
-                              ? LocalStrings.getStartedButton
-                              : LocalStrings.nextButton,
+                          onPressed: () => handleOnboardingButtonPress(
+                              context, onboardingData),
+                          text: getButtonText(state),
                         ),
                       ],
                     ),
