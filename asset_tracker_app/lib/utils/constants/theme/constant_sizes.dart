@@ -40,6 +40,9 @@ class ConstantSizes {
   static const double textXXXL = 32.0;
 
   ///Sizedbox gap sizes
+  ///
+  ///8.0
+  static const double gapExtraSmall = 8.0;
 
   /// 16.0
   static const double gapSmall = 16.0;
