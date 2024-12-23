@@ -1,5 +1,3 @@
-//simdilik baglamıyorum sadece uygulama icerisindeki constant stringlerimi buraya yazıyorum.
-
 class LocalStrings {
   //onBoard view Screens
 //1
@@ -48,4 +46,10 @@ class LocalStrings {
       'The password is too weak. Use at least 6 characters.';
   static const emailAlreadyinUse = 'This email address is already in use.';
   static const operationNotAllowed = 'Email/password login is not active.';
+
+  //home screen
+  static const refreshingData = 'Refreshing data...';
+  static const haremAltinTableKod = 'Kod';
+  static const haremAltinTableAlis = 'Alis';
+  static const haremAltinTableSatis = 'Satis';
 }

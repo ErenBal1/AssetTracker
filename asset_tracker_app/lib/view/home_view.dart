@@ -1,43 +1,41 @@
-import 'package:asset_tracker_app/services/firebase/firebase_auth_service.dart';
-import 'package:asset_tracker_app/utils/constants/app_routes_constants.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:asset_tracker_app/utils/constants/theme/constant_paddings.dart';
+import 'package:asset_tracker_app/utils/mixins/home_screen_mixin.dart';
+import 'package:asset_tracker_app/widgets/home_page/buttons/home_page_logout_button.dart';
+import 'package:asset_tracker_app/widgets/home_page/buttons/home_page_refresh_button.dart';
+import 'package:asset_tracker_app/widgets/home_page/harem_altin_table_widget.dart';
+import 'package:asset_tracker_app/widgets/home_page/last_update_date.dart';
 import 'package:flutter/material.dart';
 
-//bu sayfa komple degisecek gecici olarak yaptim
-
-class HomePageView extends StatelessWidget {
-  final FirebaseAuthService _authService = FirebaseAuthService();
-
-  HomePageView({super.key});
+class HomePageView extends StatefulWidget {
+  const HomePageView({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final user = FirebaseAuth.instance.currentUser;
+  State<HomePageView> createState() => _HomePageViewState();
+}
 
+class _HomePageViewState extends State<HomePageView> with HomeScreenMixin {
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Welcome'),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.logout),
-            onPressed: () async {
-              await _authService.signOut();
-              if (context.mounted) {
-                Navigator.pushReplacementNamed(context, ToScreen.loginPage);
-              }
-            },
-          ),
+          HomePageRefreshButton(onPressed: refreshData),
+          const HomePageLogoutButton(),
         ],
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('Email: ${user?.email ?? ''}'),
-            const SizedBox(height: 16),
-            const Text('Welcome to Asset Tracker!'),
-          ],
-        ),
+      body: Column(
+        children: [
+          const Padding(
+            padding: ConstantPaddings.allXS,
+            child: LastUpdateDate(),
+          ),
+          Expanded(
+            child: RefreshIndicator(
+              onRefresh: refreshData,
+              child: const HaremAltinTableWidget(),
+            ),
+          ),
+        ],
       ),
     );
   }
