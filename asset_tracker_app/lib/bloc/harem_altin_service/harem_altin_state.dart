@@ -1,3 +1,5 @@
+import 'package:asset_tracker_app/models/harem_altin_data_model.dart';
+
 abstract class HaremAltinState {}
 
 class HaremAltinDataInitial extends HaremAltinState {}
@@ -5,12 +7,12 @@ class HaremAltinDataInitial extends HaremAltinState {}
 class HaremAltinDataLoading extends HaremAltinState {}
 
 class HaremAltinDataLoaded extends HaremAltinState {
-  final Map<String, dynamic> data;
-  final Map<String, dynamic> previousData;
+  final HaremAltinDataModel currentData;
+  final HaremAltinDataModel? previousData;
 
   HaremAltinDataLoaded({
-    required this.data,
-    required this.previousData,
+    required this.currentData,
+    this.previousData,
   });
 }
 

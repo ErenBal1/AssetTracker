@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:asset_tracker_app/services/web_socket_service.dart';
+import 'package:asset_tracker_app/services/websocket/web_socket_service.dart';
 
 class HaremAltinDataParser implements IWebSocketDataParser {
   @override
