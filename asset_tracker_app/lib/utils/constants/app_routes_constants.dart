@@ -13,6 +13,6 @@ class AppRoutes {
   static Map<String, Widget Function(BuildContext)> routes = {
     ToScreen.onboardPage: (context) => const OnboardingScreenView(),
     ToScreen.loginPage: (context) => const LoginScreenView(),
-    ToScreen.homePage: (context) => HomePageView(),
+    ToScreen.homePage: (context) => const HomePageView(),
   };
 }

@@ -1,4 +1,5 @@
 import 'package:asset_tracker_app/bloc/auth/auth_bloc.dart';
+import 'package:asset_tracker_app/bloc/harem_altin_service/harem_altin_bloc.dart';
 import 'package:asset_tracker_app/bloc/onboarding/onboarding_bloc.dart';
 import 'package:asset_tracker_app/bloc/splash/splash_bloc.dart';
 import 'package:asset_tracker_app/main.dart';
@@ -21,6 +22,9 @@ class AppProvider extends StatelessWidget {
         ),
         BlocProvider<SplashBloc>(
           create: (context) => SplashBloc(),
+        ),
+        BlocProvider<HaremAltinBloc>(
+          create: (context) => HaremAltinBloc(),
         ),
       ],
       child: const AssetTrackerMain(),
