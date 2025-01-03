@@ -1,5 +1,3 @@
-//simdilik baglamıyorum sadece uygulama icerisindeki constant stringlerimi buraya yazıyorum.
-
 class LocalStrings {
   //onBoard view Screens
 //1
@@ -48,4 +46,64 @@ class LocalStrings {
       'The password is too weak. Use at least 6 characters.';
   static const emailAlreadyinUse = 'This email address is already in use.';
   static const operationNotAllowed = 'Email/password login is not active.';
+
+  //home screen
+  static const haremAltinTableKod = 'Kod';
+  static const haremAltinTableAlis = 'Alis';
+  static const haremAltinTableSatis = 'Satis';
+  static const lastUpdate = 'Last Update: ';
+
+  //WebSocketErrors
+  static const webSocketStreamError = 'WebSocket stream error: ';
+  static const webSocketConnectionClosed = 'WebSocket connection closed';
+  static const webSocketConnectionError = 'WebSocket connection error: ';
+  static const webSocketMaxReconnectionAttempts =
+      'Maximum reconnection attempts reached';
+  static const webSocketReconnectDelay = 'Reconnect delay: ';
+  static const webSocketReconnectAttempts =
+      'Attempting to reconnect... Attempt: ';
+
+  //harem_altin_bloc error
+  static const haremAltinDataConversionError = 'Veri dönüşüm hatası: ';
+
+  //harem_altin CurrencyTypes
+
+  static const altin = 'Altın';
+  static const usdPure = 'Ham Dolar';
+  static const usdTry = 'Dolar';
+  static const ons = 'Ons';
+  static const eurTry = 'Euro';
+  static const usdKg = 'Dolar/KG';
+  static const eurUsd = 'Euro/Dolar';
+  static const eurKg = 'Euro/KG';
+  static const ayar22 = '22 Ayar Bilezik';
+  static const gbpTry = 'Sterlin';
+  static const chfTry = 'İsviçre Frangı';
+  static const kulceAltin = 'Külçe Altın';
+  static const audTry = 'Avustralya Doları';
+  static const xauXag = 'Altın/Gümüş Oranı';
+  static const ceyrekYeni = 'Çeyrek Altın (Yeni)';
+  static const cadTry = 'Kanada Doları';
+  static const ceyrekEski = 'Çeyrek Altın (Eski)';
+  static const sarTry = 'Suudi Arabistan Riyali';
+  static const yarimYeni = 'Yarım Altın (Yeni)';
+  static const yarimEski = 'Yarım Altın (Eski)';
+  static const jpyTry = 'Japon Yeni';
+  static const audUsd = 'Avustralya Doları/Dolar';
+  static const tekYeni = 'Tam Altın (Yeni)';
+  static const tekEski = 'Tam Altın (Eski)';
+  static const sekTry = 'İsveç Kronu';
+  static const ataYeni = 'Ata Altın (Yeni)';
+  static const dkkTry = 'Danimarka Kronu';
+  static const ataEski = 'Ata Altın (Eski)';
+  static const nokTry = 'Norveç Kronu';
+  static const ata5Yeni = '5\'li Ata Altın (Yeni)';
+  static const usdJpy = 'Dolar/Japon Yeni';
+  static const ata5Eski = '5\'li Ata Altın (Eski)';
+  static const gremeseYeni = 'Gremese Altın (Yeni)';
+  static const gremeseEski = 'Gremese Altın (Eski)';
+  static const ayar14 = '14 Ayar Altın';
+  static const gumusTry = 'Gümüş';
+  static const xagUsd = 'Gümüş/Dolar';
+  static const gumusUsd = 'Gümüş USD';
 }
