@@ -10,8 +10,15 @@ class HaremAltinDataModel {
     DateTime? timestamp,
   }) : timestamp = timestamp ?? DateTime.now();
 
-  factory HaremAltinDataModel.fromJson(Map<String, dynamic> json) {
+  factory HaremAltinDataModel.fromJson(
+    Map<String, dynamic> json, {
+    HaremAltinDataModel? previousData,
+  }) {
     final currencies = <String, CurrencyData>{};
+
+    if (previousData != null) {
+      currencies.addAll(previousData.currencies);
+    }
 
     json.forEach((code, data) {
       currencies[code] = CurrencyData.fromJson(code, data);
@@ -76,7 +83,6 @@ class HaremAltinDataModel {
       CurrencyType.GUMUSUSD,
     ];
 
-    // Önce priority sırasına göre ekle
     for (var currencyType in priorityOrder) {
       final currencyKey = currencyType.name;
       if (currencyList.containsKey(currencyKey)) {
@@ -85,7 +91,6 @@ class HaremAltinDataModel {
       }
     }
 
-    // Kalan varsa alfabetik sıraya göre ekle
     if (currencyList.isNotEmpty) {
       final remaining = currencyList.values.toList()
         ..sort((a, b) => a.displayName.compareTo(b.displayName));

@@ -15,8 +15,35 @@ class AssetListItem extends StatelessWidget {
     return isIncreased ? Colors.green.shade100 : Colors.red.shade100;
   }
 
+  Widget _buildPriceContainer(
+      String type, String value, bool hasIncreased, bool hasDecreased) {
+    return Container(
+      padding: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        color: hasIncreased
+            ? _getPriceChangeColor(true)
+            : hasDecreased
+                ? _getPriceChangeColor(false)
+                : Colors.transparent,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(type, style: const TextStyle(fontSize: 12, color: Colors.grey)),
+          Text(
+            '$value ${currency.currencySymbol}',
+            style: const TextStyle(fontWeight: FontWeight.w500),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final alis = currency.alis ?? previousCurrency?.alis ?? '-';
+    final satis = currency.satis ?? previousCurrency?.satis ?? '-';
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       child: Padding(
