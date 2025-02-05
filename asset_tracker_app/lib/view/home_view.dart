@@ -74,16 +74,22 @@ class _HomePageViewState extends State<HomePageView> with HomeScreenMixin {
               builder: (context, state) {
                 if (state is HaremAltinDataLoaded) {
                   final filteredCurrencies = _getFilteredCurrencies(
-                      state.currentData.sortedCurrencies);
+                    state.currentData.sortedCurrencies,
+                  );
 
                   return ListView.builder(
+                    key: const PageStorageKey(
+                        'asset_list'), // Liste pozisyonunu korumak için
                     padding: const EdgeInsets.only(bottom: 16),
                     itemCount: filteredCurrencies.length,
                     itemBuilder: (context, index) {
                       final currency = filteredCurrencies[index];
                       final previousCurrency =
                           state.previousData?.currencies[currency.code];
+
                       return AssetListItem(
+                        key:
+                            ValueKey(currency.code), // Her item için unique key
                         currency: currency,
                         previousCurrency: previousCurrency,
                       );
