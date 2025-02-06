@@ -54,10 +54,7 @@ class LocalStrings {
   static const lastUpdate = 'Last Update: ';
   static const searchFieldHintText = 'Search assets...';
   static const buy = 'Alış';
-  static const buyCode = 'alis';
   static const sell = 'Satış';
-  static const sellCode = 'satis';
-  static const assetListCode = 'asset_list';
 
   //WebSocketErrors
   static const webSocketStreamError = 'WebSocket stream error: ';

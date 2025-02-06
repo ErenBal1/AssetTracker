@@ -2,7 +2,7 @@ import 'package:asset_tracker_app/bloc/harem_altin_service/harem_altin_bloc.dart
 import 'package:asset_tracker_app/bloc/harem_altin_service/harem_altin_state.dart';
 import 'package:asset_tracker_app/localization/strings.dart';
 import 'package:asset_tracker_app/models/harem_altin_currency_data_model.dart';
-import 'package:asset_tracker_app/widgets/home_page/asset_list_item.dart';
+import 'package:asset_tracker_app/widgets/home_page/asset_list/asset_list_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -18,7 +18,6 @@ class HomeAssetList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double bottomPadding = 16;
     return Expanded(
       child: BlocBuilder<HaremAltinBloc, HaremAltinState>(
         builder: (context, state) {
@@ -28,8 +27,7 @@ class HomeAssetList extends StatelessWidget {
             );
 
             return ListView.builder(
-              key: const PageStorageKey(LocalStrings.assetListCode),
-              padding: EdgeInsets.only(bottom: bottomPadding),
+              key: const PageStorageKey('asset_list'),
               itemCount: filteredCurrencies.length,
               itemBuilder: (context, index) {
                 final currency = filteredCurrencies[index];

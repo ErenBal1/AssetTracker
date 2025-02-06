@@ -121,9 +121,4 @@ class ConstantPaddings {
     horizontal: ConstantSizes.paddingM,
     vertical: ConstantSizes.paddingXS,
   );
-
-  static const EdgeInsets xx = EdgeInsets.symmetric(
-    horizontal: ConstantSizes.paddingXS,
-    vertical: ConstantSizes.paddingXXS,
-  );
 }
