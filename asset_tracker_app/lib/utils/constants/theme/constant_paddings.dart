@@ -115,4 +115,15 @@ class ConstantPaddings {
     horizontal: ConstantSizes.paddingXL, // 24
     vertical: ConstantSizes.paddingS, // 12
   );
+
+  /// horizontal: 16.0, vertical: 8.0
+  static const EdgeInsets homePageSearchFieldPadding = EdgeInsets.symmetric(
+    horizontal: ConstantSizes.paddingM,
+    vertical: ConstantSizes.paddingXS,
+  );
+
+  static const EdgeInsets xx = EdgeInsets.symmetric(
+    horizontal: ConstantSizes.paddingXS,
+    vertical: ConstantSizes.paddingXXS,
+  );
 }

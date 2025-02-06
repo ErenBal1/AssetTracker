@@ -1,7 +1,13 @@
+import 'package:asset_tracker_app/localization/strings.dart';
 import 'package:asset_tracker_app/models/harem_altin_currency_data_model.dart';
+import 'package:asset_tracker_app/utils/constants/theme/constant_gap_sizes.dart';
+import 'package:asset_tracker_app/utils/constants/theme/constant_text_styles.dart';
+import 'package:asset_tracker_app/utils/mixins/home_screen_mixins/currency_icon_mixin.dart';
+import 'package:asset_tracker_app/utils/mixins/home_screen_mixins/price_styling_mixin.dart';
 import 'package:flutter/material.dart';
 
-class AssetListItem extends StatelessWidget {
+class AssetListItem extends StatelessWidget
+    with PriceStylingMixin, CurrencyIconMixin {
   final CurrencyData currency;
   final CurrencyData? previousCurrency;
 
@@ -11,126 +17,51 @@ class AssetListItem extends StatelessWidget {
     this.previousCurrency,
   });
 
-  Color _getPriceChangeColor(bool isIncreased) {
-    return isIncreased ? Colors.green.shade100 : Colors.red.shade100;
-  }
-
-  Widget _buildPriceContainer(
-      String type, String value, bool hasIncreased, bool hasDecreased) {
-    return Container(
-      padding: const EdgeInsets.all(8),
-      decoration: BoxDecoration(
-        color: hasIncreased
-            ? _getPriceChangeColor(true)
-            : hasDecreased
-                ? _getPriceChangeColor(false)
-                : Colors.transparent,
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(type, style: const TextStyle(fontSize: 12, color: Colors.grey)),
-          Text(
-            '$value ${currency.currencySymbol}',
-            style: const TextStyle(fontWeight: FontWeight.w500),
-          ),
-        ],
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    final alis = currency.alis ?? previousCurrency?.alis ?? '-';
-    final satis = currency.satis ?? previousCurrency?.satis ?? '-';
     return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Row(
-          children: [
-            // Sol taraf - İkon ve isim
-            Expanded(
-              flex: 2,
-              child: Row(
-                children: [
-                  Icon(
-                    currency.isGold
-                        ? Icons.monetization_on
-                        : Icons.currency_exchange,
-                    color: currency.isGold ? Colors.amber : Colors.blue,
+      child: Row(
+        children: [
+          Expanded(
+            // Left Side - Icon and Name
+            flex: 2,
+            child: Row(
+              children: [
+                buildCurrencyIcon(currency.isGold),
+                const GapSize.widthExtraSmall(),
+                Expanded(
+                  child: Text(
+                    currency.displayName,
+                    style: ConstantTextStyles.assetText,
                   ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Text(
-                      currency.displayName,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
-            // Sağ taraf - Fiyatlar
-            Expanded(
-              flex: 3,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  // Alış Fiyatı
-                  Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: currency.hasIncreasedFrom(previousCurrency, 'alis')
-                          ? _getPriceChangeColor(true)
-                          : currency.hasDecreasedFrom(previousCurrency, 'alis')
-                              ? _getPriceChangeColor(false)
-                              : Colors.transparent,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text('Alış',
-                            style: TextStyle(fontSize: 12, color: Colors.grey)),
-                        Text(
-                          '${currency.alis} ${currency.currencySymbol}',
-                          style: const TextStyle(fontWeight: FontWeight.w500),
-                        ),
-                      ],
-                    ),
-                  ),
-                  // Satış Fiyatı
-                  Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: currency.hasIncreasedFrom(
-                              previousCurrency, 'satis')
-                          ? _getPriceChangeColor(true)
-                          : currency.hasDecreasedFrom(previousCurrency, 'satis')
-                              ? _getPriceChangeColor(false)
-                              : Colors.transparent,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text('Satış',
-                            style: TextStyle(fontSize: 12, color: Colors.grey)),
-                        Text(
-                          '${currency.satis} ${currency.currencySymbol}',
-                          style: const TextStyle(fontWeight: FontWeight.w500),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+          ),
+          Expanded(
+            // Right Side - Prices
+            flex: 3,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                // Buy
+                buildPriceContainer(
+                  type: LocalStrings.buy,
+                  currency: currency,
+                  priceType: LocalStrings.buyCode,
+                  previousCurrency: previousCurrency,
+                ),
+                // Sell
+                buildPriceContainer(
+                  type: LocalStrings.sell,
+                  currency: currency,
+                  priceType: LocalStrings.sellCode,
+                  previousCurrency: previousCurrency,
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
