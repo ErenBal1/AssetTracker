@@ -48,10 +48,16 @@ class LocalStrings {
   static const operationNotAllowed = 'Email/password login is not active.';
 
   //home screen
-  static const haremAltinTableKod = 'Kod';
-  static const haremAltinTableAlis = 'Alis';
+  static const homeLabelNavBar = 'Home';
+  static const profileLabelNavBar = 'Profile';
   static const haremAltinTableSatis = 'Satis';
   static const lastUpdate = 'Last Update: ';
+  static const searchFieldHintText = 'Search assets...';
+  static const buy = 'Alış';
+  static const buyCode = 'alis';
+  static const sell = 'Satış';
+  static const sellCode = 'satis';
+  static const assetListCode = 'asset_list';
 
   //WebSocketErrors
   static const webSocketStreamError = 'WebSocket stream error: ';
