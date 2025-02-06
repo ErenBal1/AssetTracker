@@ -1,5 +1,5 @@
 import 'package:asset_tracker_app/models/harem_altin_currency_data_model.dart';
-import 'package:asset_tracker_app/utils/enums/currency_type_enum.dart';
+import 'package:asset_tracker_app/utils/constants/asset_priority_list.dart';
 
 class HaremAltinDataModel {
   final Map<String, CurrencyData> currencies;
@@ -41,47 +41,6 @@ class HaremAltinDataModel {
   List<CurrencyData> get sortedCurrencies {
     final currencyList = Map<String, CurrencyData>.from(currencies);
     final result = <CurrencyData>[];
-
-    final priorityOrder = [
-      CurrencyType.ALTIN,
-      CurrencyType.USDTRY,
-      CurrencyType.EURTRY,
-      CurrencyType.ONS,
-      CurrencyType.GBPTRY,
-      CurrencyType.KULCEALTIN,
-      CurrencyType.CEYREK_YENI,
-      CurrencyType.YARIM_YENI,
-      CurrencyType.TEK_YENI,
-      CurrencyType.ATA_YENI,
-      CurrencyType.ATA5_YENI,
-      CurrencyType.GUMUSTRY,
-      CurrencyType.AYAR22,
-      CurrencyType.AYAR14,
-      CurrencyType.CEYREK_ESKI,
-      CurrencyType.YARIM_ESKI,
-      CurrencyType.TEK_ESKI,
-      CurrencyType.ATA_ESKI,
-      CurrencyType.ATA5_ESKI,
-      CurrencyType.GREMESE_YENI,
-      CurrencyType.GREMESE_ESKI,
-      CurrencyType.CHFTRY,
-      CurrencyType.USDPURE,
-      CurrencyType.EURUSD,
-      CurrencyType.USDKG,
-      CurrencyType.EURKG,
-      CurrencyType.XAUXAG,
-      CurrencyType.CADTRY,
-      CurrencyType.AUDTRY,
-      CurrencyType.JPYTRY,
-      CurrencyType.SARTRY,
-      CurrencyType.AUDUSD,
-      CurrencyType.SEKTRY,
-      CurrencyType.DKKTRY,
-      CurrencyType.NOKTRY,
-      CurrencyType.USDJPY,
-      CurrencyType.XAGUSD,
-      CurrencyType.GUMUSUSD,
-    ];
 
     for (var currencyType in priorityOrder) {
       final currencyKey = currencyType.name;
