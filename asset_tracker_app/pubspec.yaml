@@ -13,9 +13,8 @@ dependencies:
 
   cupertino_icons: ^1.0.8
 
-  #FIREBASE
-  firebase_core: ^2.32.0
-  firebase_auth: ^4.16.0
+  #flutter_secure_storage
+  flutter_secure_storage: ^9.2.4
 
   #BLOC
   equatable: ^2.0.7
@@ -23,6 +22,8 @@ dependencies:
 
   #web_socket_channel
   web_socket_channel: ^3.0.1
+
+
 
 
 dev_dependencies:

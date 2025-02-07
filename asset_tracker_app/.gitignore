@@ -47,3 +47,4 @@ android/app/google-services.json
 lib/services/firebase/firebase_options.dart
 /firepit-log.txt
 lib/utils/constants/constant_paths.dart
+lib/utils/constants/mock_service_user_credentials.dart

@@ -1,7 +1,7 @@
 import 'package:asset_tracker_app/bloc/auth/auth_bloc.dart';
 import 'package:asset_tracker_app/bloc/auth/auth_state.dart';
 import 'package:asset_tracker_app/localization/strings.dart';
-import 'package:asset_tracker_app/services/firebase/firebase_auth_service.dart';
+import 'package:asset_tracker_app/services/mock_service/mock_service.dart';
 import 'package:asset_tracker_app/utils/constants/app_routes_constants.dart';
 import 'package:asset_tracker_app/utils/constants/theme/constant_gap_sizes.dart';
 import 'package:asset_tracker_app/utils/constants/theme/constant_paddings.dart';
@@ -26,7 +26,7 @@ class _LoginScreenViewState extends State<LoginScreenView>
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AuthBloc(FirebaseAuthService()),
+      create: (context) => AuthBloc(MockAuthService()),
       child: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthAuthenticated) {
