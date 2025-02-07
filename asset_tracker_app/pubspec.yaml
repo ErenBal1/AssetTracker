@@ -23,6 +23,10 @@ dependencies:
   #web_socket_channel
   web_socket_channel: ^3.0.1
 
+  #FIREBASE
+  firebase_core: ^3.11.0
+  firebase_auth: ^5.4.2
+
 
 
 

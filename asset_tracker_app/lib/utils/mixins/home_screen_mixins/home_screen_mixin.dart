@@ -7,7 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 mixin HomeScreenMixin<HomeScreenState extends StatefulWidget>
     on State<HomeScreenState> {
-  final MockAuthService authService = MockAuthService();
+  final IAuthService authService = MockAuthService();
   late final HaremAltinBloc _haremAltinBloc;
   final TextEditingController searchController = TextEditingController();
   String searchQuery = '';
