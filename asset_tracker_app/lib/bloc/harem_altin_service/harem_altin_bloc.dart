@@ -11,6 +11,7 @@ class HaremAltinBloc extends Bloc<HaremAltinEvent, HaremAltinState> {
   final WebSocketService _webSocketService = WebSocketService();
   StreamSubscription? _webSocketSubscription;
   HaremAltinDataModel? previousMarketData;
+  HaremAltinDataModel? _lastStableData;
   Timer? _reconnectTimer;
   final Duration _reconnectTimeDuration = const Duration(milliseconds: 500);
 
@@ -24,7 +25,15 @@ class HaremAltinBloc extends Bloc<HaremAltinEvent, HaremAltinState> {
 
         final initialData = await _webSocketService.getData();
         if (initialData != null && !emit.isDone) {
-          final marketData = HaremAltinDataModel.fromJson(initialData);
+          final marketData = HaremAltinDataModel.fromJson(
+            initialData,
+            previousData: _lastStableData,
+          );
+
+          if (_isDataComplete(marketData)) {
+            _lastStableData = marketData;
+          }
+
           emit(HaremAltinDataLoaded(
             currentData: marketData,
             previousData: previousMarketData,
@@ -41,7 +50,15 @@ class HaremAltinBloc extends Bloc<HaremAltinEvent, HaremAltinState> {
 
     on<NewHaremAltinData>((event, emit) {
       try {
-        final marketData = HaremAltinDataModel.fromJson(event.data);
+        final marketData = HaremAltinDataModel.fromJson(
+          event.data,
+          previousData: _lastStableData,
+        );
+
+        if (_isDataComplete(marketData)) {
+          _lastStableData = marketData;
+        }
+
         emit(HaremAltinDataLoaded(
           currentData: marketData,
           previousData: previousMarketData,
@@ -64,8 +81,14 @@ class HaremAltinBloc extends Bloc<HaremAltinEvent, HaremAltinState> {
       await _webSocketSubscription?.cancel();
       _webSocketService.disconnect();
       previousMarketData = null;
+      _lastStableData = null;
       emit(HaremAltinDataInitial());
     });
+  }
+
+  bool _isDataComplete(HaremAltinDataModel data) {
+    const int expectedCurrencyCount = 38;
+    return data.currencies.length >= expectedCurrencyCount;
   }
 
   Future<void> _setupStreamSubscription(Emitter<HaremAltinState> emit) async {

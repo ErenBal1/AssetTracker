@@ -77,4 +77,13 @@ class ConstantSizes {
 
   /// 32.0
   static const double paddingXXL = 32;
+
+  /// 8.0
+  /// Border Radius Circular
+  static const double borderRadiusCircularXS = 8.0;
+
+  /// Special ones
+  /// 56.0
+  /// Used for the height of the app bar
+  static const double appBarHeight = 56.0;
 }

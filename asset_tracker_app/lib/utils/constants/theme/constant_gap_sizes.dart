@@ -4,6 +4,10 @@ import 'package:flutter/material.dart';
 class GapSize extends SizedBox {
   const GapSize.extraSmall({super.key})
       : super(height: ConstantSizes.gapExtraSmall);
+
+  const GapSize.widthExtraSmall({super.key})
+      : super(width: ConstantSizes.gapExtraSmall);
+
   const GapSize.small({super.key}) : super(height: ConstantSizes.gapSmall);
 
   const GapSize.medium({super.key}) : super(height: ConstantSizes.gapMedium);

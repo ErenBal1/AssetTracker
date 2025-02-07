@@ -1,7 +1,8 @@
-import 'package:asset_tracker_app/utils/constants/theme/constant_paddings.dart';
-import 'package:asset_tracker_app/utils/mixins/home_screen_mixin.dart';
-import 'package:asset_tracker_app/widgets/home_page/buttons/home_page_logout_button.dart';
-import 'package:asset_tracker_app/widgets/home_page/harem_altin_table_widget.dart';
+import 'package:asset_tracker_app/utils/mixins/home_screen_mixins/home_screen_mixin.dart';
+import 'package:asset_tracker_app/widgets/home_page/asset_list/home_page_asset_list.dart';
+import 'package:asset_tracker_app/widgets/home_page/home_page_bottom_navigation_bar.dart';
+import 'package:asset_tracker_app/widgets/home_page/home_page_search_field.dart';
+import 'package:asset_tracker_app/widgets/home_page/home_page_title.dart';
 import 'package:asset_tracker_app/widgets/home_page/last_update_date.dart';
 import 'package:flutter/material.dart';
 
@@ -16,22 +17,21 @@ class _HomePageViewState extends State<HomePageView> with HomeScreenMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        actions: const [
-          HomePageLogoutButton(),
-        ],
-      ),
-      body: const Column(
+      appBar: const HomePageTitle(),
+      body: Column(
         children: [
-          Padding(
-            padding: ConstantPaddings.allXS,
-            child: LastUpdateDate(),
+          const LastUpdateDate(),
+          HomeSearchField(
+            controller: searchController,
+            onQueryChanged: (query) => setState(() => searchQuery = query),
           ),
-          Expanded(
-            child: HaremAltinTableWidget(),
+          HomeAssetList(
+            searchQuery: searchQuery,
+            getFilteredCurrencies: getFilteredCurrencies,
           ),
         ],
       ),
+      bottomNavigationBar: const HomeBottomNav(),
     );
   }
 }

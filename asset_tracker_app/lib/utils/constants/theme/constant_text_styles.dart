@@ -29,4 +29,11 @@ class ConstantTextStyles {
     fontSize: ConstantSizes.textLarge,
     fontWeight: FontWeight.bold,
   );
+
+  // Home View Price Text Style
+  static const TextStyle buySellText =
+      TextStyle(fontSize: ConstantSizes.textSmall, color: Colors.grey);
+
+  static const TextStyle priceText = TextStyle(fontWeight: FontWeight.w500);
+  static const TextStyle assetText = TextStyle(fontWeight: FontWeight.bold);
 }
