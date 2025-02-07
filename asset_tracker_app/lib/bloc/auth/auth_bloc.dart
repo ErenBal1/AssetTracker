@@ -4,7 +4,7 @@ import 'auth_event.dart';
 import 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  final MockAuthService _authService;
+  final IAuthService _authService;
 
   AuthBloc(this._authService) : super(AuthInitial()) {
     on<SignInRequested>((event, emit) async {
