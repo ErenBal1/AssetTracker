@@ -1,10 +1,10 @@
+import 'package:asset_tracker_app/services/mock_service/mock_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../services/firebase/firebase_auth_service.dart';
 import 'auth_event.dart';
 import 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  final FirebaseAuthService _authService;
+  final IAuthService _authService;
 
   AuthBloc(this._authService) : super(AuthInitial()) {
     on<SignInRequested>((event, emit) async {

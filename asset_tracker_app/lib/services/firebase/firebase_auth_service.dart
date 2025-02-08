@@ -1,11 +1,7 @@
 import 'package:asset_tracker_app/localization/strings.dart';
+import 'package:asset_tracker_app/services/mock_service/mock_service.dart';
 import 'package:asset_tracker_app/utils/enums/auth_service_error_enum.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
-abstract class IAuthService {
-  Future<bool> signIn(String email, String password);
-  Future<void> signOut();
-}
 
 class FirebaseAuthService implements IAuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
