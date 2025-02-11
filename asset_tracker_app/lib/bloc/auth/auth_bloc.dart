@@ -1,4 +1,4 @@
-import 'package:asset_tracker_app/services/mock_service/mock_service.dart';
+import 'package:asset_tracker_app/services/auth_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'auth_event.dart';
 import 'auth_state.dart';

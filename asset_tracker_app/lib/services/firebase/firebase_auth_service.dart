@@ -1,5 +1,5 @@
 import 'package:asset_tracker_app/localization/strings.dart';
-import 'package:asset_tracker_app/services/mock_service/mock_service.dart';
+import 'package:asset_tracker_app/services/auth_service.dart';
 import 'package:asset_tracker_app/utils/enums/auth_service_error_enum.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
