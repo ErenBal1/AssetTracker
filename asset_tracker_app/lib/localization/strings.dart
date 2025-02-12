@@ -49,7 +49,7 @@ class LocalStrings {
 
   //home screen
   static const homeLabelNavBar = 'Home';
-  static const profileLabelNavBar = 'Profile';
+  static const myAssetsLabelNavBar = 'My Assets';
   static const haremAltinTableSatis = 'Satis';
   static const lastUpdate = 'Last Update: ';
   static const searchFieldHintText = 'Search assets...';

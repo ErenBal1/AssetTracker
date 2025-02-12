@@ -24,6 +24,19 @@ class UserAssetRepository {
     }
   }
 
+  Future<void> deleteAsset(String assetId) async {
+    try {
+      await _firestore
+          .collection('users')
+          .doc(_auth.currentUser?.uid)
+          .collection('assets')
+          .doc(assetId)
+          .delete();
+    } catch (e) {
+      throw Exception('Varlık silinirken hata oluştu: $e');
+    }
+  }
+
   // Fetch user's assets from Firestore
   Stream<List<UserAsset>> getUserAssets() {
     return _firestore

@@ -171,21 +171,25 @@ class _AddAssetFormState extends State<AddAssetForm> {
         return;
       }
 
-      context.read<AssetFormBloc>().add(
-            AssetSubmitted(
-              type: selectedType!,
-              amount: double.parse(_amountController.text),
-              purchasePrice: double.parse(_priceController.text),
-              purchaseDate: _selectedDate!,
-            ),
-          );
-    }
-  }
+      try {
+        context.read<AssetFormBloc>().add(
+              AssetSubmitted(
+                type: selectedType!,
+                amount: double.parse(_amountController.text),
+                purchasePrice: double.parse(_priceController.text),
+                purchaseDate: _selectedDate!,
+              ),
+            );
 
-  @override
-  void dispose() {
-    _amountController.dispose();
-    _priceController.dispose();
-    super.dispose();
+        Navigator.pop(context);
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Varlık başarıyla eklendi')),
+        );
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Hata oluştu: $e')),
+        );
+      }
+    }
   }
 }
