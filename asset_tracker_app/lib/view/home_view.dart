@@ -1,7 +1,6 @@
 import 'package:asset_tracker_app/utils/mixins/home_screen_mixins/home_screen_mixin.dart';
 import 'package:asset_tracker_app/widgets/home_page/add_asset.dart';
 import 'package:asset_tracker_app/widgets/home_page/asset_list/home_page_asset_list.dart';
-import 'package:asset_tracker_app/widgets/home_page/home_page_bottom_navigation_bar.dart';
 import 'package:asset_tracker_app/widgets/home_page/home_page_search_field.dart';
 import 'package:asset_tracker_app/widgets/home_page/home_page_title.dart';
 import 'package:asset_tracker_app/widgets/home_page/last_update_date.dart';
@@ -36,7 +35,6 @@ class _HomePageViewState extends State<HomePageView> with HomeScreenMixin {
         onPressed: () => _showAddAssetBottomSheet(context),
         child: const Icon(Icons.add),
       ),
-      bottomNavigationBar: const HomeBottomNav(),
     );
   }
 
