@@ -114,4 +114,20 @@ class LocalStrings {
   static const myAssetsLabel = 'My Assets';
   static const addAssetError = 'Varlık eklenirken hata oluştu: ';
   static const deleteAssetError = 'Varlık silinirken hata oluştu: ';
+
+  //add_asset_form
+  static const assetType = 'Varlık Tipi';
+  static const assetAmount = 'Miktar';
+  static const enterAmount = 'Lütfen miktar girin';
+  static const enterValidAmount = 'Geçerli bir miktar girin';
+  static const selectType = 'Lütfen bir varlık tipi seçin';
+  static const assetPurchasePrice = 'Alış Fiyatı';
+  static const enterAssetPrice = 'Lütfen alış fiyatı girin';
+  static const enterValidAssetPrice = 'Geçerli bir fiyat girin';
+  static const purchaseDate = 'Alım Tarihi';
+  static const selectDate = 'Tarih Seçin';
+  static const add = 'Ekle';
+  static const pleaseSelectDate = 'Lütfen bir tarih seçin';
+  static const assetAddedSuccessfully = 'Varlık başarıyla eklendi';
+  static const errorOccurred = 'Hata oluştu: ';
 }
