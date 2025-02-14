@@ -1,5 +1,8 @@
 import 'package:asset_tracker_app/bloc/asset_form/asset_form_state.dart';
+import 'package:asset_tracker_app/localization/strings.dart';
 import 'package:asset_tracker_app/repositories/user_asset_repository.dart';
+import 'package:asset_tracker_app/utils/constants/theme/constant_gap_sizes.dart';
+import 'package:asset_tracker_app/utils/constants/theme/constant_paddings.dart';
 import 'package:asset_tracker_app/utils/mixins/home_screen_mixins/add_asset_form_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,7 +27,8 @@ class _AddAssetFormState extends State<AddAssetForm> with AddAssetFormMixin {
           if (state.isSuccess) {
             Navigator.pop(context);
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Varlık başarıyla eklendi')),
+              const SnackBar(
+                  content: Text(LocalStrings.assetAddedSuccessfully)),
             );
           } else if (state.error != null) {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -34,20 +38,20 @@ class _AddAssetFormState extends State<AddAssetForm> with AddAssetFormMixin {
         },
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: ConstantPaddings.allM,
             child: Form(
               key: formKey,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   buildTypeDropdown(),
-                  const SizedBox(height: 16),
+                  const GapSize.small(),
                   buildAmountField(),
-                  const SizedBox(height: 16),
+                  const GapSize.small(),
                   buildPriceField(),
-                  const SizedBox(height: 16),
+                  const GapSize.small(),
                   buildDatePicker(),
-                  const SizedBox(height: 24),
+                  const GapSize.medium(),
                   buildSubmitButton(),
                 ],
               ),

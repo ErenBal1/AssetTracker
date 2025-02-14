@@ -1,5 +1,5 @@
 import 'package:asset_tracker_app/utils/mixins/home_screen_mixins/home_screen_mixin.dart';
-import 'package:asset_tracker_app/widgets/home_page/add_asset.dart';
+import 'package:asset_tracker_app/widgets/home_page/add_asset_bottom_sheet.dart';
 import 'package:asset_tracker_app/widgets/home_page/asset_list/home_page_asset_list.dart';
 import 'package:asset_tracker_app/widgets/home_page/home_page_search_field.dart';
 import 'package:asset_tracker_app/widgets/home_page/home_page_title.dart';
@@ -32,21 +32,8 @@ class _HomePageViewState extends State<HomePageView> with HomeScreenMixin {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => _showAddAssetBottomSheet(context),
+        onPressed: () => showAddAssetBottomSheet(context),
         child: const Icon(Icons.add),
-      ),
-    );
-  }
-
-  void _showAddAssetBottomSheet(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      builder: (context) => Padding(
-        padding: EdgeInsets.only(
-          bottom: MediaQuery.of(context).viewInsets.bottom,
-        ),
-        child: const AddAssetForm(),
       ),
     );
   }

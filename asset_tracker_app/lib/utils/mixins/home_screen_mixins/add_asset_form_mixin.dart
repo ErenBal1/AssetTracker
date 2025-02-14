@@ -1,8 +1,8 @@
 import 'package:asset_tracker_app/bloc/asset_form/asset_form_bloc.dart';
 import 'package:asset_tracker_app/bloc/asset_form/asset_form_event.dart';
+import 'package:asset_tracker_app/localization/strings.dart';
 import 'package:asset_tracker_app/utils/enums/currency_type_enum.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 mixin AddAssetFormMixin<AddAssetFormState extends StatefulWidget>
@@ -17,7 +17,7 @@ mixin AddAssetFormMixin<AddAssetFormState extends StatefulWidget>
     return DropdownButtonFormField<CurrencyType>(
       value: _selectedType,
       decoration: const InputDecoration(
-        labelText: 'Varlık Tipi',
+        labelText: LocalStrings.assetType,
         border: OutlineInputBorder(),
       ),
       items: CurrencyType.values
@@ -30,7 +30,7 @@ mixin AddAssetFormMixin<AddAssetFormState extends StatefulWidget>
         setState(() => _selectedType = value);
       },
       validator: (value) {
-        if (value == null) return 'Lütfen bir varlık tipi seçin';
+        if (value == null) return LocalStrings.selectType;
         return null;
       },
     );
@@ -40,16 +40,16 @@ mixin AddAssetFormMixin<AddAssetFormState extends StatefulWidget>
     return TextFormField(
       controller: _amountController,
       decoration: const InputDecoration(
-        labelText: 'Miktar',
+        labelText: LocalStrings.assetAmount,
         border: OutlineInputBorder(),
       ),
       keyboardType: TextInputType.number,
       validator: (value) {
         if (value == null || value.isEmpty) {
-          return 'Lütfen miktar girin';
+          return LocalStrings.enterAmount;
         }
         if (double.tryParse(value) == null || double.parse(value) <= 0) {
-          return 'Geçerli bir miktar girin';
+          return LocalStrings.enterValidAmount;
         }
         return null;
       },
@@ -60,16 +60,16 @@ mixin AddAssetFormMixin<AddAssetFormState extends StatefulWidget>
     return TextFormField(
       controller: _priceController,
       decoration: const InputDecoration(
-        labelText: 'Alış Fiyatı',
+        labelText: LocalStrings.assetPurchasePrice,
         border: OutlineInputBorder(),
       ),
       keyboardType: TextInputType.number,
       validator: (value) {
         if (value == null || value.isEmpty) {
-          return 'Lütfen alış fiyatı girin';
+          return LocalStrings.enterAssetPrice;
         }
         if (double.tryParse(value) == null || double.parse(value) <= 0) {
-          return 'Geçerli bir fiyat girin';
+          return LocalStrings.enterValidAssetPrice;
         }
         return null;
       },
@@ -91,13 +91,13 @@ mixin AddAssetFormMixin<AddAssetFormState extends StatefulWidget>
       },
       child: InputDecorator(
         decoration: const InputDecoration(
-          labelText: 'Alım Tarihi',
+          labelText: LocalStrings.purchaseDate,
           border: OutlineInputBorder(),
         ),
         child: Text(
           _selectedDate != null
               ? '${_selectedDate!.day}/${_selectedDate!.month}/${_selectedDate!.year}'
-              : 'Tarih Seçin',
+              : LocalStrings.selectDate,
         ),
       ),
     );
@@ -106,7 +106,7 @@ mixin AddAssetFormMixin<AddAssetFormState extends StatefulWidget>
   Widget buildSubmitButton() {
     return ElevatedButton(
       onPressed: _submitForm,
-      child: const Text('Ekle'),
+      child: const Text(LocalStrings.add),
     );
   }
 
@@ -114,7 +114,7 @@ mixin AddAssetFormMixin<AddAssetFormState extends StatefulWidget>
     if (formKey.currentState?.validate() ?? false) {
       if (_selectedDate == null) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Lütfen bir tarih seçin')),
+          const SnackBar(content: Text(LocalStrings.pleaseSelectDate)),
         );
         return;
       }
@@ -131,11 +131,11 @@ mixin AddAssetFormMixin<AddAssetFormState extends StatefulWidget>
 
         Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Varlık başarıyla eklendi')),
+          const SnackBar(content: Text(LocalStrings.assetAddedSuccessfully)),
         );
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Hata oluştu: $e')),
+          SnackBar(content: Text(LocalStrings.errorOccurred + e.toString())),
         );
       }
     }
