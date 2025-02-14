@@ -24,10 +24,18 @@ class _MyAssetsViewState extends State<MyAssetsView> with MyAssetsViewMixin {
         builder: (context, haremAltinState) {
           if (haremAltinState is HaremAltinDataLoaded) {
             return MyAssetsCardListView(haremAltinState: haremAltinState);
+          } else if (haremAltinState is HaremAltinDataLoading) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (haremAltinState is HaremAltinError) {
+            return const Center(
+              child: Text(LocalStrings.unableToLoadAssetsError),
+            );
           }
 
           return const Center(
-            child: Text("burda sıkıntı var 2."),
+            child: Text(LocalStrings.smthWentWrongError),
           );
         },
       ),

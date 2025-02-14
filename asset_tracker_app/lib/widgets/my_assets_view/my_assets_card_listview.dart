@@ -1,8 +1,9 @@
 import 'package:asset_tracker_app/bloc/harem_altin_service/harem_altin_state.dart';
+import 'package:asset_tracker_app/localization/strings.dart';
 import 'package:asset_tracker_app/models/user_asset.dart';
 import 'package:asset_tracker_app/repositories/user_asset_repository.dart';
 import 'package:asset_tracker_app/widgets/my_assets_view/my_assets_card.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MyAssetsCardListView extends StatelessWidget {
@@ -19,20 +20,20 @@ class MyAssetsCardListView extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return Center(
-            child: Text('Hata: ${snapshot.error}'),
+            child: Text(LocalStrings.errorOccurred + snapshot.error.toString()),
           );
         }
 
         if (!snapshot.hasData) {
           return const Center(
-            child: Text("burda sıkıntı var 1."),
+            child: CircularProgressIndicator(),
           );
         }
 
         final assets = snapshot.data!;
         if (assets.isEmpty) {
           return const Center(
-            child: Text('Henüz varlık eklemediniz.'),
+            child: Text(LocalStrings.noAssetsAddedYet),
           );
         }
 
