@@ -109,4 +109,9 @@ class LocalStrings {
   static const gumusTry = 'Gümüş';
   static const xagUsd = 'Gümüş/Dolar';
   static const gumusUsd = 'Gümüş USD';
+
+  //my_assets_screen
+  static const myAssetsLabel = 'My Assets';
+  static const addAssetError = 'Varlık eklenirken hata oluştu: ';
+  static const deleteAssetError = 'Varlık silinirken hata oluştu: ';
 }

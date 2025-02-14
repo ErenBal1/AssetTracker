@@ -1,3 +1,4 @@
+import 'package:asset_tracker_app/localization/strings.dart';
 import 'package:asset_tracker_app/models/user_asset.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -20,7 +21,7 @@ class UserAssetRepository {
           .collection('assets')
           .add(asset.toMap());
     } catch (e) {
-      throw Exception('Varlık eklenirken hata oluştu: $e');
+      throw Exception(LocalStrings.addAssetError + e.toString());
     }
   }
 
@@ -33,7 +34,7 @@ class UserAssetRepository {
           .doc(assetId)
           .delete();
     } catch (e) {
-      throw Exception('Varlık silinirken hata oluştu: $e');
+      throw Exception(LocalStrings.deleteAssetError + e.toString());
     }
   }
 
