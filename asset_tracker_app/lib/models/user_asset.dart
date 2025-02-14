@@ -1,4 +1,3 @@
-// lib/models/user_asset.dart
 import 'package:asset_tracker_app/models/harem_altin_currency_data_model.dart';
 import 'package:asset_tracker_app/utils/enums/currency_type_enum.dart';
 
