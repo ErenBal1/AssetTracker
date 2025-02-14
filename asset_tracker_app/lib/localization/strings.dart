@@ -130,4 +130,23 @@ class LocalStrings {
   static const pleaseSelectDate = 'Lütfen bir tarih seçin';
   static const assetAddedSuccessfully = 'Varlık başarıyla eklendi';
   static const errorOccurred = 'Hata oluştu: ';
+  static const smthWentWrongError =
+      "Bir şeyler yanlış gitti. Lütfen daha sonra tekrar deneyin.";
+  static const unableToLoadAssetsError =
+      "Varlıklar yüklenemiyor. Lütfen tekrar deneyin.";
+  static const noAssetsAddedYet = 'Henüz varlık eklenmedi.';
+
+  //my_assets_card
+  static const amount = 'Miktar: ';
+  static const purchasePrice = 'Alış Fiyatı: ';
+  static const purchaseDateLabel = 'Alım Tarihi: ';
+  static const deleteAsset = 'Varlığı Sil';
+  static const deleteAssetConfirmation =
+      ' varlığını silmek istediğinize emin misiniz?';
+  static const cancel = 'İptal';
+  static const assetDeletedSuccessfully = 'Varlık başarıyla silindi';
+  static const assetCurrentValue = "Güncel Değer: ";
+  static const profitLoss = 'Kar/Zarar: ';
+  static const deleteAssetFailed = 'Varlık silme başarısız: ';
+  static const delete = 'Sil';
 }
