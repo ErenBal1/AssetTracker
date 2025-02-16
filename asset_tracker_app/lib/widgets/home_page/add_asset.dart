@@ -1,5 +1,4 @@
 import 'package:asset_tracker_app/bloc/asset_form/asset_form_state.dart';
-import 'package:asset_tracker_app/localization/strings.dart';
 import 'package:asset_tracker_app/repositories/user_asset_repository.dart';
 import 'package:asset_tracker_app/utils/constants/theme/constant_gap_sizes.dart';
 import 'package:asset_tracker_app/utils/constants/theme/constant_paddings.dart';
@@ -23,19 +22,7 @@ class _AddAssetFormState extends State<AddAssetForm> with AddAssetFormMixin {
         userAssetRepository: context.read<UserAssetRepository>(),
       ),
       child: BlocListener<AssetFormBloc, AssetFormState>(
-        listener: (context, state) {
-          if (state.isSuccess) {
-            Navigator.pop(context);
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                  content: Text(LocalStrings.assetAddedSuccessfully)),
-            );
-          } else if (state.error != null) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.error!)),
-            );
-          }
-        },
+        listener: assetFormBlocListener,
         child: SingleChildScrollView(
           child: Padding(
             padding: ConstantPaddings.allM,
