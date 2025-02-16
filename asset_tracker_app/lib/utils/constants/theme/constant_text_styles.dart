@@ -36,4 +36,19 @@ class ConstantTextStyles {
 
   static const TextStyle priceText = TextStyle(fontWeight: FontWeight.w500);
   static const TextStyle assetText = TextStyle(fontWeight: FontWeight.bold);
+
+  // My Assets View
+  static const TextStyle assetNameLabel = TextStyle(
+    fontSize: ConstantSizes.textXL,
+    fontWeight: FontWeight.bold,
+  );
+
+  static const TextStyle assetCardInfoTexts = TextStyle(
+    fontSize: ConstantSizes.textLarge,
+  );
+
+  static const TextStyle assetCardPurchaseDateText = TextStyle(
+    fontSize: ConstantSizes.textMedium,
+    color: Colors.grey,
+  );
 }

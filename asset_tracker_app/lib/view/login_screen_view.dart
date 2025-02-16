@@ -30,7 +30,7 @@ class _LoginScreenViewState extends State<LoginScreenView>
       child: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthAuthenticated) {
-            Navigator.pushReplacementNamed(context, ToScreen.homePage);
+            Navigator.pushReplacementNamed(context, ToScreen.mainWrapper);
           } else if (state is AuthError) {
             showErrorMessage(state.message);
           }

@@ -1,10 +1,6 @@
+import 'package:asset_tracker_app/services/auth_service.dart';
 import 'package:asset_tracker_app/utils/constants/mock_service_user_credentials.dart';
 import 'package:asset_tracker_app/utils/enums/auth_service_error_enum.dart';
-
-abstract class IAuthService {
-  Future<bool> signIn(String email, String password);
-  Future<void> signOut();
-}
 
 class MockAuthService implements IAuthService {
   final Duration _networkSignInDelaySimulationDuration =

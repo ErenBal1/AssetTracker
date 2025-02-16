@@ -121,28 +121,6 @@ enum CurrencyType {
     }
   }
 
-  String get symbol {
-    switch (this) {
-      case CurrencyType.USDTRY:
-      case CurrencyType.USDPURE:
-      case CurrencyType.USDKG:
-      case CurrencyType.AUDUSD:
-      case CurrencyType.GUMUSUSD:
-        return '\$';
-      case CurrencyType.EURTRY:
-      case CurrencyType.EURUSD:
-      case CurrencyType.EURKG:
-        return '€';
-      case CurrencyType.GBPTRY:
-        return '£';
-      case CurrencyType.JPYTRY:
-      case CurrencyType.USDJPY:
-        return '¥';
-      default:
-        return '₺';
-    }
-  }
-
   bool get isGold {
     return [
       CurrencyType.ALTIN,

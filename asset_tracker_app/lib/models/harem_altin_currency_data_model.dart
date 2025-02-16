@@ -52,6 +52,5 @@ class CurrencyData {
       );
 
   String get displayName => currencyType.displayName;
-  String get currencySymbol => currencyType.symbol;
   bool get isGold => currencyType.isGold;
 }
