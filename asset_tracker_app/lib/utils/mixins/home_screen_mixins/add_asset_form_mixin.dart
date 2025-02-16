@@ -1,5 +1,6 @@
 import 'package:asset_tracker_app/bloc/asset_form/asset_form_bloc.dart';
 import 'package:asset_tracker_app/bloc/asset_form/asset_form_event.dart';
+import 'package:asset_tracker_app/bloc/asset_form/asset_form_state.dart';
 import 'package:asset_tracker_app/localization/strings.dart';
 import 'package:asset_tracker_app/utils/enums/currency_type_enum.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,19 @@ mixin AddAssetFormMixin<AddAssetFormState extends StatefulWidget>
   final _amountController = TextEditingController();
   final _priceController = TextEditingController();
   DateTime? _selectedDate;
+
+  void assetFormBlocListener(BuildContext context, AssetFormState state) {
+    if (state.isSuccess) {
+      Navigator.pop(context);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text(LocalStrings.assetAddedSuccessfully)),
+      );
+    } else if (state.error != null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(state.error!)),
+      );
+    }
+  }
 
   Widget buildTypeDropdown() {
     return DropdownButtonFormField<CurrencyType>(

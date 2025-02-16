@@ -26,29 +26,28 @@ class DeleteButtonAlertDialog extends StatelessWidget {
         ),
         //Delete Button
         TextButton(
-          onPressed: () async {
-            Navigator.pop(context);
-            try {
-              if (!context.mounted) return;
-              await context.read<UserAssetRepository>().deleteAsset(asset.id);
-              if (!context.mounted) return;
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                    content: Text(LocalStrings.assetDeletedSuccessfully)),
-              );
-            } catch (e) {
-              if (!context.mounted) return;
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                    content:
-                        Text(LocalStrings.deleteAssetFailed + e.toString())),
-              );
-            }
-          },
+          onPressed: () => _onDeletePressed(context),
           style: TextButton.styleFrom(foregroundColor: Colors.red),
           child: const Text(LocalStrings.delete),
         ),
       ],
     );
+  }
+
+  Future<void> _onDeletePressed(BuildContext context) async {
+    Navigator.pop(context);
+    try {
+      if (!context.mounted) return;
+      await context.read<UserAssetRepository>().deleteAsset(asset.id);
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text(LocalStrings.assetDeletedSuccessfully)),
+      );
+    } catch (e) {
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(LocalStrings.deleteAssetFailed + e.toString())),
+      );
+    }
   }
 }
