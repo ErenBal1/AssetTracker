@@ -41,6 +41,10 @@ class ConstantSizes {
 
   ///Sizedbox gap sizes
   ///
+  ///
+  /// 4.0
+  static const double gapXXS = 4.0;
+
   ///8.0
   static const double gapExtraSmall = 8.0;
 
