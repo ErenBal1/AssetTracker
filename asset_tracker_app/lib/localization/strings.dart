@@ -49,7 +49,7 @@ class LocalStrings {
 
   //home screen
   static const homeLabelNavBar = 'Home';
-  static const profileLabelNavBar = 'Profile';
+  static const myAssetsLabelNavBar = 'My Assets';
   static const haremAltinTableSatis = 'Satis';
   static const lastUpdate = 'Last Update: ';
   static const searchFieldHintText = 'Search assets...';
@@ -109,4 +109,44 @@ class LocalStrings {
   static const gumusTry = 'Gümüş';
   static const xagUsd = 'Gümüş/Dolar';
   static const gumusUsd = 'Gümüş USD';
+
+  //my_assets_screen
+  static const myAssetsLabel = 'My Assets';
+  static const addAssetError = 'Varlık eklenirken hata oluştu: ';
+  static const deleteAssetError = 'Varlık silinirken hata oluştu: ';
+
+  //add_asset_form
+  static const assetType = 'Varlık Tipi';
+  static const assetAmount = 'Miktar';
+  static const enterAmount = 'Lütfen miktar girin';
+  static const enterValidAmount = 'Geçerli bir miktar girin';
+  static const selectType = 'Lütfen bir varlık tipi seçin';
+  static const assetPurchasePrice = 'Alış Fiyatı';
+  static const enterAssetPrice = 'Lütfen alış fiyatı girin';
+  static const enterValidAssetPrice = 'Geçerli bir fiyat girin';
+  static const purchaseDate = 'Alım Tarihi';
+  static const selectDate = 'Tarih Seçin';
+  static const add = 'Ekle';
+  static const pleaseSelectDate = 'Lütfen bir tarih seçin';
+  static const assetAddedSuccessfully = 'Varlık başarıyla eklendi';
+  static const errorOccurred = 'Hata oluştu: ';
+  static const smthWentWrongError =
+      "Bir şeyler yanlış gitti. Lütfen daha sonra tekrar deneyin.";
+  static const unableToLoadAssetsError =
+      "Varlıklar yüklenemiyor. Lütfen tekrar deneyin.";
+  static const noAssetsAddedYet = 'Henüz varlık eklenmedi.';
+
+  //my_assets_card
+  static const amount = 'Miktar: ';
+  static const purchasePrice = 'Alış Fiyatı: ';
+  static const purchaseDateLabel = 'Alım Tarihi: ';
+  static const deleteAsset = 'Varlığı Sil';
+  static const deleteAssetConfirmation =
+      ' varlığını silmek istediğinize emin misiniz?';
+  static const cancel = 'İptal';
+  static const assetDeletedSuccessfully = 'Varlık başarıyla silindi';
+  static const assetCurrentValue = "Güncel Değer: ";
+  static const profitLoss = 'Kar/Zarar: ';
+  static const deleteAssetFailed = 'Varlık silme başarısız: ';
+  static const delete = 'Sil';
 }

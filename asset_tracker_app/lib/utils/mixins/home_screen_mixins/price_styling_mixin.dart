@@ -38,7 +38,7 @@ mixin PriceStylingMixin {
         children: [
           Text(type, style: ConstantTextStyles.buySellText),
           Text(
-            '$currentPrice ${currency.currencySymbol}',
+            currentPrice,
             style: ConstantTextStyles.priceText,
           ),
         ],

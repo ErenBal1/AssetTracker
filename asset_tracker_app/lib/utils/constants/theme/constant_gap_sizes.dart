@@ -2,6 +2,7 @@ import 'package:asset_tracker_app/utils/constants/theme/constant_sizes.dart';
 import 'package:flutter/material.dart';
 
 class GapSize extends SizedBox {
+  const GapSize.xxs({super.key}) : super(height: ConstantSizes.gapXXS);
   const GapSize.extraSmall({super.key})
       : super(height: ConstantSizes.gapExtraSmall);
 
