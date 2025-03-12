@@ -18,33 +18,47 @@ class AppProvider extends StatelessWidget {
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider<UserAssetRepository>(
-          create: (context) => UserAssetRepositoryImpl(),
+          create: (context) {
+            return UserAssetRepositoryImpl();
+          },
         ),
       ],
       child: MultiBlocProvider(
         providers: [
-          BlocProvider<MyAssetsBloc>(
-            create: (context) => MyAssetsBloc(
-              userAssetRepository: context.read<UserAssetRepository>(),
-              haremAltinBloc: context.read<HaremAltinBloc>(),
-            ),
-          ),
           BlocProvider<AuthBloc>(
-            create: (context) => AuthBloc(FirebaseAuthService()),
-          ),
-          BlocProvider<OnboardingBloc>(
-            create: (context) => OnboardingBloc(),
-          ),
-          BlocProvider<SplashBloc>(
-            create: (context) => SplashBloc(),
+            create: (context) {
+              return AuthBloc(FirebaseAuthService());
+            },
           ),
           BlocProvider<HaremAltinBloc>(
-            create: (context) => HaremAltinBloc(),
+            create: (context) {
+              return HaremAltinBloc();
+            },
+          ),
+          BlocProvider<MyAssetsBloc>(
+            create: (context) {
+              return MyAssetsBloc(
+                userAssetRepository: context.read<UserAssetRepository>(),
+                haremAltinBloc: context.read<HaremAltinBloc>(),
+              );
+            },
+          ),
+          BlocProvider<OnboardingBloc>(
+            create: (context) {
+              return OnboardingBloc();
+            },
+          ),
+          BlocProvider<SplashBloc>(
+            create: (context) {
+              return SplashBloc();
+            },
           ),
           BlocProvider<AssetFormBloc>(
-            create: (context) => AssetFormBloc(
-              userAssetRepository: context.read<UserAssetRepository>(),
-            ),
+            create: (context) {
+              return AssetFormBloc(
+                userAssetRepository: context.read<UserAssetRepository>(),
+              );
+            },
           ),
         ],
         child: const AssetTrackerMain(),

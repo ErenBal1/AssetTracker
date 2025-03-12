@@ -7,12 +7,13 @@ import 'package:asset_tracker_app/bloc/harem_altin_service/harem_altin_state.dar
 import 'package:asset_tracker_app/localization/strings.dart';
 import 'package:asset_tracker_app/models/user_asset.dart';
 import 'package:asset_tracker_app/repositories/user_asset_repository.dart';
-import 'package:asset_tracker_app/utils/constants/app_routes_constants.dart';
 import 'package:asset_tracker_app/utils/mixins/my_assets_view_mixin.dart';
 import 'package:asset_tracker_app/widgets/profile_view/my_assets_card_listview.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:asset_tracker_app/view/login_screen_view.dart';
 
 class ProfileView extends StatefulWidget {
   const ProfileView({super.key});
@@ -65,44 +66,68 @@ class _ProfileViewState extends State<ProfileView> with ProfileViewMixin {
     );
   }
 
-  void _handleLogout() {
-    // Çıkış yapma onayı için diyalog göster
-    showDialog(
-      context: context,
-      builder: (dialogContext) => AlertDialog(
-        title: const Text('Çıkış Yap'),
-        content:
-            const Text('Oturumunuzu sonlandırmak istediğinize emin misiniz?'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(dialogContext), // İptal
-            child: const Text('İptal'),
+  Future<void> _handleLogout() async {
+    final shouldLogout = await showDialog<bool>(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('Çıkış Yap'),
+            content: const Text('Çıkış yapmak istediğinizden emin misiniz?'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: const Text('İptal'),
+              ),
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(true),
+                child: const Text('Çıkış Yap'),
+              ),
+            ],
           ),
-          TextButton(
-            onPressed: () {
-              Navigator.pop(dialogContext); // Diyaloğu kapat
+        ) ??
+        false;
 
-              // Çıkış işlemi başlat
-              // AuthBloc üzerinden çıkış yap olayını tetikle
-              context.read<AuthBloc>().add(SignOutRequested());
+    if (!shouldLogout) {
+      return;
+    }
+    try {
+      final authBloc = context.read<AuthBloc>();
+      late final StreamSubscription<AuthState> subscription;
 
-              // Login sayfasına yönlendir
-              Navigator.pushNamedAndRemoveUntil(
-                context,
-                ToScreen.loginPage,
-                (route) => false, // Tüm sayfaları temizle
-              );
+      subscription = authBloc.stream.listen((state) {
+        if (state is AuthInitial) {
+          subscription.cancel();
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (context) => const LoginScreenView(),
+            ),
+            (route) => false,
+          );
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Başarıyla çıkış yapıldı'),
+              backgroundColor: Colors.green,
+            ),
+          );
+        } else if (state is AuthError) {
+          subscription.cancel();
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Çıkış yapma hatası: ${state.message}'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      });
 
-              // Çıkış bildirimi göster
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Oturumunuz sonlandırıldı')),
-              );
-            },
-            child: const Text('Çıkış Yap'),
-          ),
-        ],
-      ),
-    );
+      authBloc.add(SignOutRequested());
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Çıkış yaparken bir hata oluştu: $e'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
 
   // Toplam varlık değerini para formatında gösteren yardımcı fonksiyon
@@ -220,6 +245,16 @@ class _ProfileViewState extends State<ProfileView> with ProfileViewMixin {
 
   // Kullanıcı varlıklarının toplam değerini hesaplayan fonksiyon
   Widget _buildProfileContent(HaremAltinDataLoaded haremAltinState) {
+    // Firebase Authentication durumunu kontrol edelim
+    final user = FirebaseAuth.instance.currentUser;
+
+    if (user == null) {
+      return const Center(
+        child: Text(
+            'Oturum açmış kullanıcı bulunamadı. Lütfen yeniden giriş yapın.'),
+      );
+    }
+
     return StreamBuilder<List<UserAsset>>(
       stream: context.read<UserAssetRepository>().getUserAssets(),
       builder: (context, snapshot) {
@@ -237,8 +272,21 @@ class _ProfileViewState extends State<ProfileView> with ProfileViewMixin {
 
         final assets = snapshot.data!;
         if (assets.isEmpty) {
-          return const Center(
-            child: Text(LocalStrings.noAssetsAddedYet),
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(LocalStrings.noAssetsAddedYet),
+                const SizedBox(height: 16),
+                ElevatedButton(
+                  onPressed: () {
+                    // Yeniden veri yükleme denemesi
+                    setState(() {});
+                  },
+                  child: const Text('Yenile'),
+                ),
+              ],
+            ),
           );
         }
 
