@@ -214,12 +214,171 @@ class _ProfileViewState extends State<ProfileView> with ProfileViewMixin {
           }
         }
 
-        // Kaydırılabilir alan yerine Column kullanalım ve ListView'e yükseklik sınırı ekleyelim
-        return Column(
-          children: [
-            // Toplam varlık değeri header'ı
-            _buildTotalAssetsHeader(totalValue),
-          ],
+        // Kaydırılabilir alan kullanalım
+        return SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Toplam varlık değeri header'ı
+              _buildTotalAssetsHeader(totalValue),
+
+              // Varlıklar başlığı
+              Padding(
+                padding:
+                    const EdgeInsets.only(left: 16.0, top: 24.0, bottom: 8.0),
+                child: Text(
+                  'Varlıklarım',
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
+              ),
+
+              // Varlık listesi
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.5,
+                  child: _buildAssetsList(haremAltinState, assets),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  // Varlık listesini oluşturan fonksiyon
+  Widget _buildAssetsList(
+      HaremAltinDataLoaded haremAltinState, List<UserAsset> assets) {
+    // Varlıkları türlerine göre gruplandıralım
+    final Map<String, List<UserAsset>> groupedAssets = {};
+    final Map<String, double> totalAmounts = {};
+    final Map<String, double> totalValues = {};
+
+    for (final asset in assets) {
+      final typeName = asset.type.displayName;
+      if (!groupedAssets.containsKey(typeName)) {
+        groupedAssets[typeName] = [];
+        totalAmounts[typeName] = 0;
+        totalValues[typeName] = 0;
+      }
+
+      groupedAssets[typeName]!.add(asset);
+      totalAmounts[typeName] = (totalAmounts[typeName] ?? 0) + asset.amount;
+
+      final currentRate =
+          haremAltinState.currentData.currencies[asset.type.name];
+      if (currentRate != null) {
+        totalValues[typeName] =
+            (totalValues[typeName] ?? 0) + asset.getCurrentValue(currentRate);
+      }
+    }
+
+    // Gruplandırılmış varlıkları listeleyelim
+    return ListView.builder(
+      shrinkWrap: true,
+      physics: const ClampingScrollPhysics(),
+      itemCount: groupedAssets.length,
+      itemBuilder: (context, index) {
+        final typeName = groupedAssets.keys.elementAt(index);
+        final amount = totalAmounts[typeName] ?? 0;
+        final value = totalValues[typeName] ?? 0;
+
+        return Card(
+          margin: const EdgeInsets.only(bottom: 12.0),
+          elevation: 2,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12.0),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    // Varlık adı
+                    Text(
+                      typeName,
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    // Toplam miktar
+                    Text(
+                      '${amount.toStringAsFixed(4)} adet',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.grey[700],
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    // Toplam değer etiketi
+                    Text(
+                      'Toplam Değer:',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey[600],
+                      ),
+                    ),
+                    // Toplam değer
+                    Text(
+                      _formatCurrency(value),
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.green,
+                      ),
+                    ),
+                  ],
+                ),
+                // Eğer bu türde birden fazla varlık varsa, detayları göster
+                if (groupedAssets[typeName]!.length > 1)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8.0),
+                    child: ExpansionTile(
+                      title: Text(
+                        'Detaylar (${groupedAssets[typeName]!.length} adet)',
+                        style: const TextStyle(fontSize: 14),
+                      ),
+                      children: groupedAssets[typeName]!.map((asset) {
+                        final currentRate = haremAltinState
+                            .currentData.currencies[asset.type.name];
+                        final currentValue = currentRate != null
+                            ? asset.getCurrentValue(currentRate)
+                            : 0.0;
+
+                        return ListTile(
+                          dense: true,
+                          title:
+                              Text('${asset.amount.toStringAsFixed(4)} adet'),
+                          subtitle: Text(
+                            'Alış: ${_formatCurrency(asset.purchasePrice * asset.amount)}',
+                            style: TextStyle(
+                                fontSize: 12, color: Colors.grey[600]),
+                          ),
+                          trailing: Text(
+                            _formatCurrency(currentValue),
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+              ],
+            ),
+          ),
         );
       },
     );
