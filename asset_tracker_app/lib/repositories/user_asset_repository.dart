@@ -50,13 +50,29 @@ class UserAssetRepositoryImpl extends UserAssetRepository {
 
   @override
   Stream<List<UserAsset>> getUserAssets() {
-    return _firestore
-        .collection(usersCollection)
-        .doc(_auth.currentUser?.uid)
-        .collection(assetsCollection)
-        .snapshots()
-        .map((snapshot) => snapshot.docs
-            .map((doc) => UserAsset.fromMap({...doc.data(), 'id': doc.id}))
-            .toList());
+    final currentUser = _auth.currentUser;
+
+    if (currentUser == null) {
+      return Stream.value([]);
+    }
+
+    try {
+      final stream = _firestore
+          .collection(usersCollection)
+          .doc(currentUser.uid)
+          .collection(assetsCollection)
+          .snapshots()
+          .map((snapshot) {
+        return snapshot.docs.map((doc) {
+          final data = doc.data();
+          data['id'] = doc.id; // Ensure ID is set
+          return UserAsset.fromMap({...data, 'id': doc.id});
+        }).toList();
+      });
+
+      return stream;
+    } catch (e) {
+      return Stream.value([]);
+    }
   }
 }
