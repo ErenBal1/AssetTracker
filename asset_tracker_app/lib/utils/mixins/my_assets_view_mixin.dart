@@ -4,8 +4,8 @@ import 'package:asset_tracker_app/bloc/harem_altin_service/harem_altin_state.dar
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-mixin MyAssetsViewMixin<MyAssetsViewState extends StatefulWidget>
-    on State<MyAssetsViewState> {
+mixin ProfileViewMixin<ProfileViewState extends StatefulWidget>
+    on State<ProfileViewState> {
   late final HaremAltinBloc _haremAltinBloc;
 
   @override
