@@ -2,11 +2,11 @@ import 'package:asset_tracker_app/localization/strings.dart';
 import 'package:asset_tracker_app/models/user_asset.dart';
 import 'package:asset_tracker_app/utils/constants/theme/constant_gap_sizes.dart';
 import 'package:asset_tracker_app/utils/constants/theme/constant_paddings.dart';
-import 'package:asset_tracker_app/widgets/my_assets_view/asset_card/asset_card_info_text.dart';
-import 'package:asset_tracker_app/widgets/my_assets_view/asset_card/asset_name_label.dart';
-import 'package:asset_tracker_app/widgets/my_assets_view/asset_card/delete_asset_button.dart';
-import 'package:asset_tracker_app/widgets/my_assets_view/asset_card/profit_loss_text_widget.dart';
-import 'package:asset_tracker_app/widgets/my_assets_view/asset_card/purchase_date_widget.dart';
+import 'package:asset_tracker_app/widgets/profile_view/asset_card/asset_card_info_text.dart';
+import 'package:asset_tracker_app/widgets/profile_view/asset_card/asset_name_label.dart';
+import 'package:asset_tracker_app/widgets/profile_view/asset_card/delete_asset_button.dart';
+import 'package:asset_tracker_app/widgets/profile_view/asset_card/profit_loss_text_widget.dart';
+import 'package:asset_tracker_app/widgets/profile_view/asset_card/purchase_date_widget.dart';
 import 'package:flutter/material.dart';
 
 class AssetCard extends StatelessWidget {

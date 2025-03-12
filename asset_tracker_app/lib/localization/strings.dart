@@ -49,7 +49,7 @@ class LocalStrings {
 
   //home screen
   static const homeLabelNavBar = 'Home';
-  static const myAssetsLabelNavBar = 'My Assets';
+  static const profileLabelNavBar = 'Profile';
   static const haremAltinTableSatis = 'Satis';
   static const lastUpdate = 'Last Update: ';
   static const searchFieldHintText = 'Search assets...';
@@ -110,8 +110,9 @@ class LocalStrings {
   static const xagUsd = 'Gümüş/Dolar';
   static const gumusUsd = 'Gümüş USD';
 
-  //my_assets_screen
-  static const myAssetsLabel = 'My Assets';
+  //profile_view
+  static const transactionHistoryLabel = 'Transaction History';
+  static const profileLabel = 'Profile';
   static const addAssetError = 'Varlık eklenirken hata oluştu: ';
   static const deleteAssetError = 'Varlık silinirken hata oluştu: ';
 

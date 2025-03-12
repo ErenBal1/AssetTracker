@@ -2,16 +2,18 @@ import 'package:asset_tracker_app/bloc/harem_altin_service/harem_altin_state.dar
 import 'package:asset_tracker_app/localization/strings.dart';
 import 'package:asset_tracker_app/models/user_asset.dart';
 import 'package:asset_tracker_app/repositories/user_asset_repository.dart';
-import 'package:asset_tracker_app/widgets/my_assets_view/my_assets_card.dart';
+import 'package:asset_tracker_app/widgets/profile_view/my_assets_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MyAssetsCardListView extends StatelessWidget {
   const MyAssetsCardListView({
     required this.haremAltinState,
+    this.maxHeight,
     super.key,
   });
   final HaremAltinDataLoaded haremAltinState;
+  final double? maxHeight;
 
   @override
   Widget build(BuildContext context) {
@@ -37,28 +39,35 @@ class MyAssetsCardListView extends StatelessWidget {
           );
         }
 
-        return ListView.builder(
-          itemCount: assets.length,
-          itemBuilder: (context, index) {
-            final asset = assets[index];
-            final currentRate =
-                haremAltinState.currentData.currencies[asset.type.name];
+        return Container(
+          constraints: BoxConstraints(
+            maxHeight: maxHeight ?? MediaQuery.of(context).size.height * 0.6,
+          ),
+          child: ListView.builder(
+            shrinkWrap: true,
+            physics: const ClampingScrollPhysics(),
+            itemCount: assets.length,
+            itemBuilder: (context, index) {
+              final asset = assets[index];
+              final currentRate =
+                  haremAltinState.currentData.currencies[asset.type.name];
 
-            if (currentRate == null) {
-              return const SizedBox.shrink();
-            }
+              if (currentRate == null) {
+                return const SizedBox.shrink();
+              }
 
-            final currentValue = asset.getCurrentValue(currentRate);
-            final profitLoss = asset.getProfitLoss(currentRate);
-            final profitLossPercentage =
-                asset.getProfitLossPercentage(currentRate);
+              final currentValue = asset.getCurrentValue(currentRate);
+              final profitLoss = asset.getProfitLoss(currentRate);
+              final profitLossPercentage =
+                  asset.getProfitLossPercentage(currentRate);
 
-            return AssetCard(
-                asset: asset,
-                currentValue: currentValue,
-                profitLoss: profitLoss,
-                profitLossPercentage: profitLossPercentage);
-          },
+              return AssetCard(
+                  asset: asset,
+                  currentValue: currentValue,
+                  profitLoss: profitLoss,
+                  profitLossPercentage: profitLossPercentage);
+            },
+          ),
         );
       },
     );
