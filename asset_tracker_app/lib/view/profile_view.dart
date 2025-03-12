@@ -69,10 +69,13 @@ class _ProfileViewState extends State<ProfileView> with ProfileViewMixin {
 
   // Toplam varlık değerini para formatında gösteren yardımcı fonksiyon
   String _formatCurrency(double amount) {
+    // TL sembolü sağda olacak şekilde özel format oluşturuyoruz
     final turkishFormat = NumberFormat.currency(
       locale: 'tr_TR',
       symbol: 'TL',
       decimalDigits: 2,
+      customPattern:
+          '###,###,##0.00 \u00A4', // Para birimi sembolü sağa konumlandırıldı
     );
     return turkishFormat.format(amount);
   }
