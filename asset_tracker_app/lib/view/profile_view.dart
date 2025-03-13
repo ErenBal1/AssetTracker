@@ -1,19 +1,14 @@
-import 'dart:async';
-import 'package:asset_tracker_app/bloc/auth/auth_bloc.dart';
-import 'package:asset_tracker_app/bloc/auth/auth_event.dart';
-import 'package:asset_tracker_app/bloc/auth/auth_state.dart';
 import 'package:asset_tracker_app/bloc/harem_altin_service/harem_altin_bloc.dart';
 import 'package:asset_tracker_app/bloc/harem_altin_service/harem_altin_state.dart';
 import 'package:asset_tracker_app/localization/strings.dart';
 import 'package:asset_tracker_app/models/user_asset.dart';
 import 'package:asset_tracker_app/repositories/user_asset_repository.dart';
-import 'package:asset_tracker_app/utils/mixins/my_assets_view_mixin.dart';
-import 'package:asset_tracker_app/widgets/profile_view/my_assets_card_listview.dart';
+import 'package:asset_tracker_app/utils/mixins/profile_view_mixin.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:asset_tracker_app/view/login_screen_view.dart';
+import 'package:fl_chart/fl_chart.dart';
 
 class ProfileView extends StatefulWidget {
   const ProfileView({super.key});
@@ -23,113 +18,6 @@ class ProfileView extends StatefulWidget {
 }
 
 class _ProfileViewState extends State<ProfileView> with ProfileViewMixin {
-  void _showTransactionsHistory() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text(LocalStrings.transactionHistoryLabel),
-        content: SizedBox(
-          width: double.maxFinite,
-          height: MediaQuery.of(context).size.height * 0.6,
-          child: BlocBuilder<HaremAltinBloc, HaremAltinState>(
-            builder: (context, haremAltinState) {
-              if (haremAltinState is HaremAltinDataLoaded) {
-                return MyAssetsCardListView(
-                  haremAltinState: haremAltinState,
-                  maxHeight: MediaQuery.of(context).size.height * 0.5,
-                );
-              }
-              if (haremAltinState is HaremAltinDataLoading) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-              if (haremAltinState is HaremAltinError) {
-                return const Center(
-                  child: Text(LocalStrings.unableToLoadAssetsError),
-                );
-              }
-
-              return const Center(
-                child: Text(LocalStrings.smthWentWrongError),
-              );
-            },
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Kapat'),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Future<void> _handleLogout() async {
-    final shouldLogout = await showDialog<bool>(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: const Text('Çıkış Yap'),
-            content: const Text('Çıkış yapmak istediğinizden emin misiniz?'),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(false),
-                child: const Text('İptal'),
-              ),
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(true),
-                child: const Text('Çıkış Yap'),
-              ),
-            ],
-          ),
-        ) ??
-        false;
-
-    if (!shouldLogout) {
-      return;
-    }
-    try {
-      final authBloc = context.read<AuthBloc>();
-      late final StreamSubscription<AuthState> subscription;
-
-      subscription = authBloc.stream.listen((state) {
-        if (state is AuthInitial) {
-          subscription.cancel();
-          Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(
-              builder: (context) => const LoginScreenView(),
-            ),
-            (route) => false,
-          );
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Başarıyla çıkış yapıldı'),
-              backgroundColor: Colors.green,
-            ),
-          );
-        } else if (state is AuthError) {
-          subscription.cancel();
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Çıkış yapma hatası: ${state.message}'),
-              backgroundColor: Colors.red,
-            ),
-          );
-        }
-      });
-
-      authBloc.add(SignOutRequested());
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Çıkış yaparken bir hata oluştu: $e'),
-          backgroundColor: Colors.red,
-        ),
-      );
-    }
-  }
-
   // Toplam varlık değerini para formatında gösteren yardımcı fonksiyon
   String _formatCurrency(double amount) {
     // TL sembolü sağda olacak şekilde özel format oluşturuyoruz
@@ -187,55 +75,6 @@ class _ProfileViewState extends State<ProfileView> with ProfileViewMixin {
                 fontWeight: FontWeight.bold,
                 letterSpacing: 0.5,
               ),
-            ),
-          ),
-          Container(
-            height: 60,
-            decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.2),
-              borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(16.0),
-                bottomRight: Radius.circular(16.0),
-              ),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(Icons.arrow_upward,
-                        color: Colors.white, size: 16),
-                    const SizedBox(height: 4),
-                    Text(
-                      'Kazanç',
-                      style: TextStyle(
-                        color: Colors.white.withOpacity(0.9),
-                        fontSize: 12,
-                      ),
-                    ),
-                  ],
-                ),
-                Container(
-                  height: 30,
-                  width: 1,
-                  color: Colors.white.withOpacity(0.3),
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(Icons.bar_chart, color: Colors.white, size: 16),
-                    const SizedBox(height: 4),
-                    Text(
-                      'Performans',
-                      style: TextStyle(
-                        color: Colors.white.withOpacity(0.9),
-                        fontSize: 12,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
             ),
           ),
         ],
@@ -307,6 +146,21 @@ class _ProfileViewState extends State<ProfileView> with ProfileViewMixin {
             children: [
               // Toplam varlık değeri header'ı
               _buildTotalAssetsHeader(totalValue),
+
+              // Grafiksel gösterim başlığı
+              Padding(
+                padding:
+                    const EdgeInsets.only(left: 16.0, top: 24.0, bottom: 8.0),
+                child: Text(
+                  'Varlık Dağılımı',
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
+              ),
+
+              // Grafikler kısmı
+              _buildCharts(haremAltinState, assets, totalValue),
 
               // Varlıklar başlığı
               Padding(
@@ -470,6 +324,223 @@ class _ProfileViewState extends State<ProfileView> with ProfileViewMixin {
     );
   }
 
+  // Grafiksel gösterim oluşturan fonksiyon
+  Widget _buildCharts(HaremAltinDataLoaded haremAltinState,
+      List<UserAsset> assets, double totalValue) {
+    // Varlıkları türlerine göre gruplandıralım ve değerlerini hesaplayalım
+    final Map<String, double> assetValues = {};
+    final List<Color> chartColors = [
+      Colors.blue,
+      Colors.red,
+      Colors.green,
+      Colors.amber,
+      Colors.purple,
+      Colors.orange,
+      Colors.teal,
+      Colors.pink,
+      Colors.indigo,
+      Colors.cyan,
+    ];
+
+    // Her varlık türü için toplam değeri hesapla
+    for (final asset in assets) {
+      final typeName = asset.type.displayName;
+      final currentRate =
+          haremAltinState.currentData.currencies[asset.type.name];
+
+      if (currentRate != null) {
+        final value = asset.getCurrentValue(currentRate);
+        assetValues[typeName] = (assetValues[typeName] ?? 0) + value;
+      }
+    }
+
+    // Grafikler için veri hazırlama
+    final sections = <PieChartSectionData>[];
+    final barGroups = <BarChartGroupData>[];
+
+    int index = 0;
+    assetValues.forEach((typeName, value) {
+      final percentage = (value / totalValue * 100).toStringAsFixed(1);
+      final colorIndex = index % chartColors.length;
+
+      // Pasta grafik bölümleri
+      sections.add(
+        PieChartSectionData(
+          color: chartColors[colorIndex],
+          value: value,
+          title: '$percentage%',
+          radius: 80,
+          titleStyle: const TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
+      );
+
+      // Çubuk grafik verileri
+      barGroups.add(
+        BarChartGroupData(
+          x: index,
+          barRods: [
+            BarChartRodData(
+              toY: value,
+              color: chartColors[colorIndex],
+              width: 20,
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(4),
+                topRight: Radius.circular(4),
+              ),
+            ),
+          ],
+        ),
+      );
+
+      index++;
+    });
+
+    return Column(
+      children: [
+        // Pasta Grafik
+        Card(
+          margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+          elevation: 2,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12.0),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Varlık Dağılımı (Pasta Grafik)',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                SizedBox(
+                  height: 200,
+                  child: PieChart(
+                    PieChartData(
+                      sections: sections,
+                      centerSpaceRadius: 40,
+                      sectionsSpace: 2,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Wrap(
+                  spacing: 16.0,
+                  runSpacing: 8.0,
+                  children: assetValues.keys.map((typeName) {
+                    final colorIndex =
+                        assetValues.keys.toList().indexOf(typeName) %
+                            chartColors.length;
+                    return Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Container(
+                          width: 12,
+                          height: 12,
+                          decoration: BoxDecoration(
+                            color: chartColors[colorIndex],
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                        const SizedBox(width: 4),
+                        Text(
+                          typeName,
+                          style: const TextStyle(fontSize: 12),
+                        ),
+                      ],
+                    );
+                  }).toList(),
+                ),
+              ],
+            ),
+          ),
+        ),
+
+        // Çubuk Grafik
+        Card(
+          margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+          elevation: 2,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12.0),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Varlık Değerleri (Çubuk Grafik)',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                SizedBox(
+                  height: 200,
+                  child: BarChart(
+                    BarChartData(
+                      alignment: BarChartAlignment.spaceAround,
+                      maxY: assetValues.values.isEmpty
+                          ? 0
+                          : assetValues.values.reduce((a, b) => a > b ? a : b) *
+                              1.2,
+                      titlesData: FlTitlesData(
+                        show: true,
+                        bottomTitles: AxisTitles(
+                          sideTitles: SideTitles(
+                            showTitles: true,
+                            getTitlesWidget: (value, meta) {
+                              if (value.toInt() >= 0 &&
+                                  value.toInt() < assetValues.length) {
+                                final typeName =
+                                    assetValues.keys.elementAt(value.toInt());
+                                return Padding(
+                                  padding: const EdgeInsets.only(top: 8.0),
+                                  child: Text(
+                                    typeName.length > 8
+                                        ? '${typeName.substring(0, 8)}..'
+                                        : typeName,
+                                    style: const TextStyle(fontSize: 10),
+                                  ),
+                                );
+                              }
+                              return const SizedBox();
+                            },
+                          ),
+                        ),
+                        leftTitles: const AxisTitles(
+                          sideTitles: SideTitles(showTitles: false),
+                        ),
+                        topTitles: const AxisTitles(
+                          sideTitles: SideTitles(showTitles: false),
+                        ),
+                        rightTitles: const AxisTitles(
+                          sideTitles: SideTitles(showTitles: false),
+                        ),
+                      ),
+                      gridData: const FlGridData(show: false),
+                      borderData: FlBorderData(show: false),
+                      barGroups: barGroups,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -480,13 +551,13 @@ class _ProfileViewState extends State<ProfileView> with ProfileViewMixin {
           IconButton(
             icon: const Icon(Icons.history),
             tooltip: 'İşlem Geçmişi',
-            onPressed: _showTransactionsHistory,
+            onPressed: showTransactionsHistory,
           ),
           // Çıkış yap butonu
           IconButton(
             icon: const Icon(Icons.logout),
             tooltip: 'Çıkış Yap',
-            onPressed: _handleLogout,
+            onPressed: handleLogout,
           ),
         ],
       ),

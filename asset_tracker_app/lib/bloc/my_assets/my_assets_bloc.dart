@@ -19,59 +19,79 @@ class MyAssetsBloc extends Bloc<MyAssetsEvent, MyAssetsState> {
   })  : _userAssetRepository = userAssetRepository,
         _haremAltinBloc = haremAltinBloc,
         super(MyAssetsInitial()) {
-    on<LoadUserAssets>(_onLoadUserAssets, transformer: (events, mapper) {
-      return events.asyncExpand(mapper);
-    });
+    on<LoadUserAssets>(_onLoadUserAssets);
+    on<DeleteUserAsset>(_onDeleteUserAsset);
   }
 
-  void _onLoadUserAssets(
+  Future<void> _onLoadUserAssets(
     LoadUserAssets event,
     Emitter<MyAssetsState> emit,
-  ) {
+  ) async {
     emit(MyAssetsLoading());
 
     // Eğer mevcut abonelikler varsa iptal et
     _assetsSubscription?.cancel();
     _ratesSubscription?.cancel();
 
-    // Stream dönüştürücü (StreamTransformer) oluştur
-    final transformer =
-        StreamTransformer<List<UserAsset>, MyAssetsState>.fromHandlers(
-      handleData: (data, sink) {
-        if (_haremAltinBloc.state is HaremAltinDataLoaded) {
-          final rates = (_haremAltinBloc.state as HaremAltinDataLoaded)
-              .currentData
-              .currencies;
-          sink.add(MyAssetsLoaded(assets: data, currentRates: rates));
-        } else {}
-      },
-      handleError: (error, stackTrace, sink) {
-        sink.add(MyAssetsError(error.toString()));
-      },
-    );
+    try {
+      // İlk olarak, mevcut HaremAltinBloc durumunu kontrol edin
+      if (_haremAltinBloc.state is HaremAltinDataLoaded) {
+        final currentRates = (_haremAltinBloc.state as HaremAltinDataLoaded)
+            .currentData
+            .currencies;
 
-    // UserAssets stream'ini dinle
-    _assetsSubscription =
-        _userAssetRepository.getUserAssets().transform(transformer).listen(
-      (state) {
-        if (!emit.isDone) {
-          emit(state);
-        }
-      },
-    );
-
-    // HaremAltinBloc'u dinleme
-    _ratesSubscription = _haremAltinBloc.stream.listen((ratesState) {
-      if (ratesState is HaremAltinDataLoaded &&
-          state is MyAssetsLoaded &&
-          !emit.isDone) {
-        final currentAssets = (state as MyAssetsLoaded).assets;
-        emit(MyAssetsLoaded(
-          assets: currentAssets,
-          currentRates: ratesState.currentData.currencies,
-        ));
+        // Varlıkları bir kez alın
+        final assets = await _userAssetRepository.getUserAssets().first;
+        emit(MyAssetsLoaded(assets: assets, currentRates: currentRates));
       }
-    });
+
+      // Ardından sürekli dinlemeye başlayın
+      _assetsSubscription = _userAssetRepository.getUserAssets().listen(
+        (assets) {
+          if (_haremAltinBloc.state is HaremAltinDataLoaded && !emit.isDone) {
+            final rates = (_haremAltinBloc.state as HaremAltinDataLoaded)
+                .currentData
+                .currencies;
+            emit(MyAssetsLoaded(assets: assets, currentRates: rates));
+          }
+        },
+        onError: (error) {
+          if (!emit.isDone) {
+            emit(MyAssetsError(error.toString()));
+          }
+        },
+      );
+
+      // HaremAltinBloc'u dinleme
+      _ratesSubscription = _haremAltinBloc.stream.listen((ratesState) {
+        if (ratesState is HaremAltinDataLoaded &&
+            state is MyAssetsLoaded &&
+            !emit.isDone) {
+          final currentAssets = (state as MyAssetsLoaded).assets;
+          emit(MyAssetsLoaded(
+            assets: currentAssets,
+            currentRates: ratesState.currentData.currencies,
+          ));
+        }
+      });
+    } catch (e) {
+      if (!emit.isDone) {
+        emit(MyAssetsError(e.toString()));
+      }
+    }
+  }
+
+  Future<void> _onDeleteUserAsset(
+    DeleteUserAsset event,
+    Emitter<MyAssetsState> emit,
+  ) async {
+    try {
+      await _userAssetRepository.deleteAsset(event.assetId);
+      // Burada silme işlemi yaptıktan sonra verileri yeniden yüklememize gerek yok,
+      // çünkü Firestore Stream'i değişikliği otomatik olarak yakalayacak
+    } catch (e) {
+      emit(MyAssetsError(e.toString()));
+    }
   }
 
   @override

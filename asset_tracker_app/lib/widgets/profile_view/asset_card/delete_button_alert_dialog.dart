@@ -1,6 +1,7 @@
+import 'package:asset_tracker_app/bloc/my_assets/my_assets_bloc.dart';
+import 'package:asset_tracker_app/bloc/my_assets/my_assets_event.dart';
 import 'package:asset_tracker_app/localization/strings.dart';
 import 'package:asset_tracker_app/models/user_asset.dart';
-import 'package:asset_tracker_app/repositories/user_asset_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -38,7 +39,19 @@ class DeleteButtonAlertDialog extends StatelessWidget {
     Navigator.pop(context);
     try {
       if (!context.mounted) return;
-      await context.read<UserAssetRepository>().deleteAsset(asset.id);
+
+      // MyAssetsBloc üzerinden silme işlemini gerçekleştir
+      final myAssetsBloc = context.read<MyAssetsBloc>();
+      myAssetsBloc.add(DeleteUserAsset(asset.id));
+
+      // Bir kısa gecikmeden sonra listeyi güncelle
+      Future.delayed(const Duration(milliseconds: 300), () {
+        if (context.mounted) {
+          // Silme işleminden sonra verileri yeniden yükle
+          myAssetsBloc.add(LoadUserAssets());
+        }
+      });
+
       if (!context.mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text(LocalStrings.assetDeletedSuccessfully)),
