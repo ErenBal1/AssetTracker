@@ -21,11 +21,18 @@ class MyAssetsCardListView extends StatefulWidget {
 }
 
 class _MyAssetsCardListViewState extends State<MyAssetsCardListView> {
+  // Verileri yenileme fonksiyonu
+  Future<void> _refreshAssets() async {
+    context.read<MyAssetsBloc>().add(LoadUserAssets());
+    // Yenileme efekti için kısa bir gecikme
+    await Future.delayed(const Duration(milliseconds: 500));
+  }
+
   @override
   void initState() {
     super.initState();
     // Varlıkları yüklemek için bloka olayı göndeririz
-    context.read<MyAssetsBloc>().add(LoadUserAssets());
+    _refreshAssets();
   }
 
   @override
@@ -35,7 +42,17 @@ class _MyAssetsCardListViewState extends State<MyAssetsCardListView> {
       builder: (context, state) {
         if (state is MyAssetsError) {
           return Center(
-            child: Text(LocalStrings.errorOccurred + state.message),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(LocalStrings.errorOccurred + state.message),
+                const SizedBox(height: 16),
+                ElevatedButton(
+                  onPressed: _refreshAssets,
+                  child: const Text('Tekrar Dene'),
+                ),
+              ],
+            ),
           );
         }
 
@@ -55,10 +72,7 @@ class _MyAssetsCardListViewState extends State<MyAssetsCardListView> {
                   const Text(LocalStrings.noAssetsAddedYet),
                   const SizedBox(height: 16),
                   ElevatedButton(
-                    onPressed: () {
-                      // Bu düğme veri yenilenmesi için bloka olayı gönderir
-                      context.read<MyAssetsBloc>().add(LoadUserAssets());
-                    },
+                    onPressed: _refreshAssets,
                     child: const Text('Yenile'),
                   ),
                 ],
@@ -66,41 +80,62 @@ class _MyAssetsCardListViewState extends State<MyAssetsCardListView> {
             );
           }
 
-          return Container(
-            constraints: BoxConstraints(
-              maxHeight:
-                  widget.maxHeight ?? MediaQuery.of(context).size.height * 0.6,
-            ),
-            child: ListView.builder(
-              shrinkWrap: true,
-              physics: const ClampingScrollPhysics(),
-              itemCount: assets.length,
-              itemBuilder: (context, index) {
-                final asset = assets[index];
-                final currentRate = widget
-                    .haremAltinState.currentData.currencies[asset.type.name];
-
-                if (currentRate == null) {
-                  return const SizedBox.shrink();
-                }
-
-                final currentValue = asset.getCurrentValue(currentRate);
-                final profitLoss = asset.getProfitLoss(currentRate);
-                final profitLossPercentage =
-                    asset.getProfitLossPercentage(currentRate);
-
-                return AssetCard(
-                    asset: asset,
-                    currentValue: currentValue,
-                    profitLoss: profitLoss,
-                    profitLossPercentage: profitLossPercentage);
+          // Aşağı çekince yenileme özelliği ekliyoruz
+          return RefreshIndicator(
+            onRefresh: _refreshAssets,
+            child: NotificationListener<OverscrollIndicatorNotification>(
+              onNotification: (overscroll) {
+                // Android'deki mavi glow efektini gizleyelim
+                overscroll.disallowIndicator();
+                return true;
               },
+              child: Container(
+                constraints: BoxConstraints(
+                  maxHeight: widget.maxHeight ??
+                      MediaQuery.of(context).size.height * 0.6,
+                ),
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  itemCount: assets.length,
+                  itemBuilder: (context, index) {
+                    final asset = assets[index];
+                    final currentRate = widget.haremAltinState.currentData
+                        .currencies[asset.type.name];
+
+                    if (currentRate == null) {
+                      return const SizedBox.shrink();
+                    }
+
+                    final currentValue = asset.getCurrentValue(currentRate);
+                    final profitLoss = asset.getProfitLoss(currentRate);
+                    final profitLossPercentage =
+                        asset.getProfitLossPercentage(currentRate);
+
+                    return AssetCard(
+                        asset: asset,
+                        currentValue: currentValue,
+                        profitLoss: profitLoss,
+                        profitLossPercentage: profitLossPercentage);
+                  },
+                ),
+              ),
             ),
           );
         }
 
-        return const Center(
-          child: CircularProgressIndicator(),
+        return Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text('Veri yüklenemedi. Lütfen tekrar deneyin.'),
+              const SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: _refreshAssets,
+                child: const Text('Tekrar Dene'),
+              ),
+            ],
+          ),
         );
       },
     );

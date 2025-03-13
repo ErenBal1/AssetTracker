@@ -2,6 +2,7 @@ import 'package:asset_tracker_app/localization/strings.dart';
 import 'package:asset_tracker_app/models/user_asset.dart';
 import 'package:asset_tracker_app/utils/constants/theme/constant_gap_sizes.dart';
 import 'package:asset_tracker_app/utils/constants/theme/constant_paddings.dart';
+import 'package:asset_tracker_app/utils/formatters/currency_formatter.dart';
 import 'package:asset_tracker_app/widgets/profile_view/asset_card/asset_card_info_text.dart';
 import 'package:asset_tracker_app/widgets/profile_view/asset_card/asset_name_label.dart';
 import 'package:asset_tracker_app/widgets/profile_view/asset_card/delete_asset_button.dart';
@@ -40,23 +41,36 @@ class AssetCard extends StatelessWidget {
             ),
             const GapSize.extraSmall(),
             AssetCardInfoText(
-                text: LocalStrings.amount + asset.amount.toString()),
+                text: LocalStrings.amount +
+                    CurrencyFormatter.formatInteger(asset.amount)),
             const GapSize.xxs(),
             AssetCardInfoText(
               text: LocalStrings.purchasePrice +
-                  asset.purchasePrice.toStringAsFixed(2),
+                  CurrencyFormatter.formatCurrency(asset.purchasePrice),
             ),
             const GapSize.xxs(),
             AssetCardInfoText(
               text: LocalStrings.assetCurrentValue +
-                  currentValue.toStringAsFixed(2),
+                  CurrencyFormatter.formatCurrency(currentValue),
             ),
             const GapSize.extraSmall(),
-            profitLossTextWidget(profitLoss, profitLossPercentage),
+            profitLossFormattedText(profitLoss, profitLossPercentage),
             const GapSize.xxs(),
             PurchaseDateWidget(asset: asset),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget profitLossFormattedText(
+      double profitLoss, double profitLossPercentage) {
+    return Text(
+      '${LocalStrings.profitLoss}${CurrencyFormatter.formatProfitLoss(profitLoss)} (${CurrencyFormatter.formatPercentage(profitLossPercentage)})',
+      style: TextStyle(
+        fontSize: 14,
+        fontWeight: FontWeight.bold,
+        color: profitLoss >= 0 ? Colors.green : Colors.red,
       ),
     );
   }
