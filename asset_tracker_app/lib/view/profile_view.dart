@@ -3,6 +3,7 @@ import 'package:asset_tracker_app/bloc/harem_altin_service/harem_altin_state.dar
 import 'package:asset_tracker_app/localization/strings.dart';
 import 'package:asset_tracker_app/models/user_asset.dart';
 import 'package:asset_tracker_app/repositories/user_asset_repository.dart';
+import 'package:asset_tracker_app/utils/formatters/currency_formatter.dart';
 import 'package:asset_tracker_app/utils/mixins/profile_view_mixin.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -173,7 +174,6 @@ class _ProfileViewState extends State<ProfileView> with ProfileViewMixin {
                       ),
                 ),
               ),
-
               // Varlık listesi
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -196,6 +196,8 @@ class _ProfileViewState extends State<ProfileView> with ProfileViewMixin {
     final Map<String, List<UserAsset>> groupedAssets = {};
     final Map<String, double> totalAmounts = {};
     final Map<String, double> totalValues = {};
+    final Map<String, double> totalPurchaseValues = {};
+    final Map<String, double> totalProfitLoss = {};
 
     for (final asset in assets) {
       final typeName = asset.type.displayName;
@@ -203,16 +205,29 @@ class _ProfileViewState extends State<ProfileView> with ProfileViewMixin {
         groupedAssets[typeName] = [];
         totalAmounts[typeName] = 0;
         totalValues[typeName] = 0;
+        totalPurchaseValues[typeName] = 0;
+        totalProfitLoss[typeName] = 0;
       }
 
       groupedAssets[typeName]!.add(asset);
       totalAmounts[typeName] = (totalAmounts[typeName] ?? 0) + asset.amount;
 
+      // Satın alma toplam değeri hesaplama
+      final purchaseValue = asset.amount * asset.purchasePrice;
+      totalPurchaseValues[typeName] =
+          (totalPurchaseValues[typeName] ?? 0) + purchaseValue;
+
       final currentRate =
           haremAltinState.currentData.currencies[asset.type.name];
       if (currentRate != null) {
-        totalValues[typeName] =
-            (totalValues[typeName] ?? 0) + asset.getCurrentValue(currentRate);
+        // Güncel toplam değeri hesaplama
+        final currentValue = asset.getCurrentValue(currentRate);
+        totalValues[typeName] = (totalValues[typeName] ?? 0) + currentValue;
+
+        // Kar/zarar hesaplama
+        final profitLoss = asset.getProfitLoss(currentRate);
+        totalProfitLoss[typeName] =
+            (totalProfitLoss[typeName] ?? 0) + profitLoss;
       }
     }
 
@@ -225,6 +240,14 @@ class _ProfileViewState extends State<ProfileView> with ProfileViewMixin {
         final typeName = groupedAssets.keys.elementAt(index);
         final amount = totalAmounts[typeName] ?? 0;
         final value = totalValues[typeName] ?? 0;
+        final profitLoss = totalProfitLoss[typeName] ?? 0;
+        final initialValue = totalPurchaseValues[typeName] ?? 0;
+        final profitLossPercentage =
+            initialValue > 0 ? (profitLoss / initialValue) * 100 : 0.0;
+
+        // Kar zarar rengi belirleme
+        final isProfitable = profitLoss >= 0;
+        final profitLossColor = isProfitable ? Colors.green : Colors.red;
 
         return Card(
           margin: const EdgeInsets.only(bottom: 12.0),
@@ -250,7 +273,7 @@ class _ProfileViewState extends State<ProfileView> with ProfileViewMixin {
                     ),
                     // Toplam miktar
                     Text(
-                      '${amount.toStringAsFixed(4)} adet',
+                      '${CurrencyFormatter.formatInteger(amount)} adet',
                       style: TextStyle(
                         fontSize: 16,
                         color: Colors.grey[700],
@@ -272,11 +295,35 @@ class _ProfileViewState extends State<ProfileView> with ProfileViewMixin {
                     ),
                     // Toplam değer
                     Text(
-                      _formatCurrency(value),
+                      CurrencyFormatter.formatCurrency(value),
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                         color: Colors.green,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                // Kar/Zarar bilgisi ekliyoruz
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    // Kar/Zarar etiketi
+                    Text(
+                      'Kar/Zarar:',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey[600],
+                      ),
+                    ),
+                    // Kar/Zarar değeri ve yüzdesi
+                    Text(
+                      '${CurrencyFormatter.formatProfitLoss(profitLoss)} (${CurrencyFormatter.formatPercentage(profitLossPercentage)})',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: profitLossColor,
                       ),
                     ),
                   ],
@@ -293,24 +340,50 @@ class _ProfileViewState extends State<ProfileView> with ProfileViewMixin {
                       children: groupedAssets[typeName]!.map((asset) {
                         final currentRate = haremAltinState
                             .currentData.currencies[asset.type.name];
-                        final currentValue = currentRate != null
-                            ? asset.getCurrentValue(currentRate)
-                            : 0.0;
+
+                        if (currentRate == null) {
+                          return const SizedBox.shrink();
+                        }
+
+                        final currentValue = asset.getCurrentValue(currentRate);
+                        final assetProfitLoss =
+                            asset.getProfitLoss(currentRate);
+                        final assetProfitLossPercentage =
+                            asset.getProfitLossPercentage(currentRate);
+                        final assetProfitLossColor =
+                            assetProfitLoss >= 0 ? Colors.green : Colors.red;
 
                         return ListTile(
                           dense: true,
-                          title:
-                              Text('${asset.amount.toStringAsFixed(4)} adet'),
-                          subtitle: Text(
-                            'Alış: ${_formatCurrency(asset.purchasePrice * asset.amount)}',
-                            style: TextStyle(
-                                fontSize: 12, color: Colors.grey[600]),
+                          title: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                  '${CurrencyFormatter.formatInteger(asset.amount)} adet'),
+                              Text(
+                                '${CurrencyFormatter.formatProfitLoss(assetProfitLoss)} (${CurrencyFormatter.formatPercentage(assetProfitLossPercentage)})',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                  color: assetProfitLossColor,
+                                ),
+                              ),
+                            ],
                           ),
-                          trailing: Text(
-                            _formatCurrency(currentValue),
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),
+                          subtitle: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Alış: ${CurrencyFormatter.formatCurrency(asset.purchasePrice * asset.amount)}',
+                                style: TextStyle(
+                                    fontSize: 12, color: Colors.grey[600]),
+                              ),
+                              Text(
+                                'Şimdi: ${CurrencyFormatter.formatCurrency(currentValue)}',
+                                style: TextStyle(
+                                    fontSize: 12, color: Colors.grey[600]),
+                              ),
+                            ],
                           ),
                         );
                       }).toList(),
@@ -420,7 +493,7 @@ class _ProfileViewState extends State<ProfileView> with ProfileViewMixin {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 30),
                 SizedBox(
                   height: 200,
                   child: PieChart(
@@ -431,7 +504,7 @@ class _ProfileViewState extends State<ProfileView> with ProfileViewMixin {
                     ),
                   ),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 30),
                 Wrap(
                   spacing: 16.0,
                   runSpacing: 8.0,
@@ -506,7 +579,7 @@ class _ProfileViewState extends State<ProfileView> with ProfileViewMixin {
                                 return Padding(
                                   padding: const EdgeInsets.only(top: 8.0),
                                   child: Text(
-                                    typeName.length > 8
+                                    typeName.length > 15
                                         ? '${typeName.substring(0, 8)}..'
                                         : typeName,
                                     style: const TextStyle(fontSize: 10),
@@ -527,8 +600,8 @@ class _ProfileViewState extends State<ProfileView> with ProfileViewMixin {
                           sideTitles: SideTitles(showTitles: false),
                         ),
                       ),
-                      gridData: const FlGridData(show: false),
-                      borderData: FlBorderData(show: false),
+                      gridData: const FlGridData(show: true),
+                      borderData: FlBorderData(show: true),
                       barGroups: barGroups,
                     ),
                   ),
@@ -566,7 +639,6 @@ class _ProfileViewState extends State<ProfileView> with ProfileViewMixin {
           if (haremAltinState is HaremAltinDataLoaded) {
             return _buildProfileContent(haremAltinState);
           }
-
           return const Center(
             child: Text(LocalStrings.smthWentWrongError),
           );
