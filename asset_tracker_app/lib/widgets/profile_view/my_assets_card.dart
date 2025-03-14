@@ -6,7 +6,6 @@ import 'package:asset_tracker_app/utils/formatters/currency_formatter.dart';
 import 'package:asset_tracker_app/widgets/profile_view/asset_card/asset_card_info_text.dart';
 import 'package:asset_tracker_app/widgets/profile_view/asset_card/asset_name_label.dart';
 import 'package:asset_tracker_app/widgets/profile_view/asset_card/delete_asset_button.dart';
-import 'package:asset_tracker_app/widgets/profile_view/asset_card/profit_loss_text_widget.dart';
 import 'package:asset_tracker_app/widgets/profile_view/asset_card/purchase_date_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -35,7 +34,9 @@ class AssetCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                AssetNameLabel(asset: asset),
+                Expanded(
+                  child: AssetNameLabel(asset: asset),
+                ),
                 DeleteAssetButton(asset: asset),
               ],
             ),
