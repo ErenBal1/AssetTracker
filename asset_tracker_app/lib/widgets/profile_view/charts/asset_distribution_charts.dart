@@ -2,11 +2,10 @@ import 'package:asset_tracker_app/models/user_asset.dart';
 import 'package:asset_tracker_app/localization/strings.dart';
 import 'package:asset_tracker_app/utils/constants/profile_view_chart_colors.dart';
 import 'package:asset_tracker_app/utils/constants/theme/constant_sizes.dart';
-import 'package:asset_tracker_app/utils/constants/theme/constant_paddings.dart';
-import 'package:asset_tracker_app/utils/constants/theme/constant_gap_sizes.dart';
-import 'package:asset_tracker_app/utils/constants/theme/constant_text_styles.dart';
 import 'package:asset_tracker_app/utils/formatters/currency_formatter.dart';
 import 'package:asset_tracker_app/viewmodels/profile_viewmodel.dart';
+import 'package:asset_tracker_app/widgets/profile_view/charts/chart_card.dart';
+import 'package:asset_tracker_app/widgets/profile_view/charts/chart_legends.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 
@@ -39,27 +38,22 @@ class AssetDistributionCharts extends StatelessWidget {
     return Column(
       children: [
         // Pie Chart
-        _buildChartCard(
+        ChartCard(
           title: LocalStrings.pieChartTitle,
+          legend: buildChartLegend(assetValues, showPrices: true),
           child: PieChart(
             PieChartData(
               sections: sections,
               centerSpaceRadius: 40,
               sectionsSpace: 2,
-              pieTouchData: PieTouchData(
-                enabled: true,
-                touchCallback: (FlTouchEvent event, pieTouchResponse) {
-                  // İleride dokunma ile etkileşim eklenebilir
-                },
-              ),
             ),
           ),
-          legend: _buildChartLegend(assetValues, showPrices: true),
         ),
 
         // Bar Chart
-        _buildChartCard(
+        ChartCard(
           title: LocalStrings.barChartTitle,
+          legend: buildChartLegend(assetValues, showPrices: false),
           child: BarChart(
             BarChartData(
               alignment: BarChartAlignment.spaceAround,
@@ -89,8 +83,6 @@ class AssetDistributionCharts extends StatelessWidget {
                 touchTooltipData: BarTouchTooltipData(
                   tooltipBgColor: Colors.black.withOpacity(0.8),
                   getTooltipItem: (group, groupIndex, rod, rodIndex) {
-                    final typeName =
-                        assetValues.keys.elementAt(group.x.toInt());
                     final value = rod.toY;
                     return BarTooltipItem(
                       '${LocalStrings.totalValue} ${CurrencyFormatter.formatCurrency(value)}',
@@ -104,46 +96,8 @@ class AssetDistributionCharts extends StatelessWidget {
               ),
             ),
           ),
-          legend: _buildChartLegend(assetValues, showPrices: false),
         ),
       ],
-    );
-  }
-
-  /// Builds a card widget for charts
-  Widget _buildChartCard({
-    required String title,
-    required Widget child,
-    required Widget legend,
-  }) {
-    return Card(
-      margin: ConstantPaddings.custom(
-          horizontal: ConstantSizes.paddingM,
-          vertical: ConstantSizes.paddingXS),
-      elevation: 2,
-      shape: RoundedRectangleBorder(
-        borderRadius:
-            BorderRadius.circular(ConstantSizes.borderRadiusCircularXS),
-      ),
-      child: Padding(
-        padding: ConstantPaddings.allM,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              title,
-              style: ConstantTextStyles.assetNameLabel,
-            ),
-            const GapSize.small(),
-            SizedBox(
-              height: 200,
-              child: child,
-            ),
-            const GapSize.mediumLarge(),
-            legend,
-          ],
-        ),
-      ),
     );
   }
 
@@ -209,47 +163,5 @@ class AssetDistributionCharts extends StatelessWidget {
     });
 
     return barGroups;
-  }
-
-  /// Builds chart legend with asset types and colors
-  /// Set [showPrices] to true to display asset values
-  Widget _buildChartLegend(Map<String, double> assetValues,
-      {bool showPrices = true}) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: assetValues.keys.map((typeName) {
-        final colorIndex =
-            assetValues.keys.toList().indexOf(typeName) % chartColors.length;
-        final value = assetValues[typeName] ?? 0;
-
-        return Padding(
-          padding:
-              const EdgeInsets.symmetric(vertical: ConstantSizes.paddingXS),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                width: 14,
-                height: 14,
-                decoration: BoxDecoration(
-                  color: chartColors[colorIndex],
-                  shape: BoxShape.circle,
-                ),
-              ),
-              const SizedBox(width: ConstantSizes.gapSmall),
-              Flexible(
-                child: Text(
-                  showPrices
-                      ? '$typeName (${CurrencyFormatter.formatCurrency(value)})'
-                      : typeName,
-                  style: const TextStyle(fontSize: ConstantSizes.textSmall),
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-            ],
-          ),
-        );
-      }).toList(),
-    );
   }
 }

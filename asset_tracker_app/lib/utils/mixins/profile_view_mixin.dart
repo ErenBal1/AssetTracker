@@ -13,7 +13,6 @@ import 'package:asset_tracker_app/utils/constants/theme/constant_paddings.dart';
 import 'package:asset_tracker_app/view/login_screen_view.dart';
 import 'package:asset_tracker_app/widgets/profile_view/charts/asset_distribution_charts.dart';
 import 'package:asset_tracker_app/widgets/profile_view/asset_list_section.dart';
-import 'package:asset_tracker_app/widgets/profile_view/error_widget.dart';
 import 'package:asset_tracker_app/widgets/profile_view/loading_widget.dart';
 import 'package:asset_tracker_app/widgets/profile_view/section_title.dart';
 import 'package:asset_tracker_app/widgets/profile_view/total_assets_header.dart';
@@ -157,18 +156,14 @@ mixin ProfileViewMixin<ProfileViewState extends StatefulWidget>
     final user = FirebaseAuth.instance.currentUser;
 
     if (user == null) {
-      return const CustomErrorWidget(
-        message: LocalStrings.noUserFoundError,
-      );
+      return const Text(LocalStrings.noUserFoundError);
     }
 
     return StreamBuilder<List<UserAsset>>(
       stream: viewModel.userAssetsStream,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return CustomErrorWidget(
-            message: '${LocalStrings.errorOccurred} ${snapshot.error}',
-          );
+          return Text('${LocalStrings.errorOccurred} ${snapshot.error}');
         }
 
         if (!snapshot.hasData) {
