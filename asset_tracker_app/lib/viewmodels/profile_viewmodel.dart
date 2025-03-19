@@ -1,6 +1,5 @@
 import 'package:asset_tracker_app/models/user_asset.dart';
 import 'package:asset_tracker_app/repositories/user_asset_repository.dart';
-import 'package:intl/intl.dart';
 
 /// ViewModel for the profile screen that handles business logic
 /// and provides data for the UI.
@@ -14,18 +13,6 @@ class ProfileViewModel {
   /// Stream of user assets
   Stream<List<UserAsset>> get userAssetsStream =>
       _userAssetRepository.getUserAssets();
-
-  /// Formats currency amount with Turkish lira symbol
-  String formatCurrency(double amount) {
-    // Create custom format with currency symbol on the right
-    final turkishFormat = NumberFormat.currency(
-      locale: 'tr_TR',
-      symbol: 'TL',
-      decimalDigits: 2,
-      customPattern: '###,###,##0.00 \u00A4',
-    );
-    return turkishFormat.format(amount);
-  }
 
   /// Calculates total asset value from all assets
   double calculateTotalAssetValue(

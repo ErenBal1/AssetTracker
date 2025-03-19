@@ -40,17 +40,14 @@ class DeleteButtonAlertDialog extends StatelessWidget {
     try {
       if (!context.mounted) return;
 
-      // MyAssetsBloc üzerinden silme işlemini gerçekleştir
+      // Perform deletion via MyAssetsBloc
       final myAssetsBloc = context.read<MyAssetsBloc>();
       myAssetsBloc.add(DeleteUserAsset(asset.id));
 
-      // Bir kısa gecikmeden sonra listeyi güncelle
-      Future.delayed(const Duration(milliseconds: 300), () {
-        if (context.mounted) {
-          // Silme işleminden sonra verileri yeniden yükle
-          myAssetsBloc.add(LoadUserAssets());
-        }
-      });
+      if (context.mounted) {
+        // Reload data after deletion
+        myAssetsBloc.add(LoadUserAssets());
+      }
 
       if (!context.mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(

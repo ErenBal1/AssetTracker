@@ -9,8 +9,8 @@ import 'package:asset_tracker_app/widgets/profile_view/asset_card/delete_asset_b
 import 'package:asset_tracker_app/widgets/profile_view/asset_card/purchase_date_widget.dart';
 import 'package:flutter/material.dart';
 
-class AssetCard extends StatelessWidget {
-  const AssetCard({
+class RecentTransactionsAssetCard extends StatelessWidget {
+  const RecentTransactionsAssetCard({
     super.key,
     required this.asset,
     required this.currentValue,
@@ -41,16 +41,16 @@ class AssetCard extends StatelessWidget {
               ],
             ),
             const GapSize.extraSmall(),
-            AssetCardInfoText(
+            RecentTransactionsAssetCardInfoText(
                 text: LocalStrings.amount +
                     CurrencyFormatter.formatInteger(asset.amount)),
             const GapSize.xxs(),
-            AssetCardInfoText(
+            RecentTransactionsAssetCardInfoText(
               text: LocalStrings.purchasePrice +
                   CurrencyFormatter.formatCurrency(asset.purchasePrice),
             ),
             const GapSize.xxs(),
-            AssetCardInfoText(
+            RecentTransactionsAssetCardInfoText(
               text: LocalStrings.assetCurrentValue +
                   CurrencyFormatter.formatCurrency(currentValue),
             ),
