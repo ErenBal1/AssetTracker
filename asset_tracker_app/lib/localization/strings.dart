@@ -115,6 +115,26 @@ class LocalStrings {
   static const profileLabel = 'Profile';
   static const addAssetError = 'Varlık eklenirken hata oluştu: ';
   static const deleteAssetError = 'Varlık silinirken hata oluştu: ';
+  static const totalAssetValue = 'Toplam Varlık Değeri';
+  static const assetDistribution = 'Varlık Dağılımı';
+  static const myAssets = 'Varlıklarım';
+  static const pieChartTitle = 'Varlık Dağılımı (Pasta Grafik)';
+  static const barChartTitle = 'Varlık Değerleri (Çubuk Grafik)';
+  static const totalValue = 'Toplam Değer:';
+  static const piece = 'adet';
+  static const details = 'Detaylar';
+  static const retry = 'Tekrar Dene';
+  static const historyTooltip = 'İşlem Geçmişi';
+  static const logoutTooltip = 'Çıkış Yap';
+  static const currentlyLabel = 'Şimdi:';
+  static const purchaseLabel = 'Alış:';
+  static const noUserFoundError =
+      'Oturum açmış kullanıcı bulunamadı. Lütfen yeniden giriş yapın.';
+  static const close = 'Kapat';
+  static const logoutConfirmation = 'Çıkış yapmak istediğinizden emin misiniz?';
+  static const logoutSuccess = 'Başarıyla çıkış yapıldı';
+  static const logoutError = 'Çıkış yapma hatası: ';
+  static const logoutGeneralError = 'Çıkış yaparken bir hata oluştu: ';
 
   //add_asset_form
   static const assetType = 'Varlık Tipi';
@@ -150,26 +170,4 @@ class LocalStrings {
   static const profitLoss = 'Kar/Zarar: ';
   static const deleteAssetFailed = 'Varlık silme başarısız: ';
   static const delete = 'Sil';
-
-  // Yeni eklenen strings (profile view)
-  static const totalAssetValue = 'Toplam Varlık Değeri';
-  static const assetDistribution = 'Varlık Dağılımı';
-  static const myAssets = 'Varlıklarım';
-  static const pieChartTitle = 'Varlık Dağılımı (Pasta Grafik)';
-  static const barChartTitle = 'Varlık Değerleri (Çubuk Grafik)';
-  static const totalValue = 'Toplam Değer:';
-  static const piece = 'adet';
-  static const details = 'Detaylar';
-  static const retry = 'Tekrar Dene';
-  static const historyTooltip = 'İşlem Geçmişi';
-  static const logoutTooltip = 'Çıkış Yap';
-  static const currentlyLabel = 'Şimdi:';
-  static const purchaseLabel = 'Alış:';
-  static const noUserFoundError =
-      'Oturum açmış kullanıcı bulunamadı. Lütfen yeniden giriş yapın.';
-  static const close = 'Kapat';
-  static const logoutConfirmation = 'Çıkış yapmak istediğinizden emin misiniz?';
-  static const logoutSuccess = 'Başarıyla çıkış yapıldı';
-  static const logoutError = 'Çıkış yapma hatası: ';
-  static const logoutGeneralError = 'Çıkış yaparken bir hata oluştu: ';
 }

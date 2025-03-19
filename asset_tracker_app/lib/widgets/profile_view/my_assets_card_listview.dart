@@ -3,7 +3,8 @@ import 'package:asset_tracker_app/bloc/my_assets/my_assets_bloc.dart';
 import 'package:asset_tracker_app/bloc/my_assets/my_assets_event.dart';
 import 'package:asset_tracker_app/bloc/my_assets/my_assets_state.dart';
 import 'package:asset_tracker_app/localization/strings.dart';
-import 'package:asset_tracker_app/widgets/profile_view/my_assets_card.dart';
+import 'package:asset_tracker_app/utils/constants/theme/constant_gap_sizes.dart';
+import 'package:asset_tracker_app/widgets/profile_view/recent_transactions_asset_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -21,23 +22,19 @@ class MyAssetsCardListView extends StatefulWidget {
 }
 
 class _MyAssetsCardListViewState extends State<MyAssetsCardListView> {
-  // Verileri yenileme fonksiyonu
   Future<void> _refreshAssets() async {
     context.read<MyAssetsBloc>().add(LoadUserAssets());
-    // Yenileme efekti için kısa bir gecikme
     await Future.delayed(const Duration(milliseconds: 500));
   }
 
   @override
   void initState() {
     super.initState();
-    // Varlıkları yüklemek için bloka olayı göndeririz
     _refreshAssets();
   }
 
   @override
   Widget build(BuildContext context) {
-    // MyAssetsBloc durumunu dinleyerek varlıkları gösteriyoruz
     return BlocBuilder<MyAssetsBloc, MyAssetsState>(
       builder: (context, state) {
         if (state is MyAssetsError) {
@@ -46,10 +43,10 @@ class _MyAssetsCardListViewState extends State<MyAssetsCardListView> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(LocalStrings.errorOccurred + state.message),
-                const SizedBox(height: 16),
+                const GapSize.small(),
                 ElevatedButton(
                   onPressed: _refreshAssets,
-                  child: const Text('Tekrar Dene'),
+                  child: const Text(LocalStrings.retry),
                 ),
               ],
             ),
@@ -70,22 +67,20 @@ class _MyAssetsCardListViewState extends State<MyAssetsCardListView> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Text(LocalStrings.noAssetsAddedYet),
-                  const SizedBox(height: 16),
+                  const GapSize.small(),
                   ElevatedButton(
                     onPressed: _refreshAssets,
-                    child: const Text('Yenile'),
+                    child: const Text(LocalStrings.retry),
                   ),
                 ],
               ),
             );
           }
 
-          // Aşağı çekince yenileme özelliği ekliyoruz
           return RefreshIndicator(
             onRefresh: _refreshAssets,
             child: NotificationListener<OverscrollIndicatorNotification>(
               onNotification: (overscroll) {
-                // Android'deki mavi glow efektini gizleyelim
                 overscroll.disallowIndicator();
                 return true;
               },
@@ -112,7 +107,7 @@ class _MyAssetsCardListViewState extends State<MyAssetsCardListView> {
                     final profitLossPercentage =
                         asset.getProfitLossPercentage(currentRate);
 
-                    return AssetCard(
+                    return RecentTransactionsAssetCard(
                         asset: asset,
                         currentValue: currentValue,
                         profitLoss: profitLoss,
@@ -125,16 +120,9 @@ class _MyAssetsCardListViewState extends State<MyAssetsCardListView> {
         }
 
         return Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text('Veri yüklenemedi. Lütfen tekrar deneyin.'),
-              const SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: _refreshAssets,
-                child: const Text('Tekrar Dene'),
-              ),
-            ],
+          child: ElevatedButton(
+            onPressed: _refreshAssets,
+            child: const Text(LocalStrings.retry),
           ),
         );
       },

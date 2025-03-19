@@ -1,8 +1,8 @@
 import 'package:asset_tracker_app/utils/constants/theme/constant_text_styles.dart';
 import 'package:flutter/material.dart';
 
-class AssetCardInfoText extends StatelessWidget {
-  const AssetCardInfoText({
+class RecentTransactionsAssetCardInfoText extends StatelessWidget {
+  const RecentTransactionsAssetCardInfoText({
     super.key,
     required this.text,
   });
