@@ -13,7 +13,6 @@ import 'package:asset_tracker_app/utils/constants/theme/constant_paddings.dart';
 import 'package:asset_tracker_app/view/login_screen_view.dart';
 import 'package:asset_tracker_app/widgets/profile_view/charts/asset_distribution_charts.dart';
 import 'package:asset_tracker_app/widgets/profile_view/asset_list_section.dart';
-import 'package:asset_tracker_app/widgets/profile_view/loading_widget.dart';
 import 'package:asset_tracker_app/widgets/profile_view/section_title.dart';
 import 'package:asset_tracker_app/widgets/profile_view/total_assets_header.dart';
 import 'package:asset_tracker_app/viewmodels/profile_viewmodel.dart';
@@ -26,6 +25,7 @@ mixin ProfileViewMixin<ProfileViewState extends StatefulWidget>
     on State<ProfileViewState> {
   late final HaremAltinBloc _haremAltinBloc;
   late ProfileViewModel viewModel;
+  final _user = FirebaseAuth.instance.currentUser;
 
   @override
   void initState() {
@@ -152,10 +152,7 @@ mixin ProfileViewMixin<ProfileViewState extends StatefulWidget>
 
   /// Builds the main content of the profile screen
   Widget buildProfileContent(HaremAltinDataLoaded haremAltinState) {
-    // Check Firebase Authentication state
-    final user = FirebaseAuth.instance.currentUser;
-
-    if (user == null) {
+    if (_user == null) {
       return const Text(LocalStrings.noUserFoundError);
     }
 
@@ -167,7 +164,7 @@ mixin ProfileViewMixin<ProfileViewState extends StatefulWidget>
         }
 
         if (!snapshot.hasData) {
-          return const LoadingWidget();
+          return const CircularProgressIndicator();
         }
 
         final assets = snapshot.data!;
