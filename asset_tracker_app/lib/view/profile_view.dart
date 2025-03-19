@@ -2,7 +2,6 @@ import 'package:asset_tracker_app/bloc/harem_altin_service/harem_altin_bloc.dart
 import 'package:asset_tracker_app/bloc/harem_altin_service/harem_altin_state.dart';
 import 'package:asset_tracker_app/localization/strings.dart';
 import 'package:asset_tracker_app/utils/mixins/profile_view_mixin.dart';
-import 'package:asset_tracker_app/widgets/profile_view/error_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -41,9 +40,7 @@ class _ProfileViewState extends State<ProfileView> with ProfileViewMixin {
           if (haremAltinState is HaremAltinDataLoaded) {
             return buildProfileContent(haremAltinState);
           }
-          return const CustomErrorWidget(
-            message: LocalStrings.smthWentWrongError,
-          );
+          return const Text(LocalStrings.smthWentWrongError);
         },
       ),
     );
