@@ -35,7 +35,7 @@ class ChartCard extends StatelessWidget {
                   title,
                   style: ConstantTextStyles.assetNameLabel,
                 ),
-                const GapSize.small(),
+                const GapSize.medium(),
                 SizedBox(
                   height: 200,
                   child: child,

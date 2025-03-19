@@ -121,4 +121,10 @@ class ConstantPaddings {
     horizontal: ConstantSizes.paddingM,
     vertical: ConstantSizes.paddingXS,
   );
+
+  /// left: 16,0, top: 24.0, bottom: 8.0
+  static const EdgeInsets sectionTitlePadding = EdgeInsets.only(
+      left: ConstantSizes.paddingM,
+      top: ConstantSizes.paddingXL,
+      bottom: ConstantSizes.paddingXS);
 }
