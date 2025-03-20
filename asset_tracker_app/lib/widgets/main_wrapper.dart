@@ -1,6 +1,6 @@
 import 'package:asset_tracker_app/localization/strings.dart';
 import 'package:asset_tracker_app/view/home_view.dart';
-import 'package:asset_tracker_app/view/my_assets_view.dart';
+import 'package:asset_tracker_app/view/profile_view.dart';
 import 'package:flutter/material.dart';
 
 class MainWrapper extends StatefulWidget {
@@ -15,7 +15,7 @@ class _MainWrapperState extends State<MainWrapper> {
 
   final List<Widget> _pages = [
     const HomePageView(),
-    const MyAssetsView(),
+    const ProfileView(),
   ];
 
   @override
@@ -31,8 +31,8 @@ class _MainWrapperState extends State<MainWrapper> {
             label: LocalStrings.homeLabelNavBar,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.local_mall),
-            label: LocalStrings.myAssetsLabelNavBar,
+            icon: Icon(Icons.person),
+            label: LocalStrings.profileLabelNavBar,
           ),
         ],
       ),

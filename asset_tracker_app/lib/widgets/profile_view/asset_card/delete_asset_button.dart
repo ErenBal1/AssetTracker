@@ -1,5 +1,5 @@
 import 'package:asset_tracker_app/models/user_asset.dart';
-import 'package:asset_tracker_app/widgets/my_assets_view/asset_card/delete_button_alert_dialog.dart';
+import 'package:asset_tracker_app/widgets/profile_view/asset_card/delete_button_alert_dialog.dart';
 import 'package:flutter/material.dart';
 
 class DeleteAssetButton extends StatelessWidget {

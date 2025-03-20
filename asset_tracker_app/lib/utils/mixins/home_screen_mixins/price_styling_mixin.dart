@@ -16,8 +16,8 @@ mixin PriceStylingMixin {
     CurrencyData? previousCurrency,
   }) {
     String currentPrice = priceType == 'alis'
-        ? currency.alis.toString() ?? '-'
-        : currency.satis.toString() ?? '-';
+        ? currency.alis.toString()
+        : currency.satis.toString();
 
     bool hasIncreased = currency.hasIncreasedFrom(previousCurrency, priceType);
     bool hasDecreased = currency.hasDecreasedFrom(previousCurrency, priceType);
