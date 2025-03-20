@@ -39,7 +39,7 @@ class ConstantTextStyles {
 
   // My Assets View
   static const TextStyle assetNameLabel = TextStyle(
-    fontSize: ConstantSizes.textXL,
+    fontSize: ConstantSizes.textLarge,
     fontWeight: FontWeight.bold,
   );
 

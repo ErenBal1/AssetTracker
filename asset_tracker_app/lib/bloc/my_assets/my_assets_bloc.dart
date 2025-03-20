@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:asset_tracker_app/bloc/harem_altin_service/harem_altin_bloc.dart';
 import 'package:asset_tracker_app/bloc/harem_altin_service/harem_altin_state.dart';
 import 'package:asset_tracker_app/bloc/my_assets/my_assets_event.dart';
@@ -20,6 +19,7 @@ class MyAssetsBloc extends Bloc<MyAssetsEvent, MyAssetsState> {
         _haremAltinBloc = haremAltinBloc,
         super(MyAssetsInitial()) {
     on<LoadUserAssets>(_onLoadUserAssets);
+    on<DeleteUserAsset>(_onDeleteUserAsset);
   }
 
   Future<void> _onLoadUserAssets(
@@ -28,30 +28,62 @@ class MyAssetsBloc extends Bloc<MyAssetsEvent, MyAssetsState> {
   ) async {
     emit(MyAssetsLoading());
 
-    await _assetsSubscription?.cancel();
-    await _ratesSubscription?.cancel();
+    _assetsSubscription?.cancel();
+    _ratesSubscription?.cancel();
 
-    _assetsSubscription = _userAssetRepository.getUserAssets().listen(
-      (assets) {
-        if (_haremAltinBloc.state is HaremAltinDataLoaded) {
-          final rates = (_haremAltinBloc.state as HaremAltinDataLoaded)
-              .currentData
-              .currencies;
-          emit(MyAssetsLoaded(assets: assets, currentRates: rates));
-        }
-      },
-      onError: (error) => emit(MyAssetsError(error.toString())),
-    );
+    try {
+      if (_haremAltinBloc.state is HaremAltinDataLoaded) {
+        final currentRates = (_haremAltinBloc.state as HaremAltinDataLoaded)
+            .currentData
+            .currencies;
 
-    _ratesSubscription = _haremAltinBloc.stream.listen((ratesState) {
-      if (ratesState is HaremAltinDataLoaded && state is MyAssetsLoaded) {
-        final currentAssets = (state as MyAssetsLoaded).assets;
-        emit(MyAssetsLoaded(
-          assets: currentAssets,
-          currentRates: ratesState.currentData.currencies,
-        ));
+        final assets = await _userAssetRepository.getUserAssets().first;
+        emit(MyAssetsLoaded(assets: assets, currentRates: currentRates));
       }
-    });
+
+      _assetsSubscription = _userAssetRepository.getUserAssets().listen(
+        (assets) {
+          if (_haremAltinBloc.state is HaremAltinDataLoaded && !emit.isDone) {
+            final rates = (_haremAltinBloc.state as HaremAltinDataLoaded)
+                .currentData
+                .currencies;
+            emit(MyAssetsLoaded(assets: assets, currentRates: rates));
+          }
+        },
+        onError: (error) {
+          if (!emit.isDone) {
+            emit(MyAssetsError(error.toString()));
+          }
+        },
+      );
+
+      _ratesSubscription = _haremAltinBloc.stream.listen((ratesState) {
+        if (ratesState is HaremAltinDataLoaded &&
+            state is MyAssetsLoaded &&
+            !emit.isDone) {
+          final currentAssets = (state as MyAssetsLoaded).assets;
+          emit(MyAssetsLoaded(
+            assets: currentAssets,
+            currentRates: ratesState.currentData.currencies,
+          ));
+        }
+      });
+    } catch (e) {
+      if (!emit.isDone) {
+        emit(MyAssetsError(e.toString()));
+      }
+    }
+  }
+
+  Future<void> _onDeleteUserAsset(
+    DeleteUserAsset event,
+    Emitter<MyAssetsState> emit,
+  ) async {
+    try {
+      await _userAssetRepository.deleteAsset(event.assetId);
+    } catch (e) {
+      emit(MyAssetsError(e.toString()));
+    }
   }
 
   @override

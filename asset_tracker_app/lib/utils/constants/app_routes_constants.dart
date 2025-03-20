@@ -1,7 +1,7 @@
 import 'package:asset_tracker_app/view/home_view.dart';
 import 'package:asset_tracker_app/view/login_screen_view.dart';
 import 'package:asset_tracker_app/view/onboard_view.dart';
-import 'package:asset_tracker_app/view/my_assets_view.dart';
+import 'package:asset_tracker_app/view/profile_view.dart';
 import 'package:asset_tracker_app/widgets/main_wrapper.dart';
 import 'package:flutter/material.dart';
 
@@ -18,7 +18,7 @@ class AppRoutes {
     ToScreen.onboardPage: (context) => const OnboardingScreenView(),
     ToScreen.loginPage: (context) => const LoginScreenView(),
     ToScreen.homePage: (context) => const HomePageView(),
-    ToScreen.myAssetsPage: (context) => const MyAssetsView(),
+    ToScreen.myAssetsPage: (context) => const ProfileView(),
     ToScreen.mainWrapper: (context) => const MainWrapper(),
   };
 }
