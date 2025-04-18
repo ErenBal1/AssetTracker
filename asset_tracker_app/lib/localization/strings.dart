@@ -32,6 +32,9 @@ class LocalStrings {
   static const alreadyHaveAcc = 'Already have an account? Sign In';
   static const firstName = 'First Name';
   static const lastName = 'Last Name';
+  static const pleaseEnterYourName = 'Please enter your name';
+  static const nameAtLeast2Characters = 'Name must be at least 2 characters';
+  static const dontHaveAcc = 'Don\'t have an account? Sign Up';
 
   //splash screen
   static const appLabel = 'Asset Tracker';

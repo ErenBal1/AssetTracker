@@ -67,7 +67,7 @@ class _LoginScreenViewState extends State<LoginScreenView>
                       onPressed: () {
                         Navigator.pushNamed(context, ToScreen.signupPage);
                       },
-                      child: const Text('Don\'t have an account? Sign Up'),
+                      child: const Text(LocalStrings.dontHaveAcc),
                     ),
                   ],
                 ),
