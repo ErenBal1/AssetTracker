@@ -24,10 +24,10 @@ class FormValidator {
 
   static String? validateName(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Please enter your name';
+      return LocalStrings.pleaseEnterYourName;
     }
     if (value.length < 2) {
-      return 'Name must be at least 2 characters';
+      return LocalStrings.nameAtLeast2Characters;
     }
     return null;
   }
