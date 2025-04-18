@@ -1,3 +1,4 @@
+import 'package:asset_tracker_app/utils/constants/theme/constant_paddings.dart';
 import 'package:flutter/material.dart';
 
 class CustomTextField extends StatelessWidget {
@@ -24,13 +25,9 @@ class CustomTextField extends StatelessWidget {
       keyboardType: keyboardType,
       validator: validator,
       decoration: InputDecoration(
-        labelText: label,
-        border: const OutlineInputBorder(),
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 16,
-          vertical: 12,
-        ),
-      ),
+          labelText: label,
+          border: const OutlineInputBorder(),
+          contentPadding: ConstantPaddings.formTextFieldPadding),
     );
   }
 }
