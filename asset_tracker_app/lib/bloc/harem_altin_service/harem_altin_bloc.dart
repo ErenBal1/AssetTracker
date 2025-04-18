@@ -17,7 +17,15 @@ class HaremAltinBloc extends Bloc<HaremAltinEvent, HaremAltinState> {
 
   HaremAltinBloc() : super(HaremAltinDataLoading()) {
     on<ConnectToWebSocket>((event, emit) async {
-      emit(HaremAltinDataLoading());
+      if (state is HaremAltinDataLoaded) {
+        // Eğer zaten veri varsa, yeni veri gelene kadar mevcut veriyi koru
+        emit(HaremAltinDataLoaded(
+          currentData: (state as HaremAltinDataLoaded).currentData,
+          previousData: previousMarketData,
+        ));
+      } else {
+        emit(HaremAltinDataLoading());
+      }
 
       try {
         await _webSocketService.connect();
@@ -42,7 +50,15 @@ class HaremAltinBloc extends Bloc<HaremAltinEvent, HaremAltinState> {
         }
       } catch (e) {
         if (!emit.isDone) {
-          emit(HaremAltinDataError(e.toString()));
+          if (state is HaremAltinDataLoaded) {
+            // Hata durumunda mevcut veriyi koru
+            emit(HaremAltinDataLoaded(
+              currentData: (state as HaremAltinDataLoaded).currentData,
+              previousData: previousMarketData,
+            ));
+          } else {
+            emit(HaremAltinDataError(e.toString()));
+          }
         }
         _scheduleReconnect();
       }
@@ -65,8 +81,16 @@ class HaremAltinBloc extends Bloc<HaremAltinEvent, HaremAltinState> {
         ));
         previousMarketData = marketData;
       } catch (e) {
-        emit(HaremAltinDataError(
-            '${LocalStrings.haremAltinDataConversionError}$e'));
+        if (state is HaremAltinDataLoaded) {
+          // Hata durumunda mevcut veriyi koru
+          emit(HaremAltinDataLoaded(
+            currentData: (state as HaremAltinDataLoaded).currentData,
+            previousData: previousMarketData,
+          ));
+        } else {
+          emit(HaremAltinDataError(
+              '${LocalStrings.haremAltinDataConversionError}$e'));
+        }
         _scheduleReconnect();
       }
     });
@@ -76,7 +100,7 @@ class HaremAltinBloc extends Bloc<HaremAltinEvent, HaremAltinState> {
       _scheduleReconnect();
     });
 
-    on<DisconnectWebSocket>((event, emit) async {
+    on<DisconnectFromWebSocket>((event, emit) async {
       _reconnectTimer?.cancel();
       await _webSocketSubscription?.cancel();
       _webSocketService.disconnect();
