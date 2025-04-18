@@ -79,10 +79,9 @@ class LocalStrings {
   static const haremAltinDataConversionError = 'Veri dönüşüm hatası: ';
 
   //harem_altin CurrencyTypes
-
   static const altin = 'Altın';
   static const usdPure = 'Ham Dolar';
-  static const usdTry = 'Dolar';
+  static const usdTry = 'Dolar/TL';
   static const ons = 'Ons';
   static const eurTry = 'Euro';
   static const usdKg = 'Dolar/KG';
