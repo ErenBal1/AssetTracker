@@ -28,6 +28,10 @@ class LocalStrings {
   static const emailLabel = 'Email';
   static const welcome = 'Welcome';
   static const signIn = 'Sign In';
+  static const signUp = 'Sign Up';
+  static const alreadyHaveAcc = 'Already have an account? Sign In';
+  static const firstName = 'First Name';
+  static const lastName = 'Last Name';
 
   //splash screen
   static const appLabel = 'Asset Tracker';
@@ -42,6 +46,8 @@ class LocalStrings {
       'You have made too many failed login attempts. Please try again later.';
   static const defaultError = 'An error occurred: ';
   static const loginError = 'There was an error logging in. Please try again.';
+  static const signupError =
+      'There was an error during signup. Please try again.';
   static const weakPassword =
       'The password is too weak. Use at least 6 characters.';
   static const emailAlreadyinUse = 'This email address is already in use.';

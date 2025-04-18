@@ -24,6 +24,27 @@ class FirebaseAuthService implements IAuthService {
     }
   }
 
+  @override
+  Future<bool> signUp(
+      String email, String password, String firstName, String lastName) async {
+    try {
+      final userCredential = await _auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      if (userCredential.user != null) {
+        await userCredential.user?.updateDisplayName('$firstName $lastName');
+        return true;
+      }
+      return false;
+    } on FirebaseAuthException catch (e) {
+      throw _handleAuthError(e);
+    } catch (e) {
+      throw LocalStrings.signupError;
+    }
+  }
+
   String _handleAuthError(FirebaseAuthException e) {
     final error = e.code.toFirebaseAuthError();
     return error == FirebaseAuthError.unknown
