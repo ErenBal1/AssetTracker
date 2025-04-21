@@ -6,11 +6,10 @@ import 'package:asset_tracker_app/services/mock_service/mock_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-mixin HomeScreenMixin<HomeScreenState extends StatefulWidget>
-    on State<HomeScreenState> {
+mixin HomeScreenMixin<T extends StatefulWidget> on State<T> {
   final IAuthService authService = MockAuthService();
   late final HaremAltinBloc _haremAltinBloc;
-  final TextEditingController searchController = TextEditingController();
+  late final TextEditingController searchController;
   String searchQuery = '';
 
   List<CurrencyData> getFilteredCurrencies(List<CurrencyData> currencies) {
@@ -27,12 +26,11 @@ mixin HomeScreenMixin<HomeScreenState extends StatefulWidget>
   void initState() {
     super.initState();
     _haremAltinBloc = context.read<HaremAltinBloc>();
-    _haremAltinBloc.add(ConnectToWebSocket());
+    searchController = TextEditingController();
   }
 
   @override
   void dispose() {
-    _haremAltinBloc.add(DisconnectWebSocket());
     searchController.dispose();
     super.dispose();
   }

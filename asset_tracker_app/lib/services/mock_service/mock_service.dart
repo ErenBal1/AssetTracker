@@ -24,4 +24,11 @@ class MockAuthService implements IAuthService {
   Future<void> signOut() async {
     await Future.delayed(const Duration(milliseconds: 500));
   }
+
+  @override
+  Future<bool> signUp(
+      String email, String password, String firstName, String lastName) {
+    // TODO: implement signUp
+    throw UnimplementedError();
+  }
 }
