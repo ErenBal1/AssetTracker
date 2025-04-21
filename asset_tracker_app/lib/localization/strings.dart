@@ -28,6 +28,13 @@ class LocalStrings {
   static const emailLabel = 'Email';
   static const welcome = 'Welcome';
   static const signIn = 'Sign In';
+  static const signUp = 'Sign Up';
+  static const alreadyHaveAcc = 'Already have an account? Sign In';
+  static const firstName = 'First Name';
+  static const lastName = 'Last Name';
+  static const pleaseEnterYourName = 'Please enter your name';
+  static const nameAtLeast2Characters = 'Name must be at least 2 characters';
+  static const dontHaveAcc = 'Don\'t have an account? Sign Up';
 
   //splash screen
   static const appLabel = 'Asset Tracker';
@@ -42,6 +49,8 @@ class LocalStrings {
       'You have made too many failed login attempts. Please try again later.';
   static const defaultError = 'An error occurred: ';
   static const loginError = 'There was an error logging in. Please try again.';
+  static const signupError =
+      'There was an error during signup. Please try again.';
   static const weakPassword =
       'The password is too weak. Use at least 6 characters.';
   static const emailAlreadyinUse = 'This email address is already in use.';
@@ -70,10 +79,9 @@ class LocalStrings {
   static const haremAltinDataConversionError = 'Veri dönüşüm hatası: ';
 
   //harem_altin CurrencyTypes
-
   static const altin = 'Altın';
   static const usdPure = 'Ham Dolar';
-  static const usdTry = 'Dolar';
+  static const usdTry = 'Dolar/TL';
   static const ons = 'Ons';
   static const eurTry = 'Euro';
   static const usdKg = 'Dolar/KG';

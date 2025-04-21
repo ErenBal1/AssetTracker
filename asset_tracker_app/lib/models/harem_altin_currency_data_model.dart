@@ -46,10 +46,21 @@ class CurrencyData {
     return currentValue < previousValue;
   }
 
-  CurrencyType get currencyType => CurrencyType.values.firstWhere(
-        (e) => e.name == code,
-        orElse: () => CurrencyType.USDTRY,
-      );
+  CurrencyType get currencyType {
+    // Özel dolar tipleri için özel CurrencyType'lar
+    if (code == 'USDTRY') return CurrencyType.USDTRY;
+    if (code == 'USDPURE') return CurrencyType.USDPURE;
+    if (code == 'USDJPY') return CurrencyType.USDJPY;
+    if (code == 'AUDUSD') return CurrencyType.AUDUSD;
+    if (code == 'USDKG') return CurrencyType.USDKG;
+    if (code == 'EURUSD') return CurrencyType.EURUSD;
+
+    // Diğer para birimleri için normal eşleştirme
+    return CurrencyType.values.firstWhere(
+      (e) => e.name == code,
+      orElse: () => CurrencyType.USDTRY,
+    );
+  }
 
   String get displayName => currencyType.displayName;
   bool get isGold => currencyType.isGold;

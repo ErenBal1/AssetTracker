@@ -116,6 +116,12 @@ class ConstantPaddings {
     vertical: ConstantSizes.paddingS, // 12
   );
 
+  /// horizontal: 16.0, vertical: 12.0
+  static const EdgeInsets formTextFieldPadding = EdgeInsets.symmetric(
+    horizontal: ConstantSizes.paddingM, // 16
+    vertical: ConstantSizes.paddingS, // 12
+  );
+
   /// horizontal: 16.0, vertical: 8.0
   static const EdgeInsets homePageSearchFieldPadding = EdgeInsets.symmetric(
     horizontal: ConstantSizes.paddingM,

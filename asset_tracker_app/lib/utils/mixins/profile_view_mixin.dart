@@ -31,7 +31,6 @@ mixin ProfileViewMixin<ProfileViewState extends StatefulWidget>
   void initState() {
     super.initState();
     _haremAltinBloc = context.read<HaremAltinBloc>();
-    _haremAltinBloc.add(ConnectToWebSocket());
     viewModel = ProfileViewModel(
       userAssetRepository: context.read<UserAssetRepository>(),
     );
@@ -39,11 +38,7 @@ mixin ProfileViewMixin<ProfileViewState extends StatefulWidget>
 
   @override
   void dispose() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (_haremAltinBloc.state is HaremAltinDataLoaded) {
-        _haremAltinBloc.add(DisconnectWebSocket());
-      }
-    });
+    // WebSocket bağlantısını kesme
     super.dispose();
   }
 

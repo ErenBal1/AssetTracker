@@ -62,6 +62,13 @@ class _LoginScreenViewState extends State<LoginScreenView>
                       isLoading: state is AuthLoading,
                       text: LocalStrings.signIn,
                     ),
+                    const GapSize.small(),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, ToScreen.signupPage);
+                      },
+                      child: const Text(LocalStrings.dontHaveAcc),
+                    ),
                   ],
                 ),
               ),
