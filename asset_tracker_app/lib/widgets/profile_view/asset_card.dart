@@ -70,7 +70,7 @@ class AssetCard extends StatelessWidget {
         ),
         // Total amount
         Text(
-          '${CurrencyFormatter.formatInteger(amount)} ${LocalStrings.piece}',
+          '${LocalStrings.amount}${CurrencyFormatter.formatDouble(amount)}',
           style: TextStyle(
             fontSize: ConstantSizes.textMedium,
             color: Colors.grey[700],
@@ -138,7 +138,7 @@ class AssetCard extends StatelessWidget {
       padding: const EdgeInsets.only(top: ConstantSizes.paddingXS),
       child: ExpansionTile(
         title: Text(
-          '${LocalStrings.details} (${assets.length} ${LocalStrings.piece})',
+          '${LocalStrings.details} (${assets.length})',
           style: const TextStyle(fontSize: ConstantSizes.textSmall),
         ),
         children: assets.map((asset) {
@@ -161,7 +161,7 @@ class AssetCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                    '${CurrencyFormatter.formatInteger(asset.amount)} ${LocalStrings.piece}'),
+                    '${LocalStrings.amount}${CurrencyFormatter.formatDouble(asset.amount)}'),
                 Text(
                   '${CurrencyFormatter.formatProfitLoss(assetProfitLoss)} (${CurrencyFormatter.formatPercentage(assetProfitLossPercentage)})',
                   style: TextStyle(
