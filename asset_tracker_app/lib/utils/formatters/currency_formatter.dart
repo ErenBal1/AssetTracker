@@ -30,4 +30,9 @@ class CurrencyFormatter {
     final formatter = NumberFormat('###,##0.00', 'tr_TR');
     return '${formatter.format(percentage)}%';
   }
+
+  static String formatDouble(double value, {int decimalDigits = 2}) {
+    final formatter = NumberFormat('#,###.${'0' * decimalDigits}', 'tr_TR');
+    return formatter.format(value);
+  }
 }

@@ -43,7 +43,7 @@ class RecentTransactionsAssetCard extends StatelessWidget {
             const GapSize.extraSmall(),
             RecentTransactionsAssetCardInfoText(
                 text: LocalStrings.amount +
-                    CurrencyFormatter.formatInteger(asset.amount)),
+                    CurrencyFormatter.formatDouble(asset.amount)),
             const GapSize.xxs(),
             RecentTransactionsAssetCardInfoText(
               text: LocalStrings.purchasePrice +
