@@ -5,6 +5,7 @@ import 'package:asset_tracker_app/localization/strings.dart';
 import 'package:asset_tracker_app/utils/enums/currency_type_enum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:asset_tracker_app/utils/constants/asset_priority_list.dart';
 
 mixin AddAssetFormMixin<AddAssetFormState extends StatefulWidget>
     on State<AddAssetFormState> {
@@ -28,13 +29,18 @@ mixin AddAssetFormMixin<AddAssetFormState extends StatefulWidget>
   }
 
   Widget buildTypeDropdown() {
+    final selectableTypes = priorityOrder
+        .where((type) => selectableAssetCodes
+            .map((e) => e.toUpperCase())
+            .contains(type.name.toUpperCase()))
+        .toList();
     return DropdownButtonFormField<CurrencyType>(
       value: _selectedType,
       decoration: const InputDecoration(
         labelText: LocalStrings.assetType,
         border: OutlineInputBorder(),
       ),
-      items: CurrencyType.values
+      items: selectableTypes
           .map((type) => DropdownMenuItem(
                 value: type,
                 child: Text(type.displayName),

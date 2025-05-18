@@ -49,3 +49,26 @@ const visibleAssetCodes = [
   'PLATIN',
   'EURUSD',
 ];
+
+/// Only assets in this list will be shown in the add asset screen.
+const selectableAssetCodes = [
+  'ALTIN',
+  'KULCEALTIN',
+  'GBPTRY',
+  'AYAR22',
+  'AYAR14',
+  'CEYREK_YENI',
+  'CEYREK_ESKI',
+  'YARIM_YENI',
+  'YARIM_ESKI',
+  'TEK_YENI',
+  'TEK_ESKI',
+  'ATA_YENI',
+  'ATA_ESKI',
+  'ATA5_YENI',
+  'ATA5_ESKI',
+  'GREMSE_YENI',
+  'GREMSE_ESKI',
+  'PLATIN',
+  'EURTRY',
+];
