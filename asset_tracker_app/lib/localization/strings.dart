@@ -79,18 +79,18 @@ class LocalStrings {
   static const haremAltinDataConversionError = 'Veri dönüşüm hatası: ';
 
   //harem_altin CurrencyTypes
-  static const altin = 'Altın';
+  static const altin = 'Has Altın';
   static const usdPure = 'Ham Dolar';
   static const usdTry = 'Dolar/TL';
-  static const ons = 'Ons';
-  static const eurTry = 'Euro';
+  static const ons = 'Ons Altın';
+  static const eurTry = 'Euro / TL';
   static const usdKg = 'Dolar/KG';
-  static const eurUsd = 'Euro/Dolar';
+  static const eurUsd = 'Euro / USD';
   static const eurKg = 'Euro/KG';
-  static const ayar22 = '22 Ayar Bilezik';
-  static const gbpTry = 'Sterlin';
+  static const ayar22 = '22 Ayar Gram Altın';
+  static const gbpTry = 'Sterlin / TL';
   static const chfTry = 'İsviçre Frangı';
-  static const kulceAltin = 'Külçe Altın';
+  static const kulceAltin = '24 Ayar Gram Altın';
   static const audTry = 'Avustralya Doları';
   static const xauXag = 'Altın/Gümüş Oranı';
   static const ceyrekYeni = 'Çeyrek Altın (Yeni)';
@@ -104,19 +104,20 @@ class LocalStrings {
   static const tekYeni = 'Tam Altın (Yeni)';
   static const tekEski = 'Tam Altın (Eski)';
   static const sekTry = 'İsveç Kronu';
-  static const ataYeni = 'Ata Altın (Yeni)';
+  static const ataYeni = 'Ata Lira (Yeni)';
   static const dkkTry = 'Danimarka Kronu';
-  static const ataEski = 'Ata Altın (Eski)';
+  static const ataEski = 'Ata Lira (Eski)';
   static const nokTry = 'Norveç Kronu';
-  static const ata5Yeni = '5\'li Ata Altın (Yeni)';
+  static const ata5Yeni = 'Beşi Bir Yerde Ata (Yeni)';
   static const usdJpy = 'Dolar/Japon Yeni';
-  static const ata5Eski = '5\'li Ata Altın (Eski)';
-  static const gremeseYeni = 'Gremese Altın (Yeni)';
-  static const gremeseEski = 'Gremese Altın (Eski)';
-  static const ayar14 = '14 Ayar Altın';
+  static const ata5Eski = 'Beşi Bir Yerde Ata (Eski)';
+  static const gremseYeni = 'Gremse Altın (Yeni)';
+  static const gremseEski = 'Gremse Altın (Eski)';
+  static const ayar14 = '14 Ayar Gram Altın';
   static const gumusTry = 'Gümüş';
   static const xagUsd = 'Gümüş/Dolar';
   static const gumusUsd = 'Gümüş USD';
+  static const platin = 'Platin';
 
   //profile_view
   static const transactionHistoryLabel = 'Transaction History';
