@@ -188,6 +188,9 @@ mixin AddAssetFormMixin<AddAssetFormState extends StatefulWidget>
                 amount: double.parse(_amountController.text),
                 purchasePrice: double.parse(_priceController.text),
                 purchaseDate: _selectedDate!,
+                karat: _selectedType == CurrencyType.BILEZIK
+                    ? _selectedKarat
+                    : null,
               ),
             );
 
@@ -199,36 +202,6 @@ mixin AddAssetFormMixin<AddAssetFormState extends StatefulWidget>
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(LocalStrings.errorOccurred + e.toString())),
         );
-        if (formKey.currentState?.validate() ?? false) {
-          if (_selectedDate == null) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text(LocalStrings.pleaseSelectDate)),
-            );
-            return;
-          }
-
-          try {
-            context.read<AssetFormBloc>().add(
-                  AssetSubmitted(
-                    type: _selectedType!,
-                    amount: double.parse(_amountController.text),
-                    purchasePrice: double.parse(_priceController.text),
-                    purchaseDate: _selectedDate!,
-                  ),
-                );
-
-            Navigator.pop(context);
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                  content: Text(LocalStrings.assetAddedSuccessfully)),
-            );
-          } catch (e) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                  content: Text(LocalStrings.errorOccurred + e.toString())),
-            );
-          }
-        }
       }
     }
   }
