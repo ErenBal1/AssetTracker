@@ -28,6 +28,7 @@ class AssetFormBloc extends Bloc<AssetFormEvent, AssetFormState> {
         amount: event.amount,
         purchasePrice: event.purchasePrice,
         purchaseDate: event.purchaseDate,
+        karat: event.karat,
       );
 
       await _userAssetRepository.addUserAsset(asset);

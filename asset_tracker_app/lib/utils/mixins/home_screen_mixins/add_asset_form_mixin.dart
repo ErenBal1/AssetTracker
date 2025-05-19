@@ -11,6 +11,7 @@ mixin AddAssetFormMixin<AddAssetFormState extends StatefulWidget>
     on State<AddAssetFormState> {
   final formKey = GlobalKey<FormState>();
   CurrencyType? _selectedType;
+  String? _selectedKarat;
   final _amountController = TextEditingController();
   final _priceController = TextEditingController();
   DateTime? _selectedDate;
@@ -47,10 +48,43 @@ mixin AddAssetFormMixin<AddAssetFormState extends StatefulWidget>
               ))
           .toList(),
       onChanged: (value) {
-        setState(() => _selectedType = value);
+        setState(() {
+          _selectedType = value;
+          if (value != CurrencyType.BILEZIK) {
+            _selectedKarat = null;
+          }
+        });
       },
       validator: (value) {
         if (value == null) return LocalStrings.selectType;
+        return null;
+      },
+    );
+  }
+
+  Widget buildKaratDropdown() {
+    if (_selectedType != CurrencyType.BILEZIK) {
+      return const SizedBox.shrink();
+    }
+
+    return DropdownButtonFormField<String>(
+      value: _selectedKarat,
+      decoration: const InputDecoration(
+        labelText: 'Ayar',
+        border: OutlineInputBorder(),
+      ),
+      items: const [
+        DropdownMenuItem(value: '14', child: Text(LocalStrings.dropDown14Ayar)),
+        DropdownMenuItem(value: '22', child: Text(LocalStrings.dropDown22Ayar)),
+      ],
+      onChanged: (value) {
+        setState(() => _selectedKarat = value);
+      },
+      validator: (value) {
+        if (_selectedType == CurrencyType.BILEZIK &&
+            (value == null || value.isEmpty)) {
+          return LocalStrings.pleaseSelectCarat;
+        }
         return null;
       },
     );
@@ -67,6 +101,9 @@ mixin AddAssetFormMixin<AddAssetFormState extends StatefulWidget>
       validator: (value) {
         if (value == null || value.isEmpty) {
           return LocalStrings.enterAmount;
+        }
+        if (value.contains(',')) {
+          return LocalStrings.valueContainsCommaError;
         }
         if (double.tryParse(value) == null || double.parse(value) <= 0) {
           return LocalStrings.enterValidAmount;
@@ -88,6 +125,9 @@ mixin AddAssetFormMixin<AddAssetFormState extends StatefulWidget>
         if (value == null || value.isEmpty) {
           return LocalStrings.enterAssetPrice;
         }
+        if (value.contains(',')) {
+          return LocalStrings.valueContainsCommaError;
+        }
         if (double.tryParse(value) == null || double.parse(value) <= 0) {
           return LocalStrings.enterValidAssetPrice;
         }
@@ -106,7 +146,9 @@ mixin AddAssetFormMixin<AddAssetFormState extends StatefulWidget>
           lastDate: DateTime.now(),
         );
         if (picked != null) {
-          setState(() => _selectedDate = picked);
+          setState(() {
+            _selectedDate = picked;
+          });
         }
       },
       child: InputDecorator(
@@ -115,9 +157,9 @@ mixin AddAssetFormMixin<AddAssetFormState extends StatefulWidget>
           border: OutlineInputBorder(),
         ),
         child: Text(
-          _selectedDate != null
-              ? '${_selectedDate!.day}/${_selectedDate!.month}/${_selectedDate!.year}'
-              : LocalStrings.selectDate,
+          _selectedDate == null
+              ? LocalStrings.selectDate
+              : '${_selectedDate!.day}/${_selectedDate!.month}/${_selectedDate!.year}',
         ),
       ),
     );
@@ -157,6 +199,36 @@ mixin AddAssetFormMixin<AddAssetFormState extends StatefulWidget>
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(LocalStrings.errorOccurred + e.toString())),
         );
+        if (formKey.currentState?.validate() ?? false) {
+          if (_selectedDate == null) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text(LocalStrings.pleaseSelectDate)),
+            );
+            return;
+          }
+
+          try {
+            context.read<AssetFormBloc>().add(
+                  AssetSubmitted(
+                    type: _selectedType!,
+                    amount: double.parse(_amountController.text),
+                    purchasePrice: double.parse(_priceController.text),
+                    purchaseDate: _selectedDate!,
+                  ),
+                );
+
+            Navigator.pop(context);
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                  content: Text(LocalStrings.assetAddedSuccessfully)),
+            );
+          } catch (e) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                  content: Text(LocalStrings.errorOccurred + e.toString())),
+            );
+          }
+        }
       }
     }
   }

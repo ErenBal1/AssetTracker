@@ -2,6 +2,7 @@ import 'package:asset_tracker_app/localization/strings.dart';
 import 'package:asset_tracker_app/models/user_asset.dart';
 import 'package:asset_tracker_app/utils/constants/theme/constant_gap_sizes.dart';
 import 'package:asset_tracker_app/utils/constants/theme/constant_paddings.dart';
+import 'package:asset_tracker_app/utils/constants/theme/constant_text_styles.dart';
 import 'package:asset_tracker_app/utils/formatters/currency_formatter.dart';
 import 'package:asset_tracker_app/widgets/profile_view/asset_card/asset_card_info_text.dart';
 import 'package:asset_tracker_app/widgets/profile_view/asset_card/asset_name_label.dart';
@@ -35,7 +36,8 @@ class RecentTransactionsAssetCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Expanded(
-                  child: AssetNameLabel(asset: asset),
+                  child: Text(asset.displayName,
+                      style: ConstantTextStyles.assetNameLabel),
                 ),
                 DeleteAssetButton(asset: asset),
               ],
