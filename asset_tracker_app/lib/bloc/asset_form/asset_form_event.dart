@@ -7,11 +7,13 @@ class AssetSubmitted extends AssetFormEvent {
   final double amount;
   final double purchasePrice;
   final DateTime purchaseDate;
+  final String? karat;
 
   AssetSubmitted({
     required this.type,
     required this.amount,
     required this.purchasePrice,
     required this.purchaseDate,
+    this.karat,
   });
 }

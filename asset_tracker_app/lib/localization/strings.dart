@@ -118,7 +118,9 @@ class LocalStrings {
   static const xagUsd = 'Gümüş/Dolar';
   static const gumusUsd = 'Gümüş USD';
   static const platin = 'Platin';
-
+  static const bilezik = 'Bilezik';
+  static const dropDown14Ayar = '14 Ayar';
+  static const dropDown22Ayar = '22 Ayar';
   //profile_view
   static const transactionHistoryLabel = 'Transaction History';
   static const profileLabel = 'Profile';
@@ -165,6 +167,9 @@ class LocalStrings {
   static const unableToLoadAssetsError =
       "Varlıklar yüklenemiyor. Lütfen tekrar deneyin.";
   static const noAssetsAddedYet = 'Henüz varlık eklenmedi.';
+  static const valueContainsCommaError =
+      'Lütfen küsuratı . ile yazınız. Örneğin: 1.5';
+  static const pleaseSelectCarat = "Lütfen bir ayar seçin";
 
   //my_assets_card
   static const amount = 'Miktar: ';

@@ -39,7 +39,8 @@ enum CurrencyType {
   GUMUSTRY,
   XAGUSD,
   GUMUSUSD,
-  PLATIN;
+  PLATIN,
+  BILEZIK;
 
   String get displayName {
     switch (this) {
@@ -121,6 +122,8 @@ enum CurrencyType {
         return LocalStrings.gumusUsd;
       case CurrencyType.PLATIN:
         return LocalStrings.platin;
+      case CurrencyType.BILEZIK:
+        return LocalStrings.bilezik;
     }
   }
 

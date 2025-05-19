@@ -23,6 +23,7 @@ final priorityOrder = [
   CurrencyType.GREMSE_YENI,
   CurrencyType.GREMSE_ESKI,
   CurrencyType.PLATIN,
+  CurrencyType.BILEZIK,
 ];
 
 /// Only assets in this list will be shown on the home screen.
@@ -71,4 +72,5 @@ const selectableAssetCodes = [
   'GREMSE_ESKI',
   'PLATIN',
   'EURTRY',
+  'BILEZIK',
 ];

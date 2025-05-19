@@ -10,9 +10,10 @@ class HomePageTitle extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: const Text(LocalStrings.appLabel),
-      centerTitle: true,
-    );
+        title: const Text(LocalStrings.appLabel),
+        centerTitle: true,
+        foregroundColor: Theme.of(context).colorScheme.onPrimary,
+        backgroundColor: Theme.of(context).primaryColor);
   }
 
   @override
