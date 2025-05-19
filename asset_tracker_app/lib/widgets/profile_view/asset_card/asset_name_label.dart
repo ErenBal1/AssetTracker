@@ -13,7 +13,7 @@ class AssetNameLabel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      asset.type.displayName,
+      asset.displayName,
       style: ConstantTextStyles.assetNameLabel,
     );
   }

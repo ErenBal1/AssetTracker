@@ -20,10 +20,7 @@ class ProfileViewModel {
     double totalValue = 0.0;
 
     for (final asset in assets) {
-      final currentRate = currencies[asset.type.name];
-      if (currentRate != null) {
-        totalValue += asset.getCurrentValue(currentRate);
-      }
+      totalValue += asset.getCurrentValue(currencies);
     }
 
     return totalValue;
@@ -38,39 +35,32 @@ class ProfileViewModel {
     final Map<String, double> totalPurchaseValues = {};
     final Map<String, double> totalProfitLoss = {};
 
-    // Group assets by type name and calculate totals
     for (final asset in assets) {
-      final typeName = asset.type.displayName;
-      if (!groupedAssets.containsKey(typeName)) {
-        groupedAssets[typeName] = [];
-        totalAmounts[typeName] = 0;
-        totalValues[typeName] = 0;
-        totalPurchaseValues[typeName] = 0;
-        totalProfitLoss[typeName] = 0;
+      final displayName = asset.displayName;
+      if (!groupedAssets.containsKey(displayName)) {
+        groupedAssets[displayName] = [];
+        totalAmounts[displayName] = 0;
+        totalValues[displayName] = 0;
+        totalPurchaseValues[displayName] = 0;
+        totalProfitLoss[displayName] = 0;
       }
 
-      groupedAssets[typeName]!.add(asset);
-      totalAmounts[typeName] = (totalAmounts[typeName] ?? 0) + asset.amount;
+      groupedAssets[displayName]!.add(asset);
+      totalAmounts[displayName] =
+          (totalAmounts[displayName] ?? 0) + asset.amount;
 
-      // Calculate total purchase value
       final purchaseValue = asset.amount * asset.purchasePrice;
-      totalPurchaseValues[typeName] =
-          (totalPurchaseValues[typeName] ?? 0) + purchaseValue;
+      totalPurchaseValues[displayName] =
+          (totalPurchaseValues[displayName] ?? 0) + purchaseValue;
 
-      final currentRate = currencies[asset.type.name];
-      if (currentRate != null) {
-        // Calculate current total value
-        final currentValue = asset.getCurrentValue(currentRate);
-        totalValues[typeName] = (totalValues[typeName] ?? 0) + currentValue;
+      final currentValue = asset.getCurrentValue(currencies);
+      totalValues[displayName] = (totalValues[displayName] ?? 0) + currentValue;
 
-        // Calculate profit/loss
-        final profitLoss = asset.getProfitLoss(currentRate);
-        totalProfitLoss[typeName] =
-            (totalProfitLoss[typeName] ?? 0) + profitLoss;
-      }
+      final profitLoss = asset.getProfitLoss(currencies);
+      totalProfitLoss[displayName] =
+          (totalProfitLoss[displayName] ?? 0) + profitLoss;
     }
 
-    // Return a combined map with all calculated values
     final result = <String, Map<String, dynamic>>{};
     result['groupedAssets'] = {'data': groupedAssets};
     result['totalAmounts'] = totalAmounts.map((k, v) => MapEntry(k, v));
@@ -88,13 +78,9 @@ class ProfileViewModel {
     final Map<String, double> assetValues = {};
 
     for (final asset in assets) {
-      final typeName = asset.type.displayName;
-      final currentRate = currencies[asset.type.name];
-
-      if (currentRate != null) {
-        final value = asset.getCurrentValue(currentRate);
-        assetValues[typeName] = (assetValues[typeName] ?? 0) + value;
-      }
+      final displayName = asset.displayName;
+      final value = asset.getCurrentValue(currencies);
+      assetValues[displayName] = (assetValues[displayName] ?? 0) + value;
     }
 
     return assetValues;

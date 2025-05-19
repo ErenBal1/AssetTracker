@@ -33,12 +33,14 @@ enum CurrencyType {
   ATA5_YENI,
   USDJPY,
   ATA5_ESKI,
-  GREMESE_YENI,
-  GREMESE_ESKI,
+  GREMSE_YENI,
+  GREMSE_ESKI,
   AYAR14,
   GUMUSTRY,
   XAGUSD,
-  GUMUSUSD;
+  GUMUSUSD,
+  PLATIN,
+  BILEZIK;
 
   String get displayName {
     switch (this) {
@@ -106,10 +108,10 @@ enum CurrencyType {
         return LocalStrings.usdJpy;
       case CurrencyType.ATA5_ESKI:
         return LocalStrings.ata5Eski;
-      case CurrencyType.GREMESE_YENI:
-        return LocalStrings.gremeseYeni;
-      case CurrencyType.GREMESE_ESKI:
-        return LocalStrings.gremeseEski;
+      case CurrencyType.GREMSE_YENI:
+        return LocalStrings.gremseYeni;
+      case CurrencyType.GREMSE_ESKI:
+        return LocalStrings.gremseEski;
       case CurrencyType.AYAR14:
         return LocalStrings.ayar14;
       case CurrencyType.GUMUSTRY:
@@ -118,6 +120,10 @@ enum CurrencyType {
         return LocalStrings.xagUsd;
       case CurrencyType.GUMUSUSD:
         return LocalStrings.gumusUsd;
+      case CurrencyType.PLATIN:
+        return LocalStrings.platin;
+      case CurrencyType.BILEZIK:
+        return LocalStrings.bilezik;
     }
   }
 
@@ -135,10 +141,11 @@ enum CurrencyType {
       CurrencyType.ATA_ESKI,
       CurrencyType.ATA5_YENI,
       CurrencyType.ATA5_ESKI,
-      CurrencyType.GREMESE_YENI,
-      CurrencyType.GREMESE_ESKI,
+      CurrencyType.GREMSE_YENI,
+      CurrencyType.GREMSE_ESKI,
       CurrencyType.AYAR14,
       CurrencyType.AYAR22,
+      CurrencyType.ONS,
     ].contains(this);
   }
 }
