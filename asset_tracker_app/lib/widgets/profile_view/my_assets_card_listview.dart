@@ -61,6 +61,9 @@ class _MyAssetsCardListViewState extends State<MyAssetsCardListView> {
 
         if (state is MyAssetsLoaded) {
           final assets = state.assets;
+          // Sort assets by creation date in descending order (newest first)
+          assets.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+
           if (assets.isEmpty) {
             return Center(
               child: Column(
