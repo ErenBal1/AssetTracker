@@ -32,6 +32,7 @@ class _AddAssetFormState extends State<AddAssetForm> with AddAssetFormMixin {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   buildTypeDropdown(),
+                  buildKaratDropdown(),
                   const GapSize.small(),
                   buildAmountField(),
                   const GapSize.small(),

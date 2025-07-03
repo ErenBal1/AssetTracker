@@ -20,6 +20,8 @@ class _ProfileViewState extends State<ProfileView> with ProfileViewMixin {
     return Scaffold(
       appBar: AppBar(
         title: const Text(LocalStrings.profileLabel),
+        foregroundColor: Theme.of(context).colorScheme.onPrimary,
+        backgroundColor: Theme.of(context).primaryColor,
         actions: [
           // Transaction history button
           IconButton(

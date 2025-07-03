@@ -70,7 +70,7 @@ class AssetCard extends StatelessWidget {
         ),
         // Total amount
         Text(
-          '${CurrencyFormatter.formatInteger(amount)} ${LocalStrings.piece}',
+          '${LocalStrings.amount}${CurrencyFormatter.formatDouble(amount)}',
           style: TextStyle(
             fontSize: ConstantSizes.textMedium,
             color: Colors.grey[700],
@@ -138,20 +138,14 @@ class AssetCard extends StatelessWidget {
       padding: const EdgeInsets.only(top: ConstantSizes.paddingXS),
       child: ExpansionTile(
         title: Text(
-          '${LocalStrings.details} (${assets.length} ${LocalStrings.piece})',
+          '${LocalStrings.details} (${assets.length})',
           style: const TextStyle(fontSize: ConstantSizes.textSmall),
         ),
         children: assets.map((asset) {
-          final currentRate = currencies[asset.type.name];
-
-          if (currentRate == null) {
-            return const SizedBox.shrink();
-          }
-
-          final currentValue = asset.getCurrentValue(currentRate);
-          final assetProfitLoss = asset.getProfitLoss(currentRate);
+          final currentValue = asset.getCurrentValue(currencies);
+          final assetProfitLoss = asset.getProfitLoss(currencies);
           final assetProfitLossPercentage =
-              asset.getProfitLossPercentage(currentRate);
+              asset.getProfitLossPercentage(currencies);
           final assetProfitLossColor =
               assetProfitLoss >= 0 ? Colors.green : Colors.red;
 
@@ -160,8 +154,14 @@ class AssetCard extends StatelessWidget {
             title: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                    '${CurrencyFormatter.formatInteger(asset.amount)} ${LocalStrings.piece}'),
+                Column(
+                  children: [
+                    Text(asset.displayName),
+                    Text(
+                      '${LocalStrings.amount}${CurrencyFormatter.formatDouble(asset.amount)}',
+                    ),
+                  ],
+                ),
                 Text(
                   '${CurrencyFormatter.formatProfitLoss(assetProfitLoss)} (${CurrencyFormatter.formatPercentage(assetProfitLossPercentage)})',
                   style: TextStyle(

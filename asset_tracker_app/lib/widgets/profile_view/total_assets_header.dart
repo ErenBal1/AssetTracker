@@ -22,21 +22,13 @@ class TotalAssetsHeader extends StatelessWidget {
       width: double.infinity,
       margin: ConstantPaddings.allM,
       decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [Colors.blueAccent, Colors.lightBlueAccent],
+        gradient: LinearGradient(
+          colors: [Theme.of(context).primaryColor, Colors.lightBlueAccent],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         borderRadius:
             BorderRadius.circular(ConstantSizes.borderRadiusCircularXS),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            spreadRadius: 1,
-            blurRadius: 10,
-            offset: const Offset(0, 3),
-          ),
-        ],
       ),
       child: Column(
         children: [
@@ -46,7 +38,7 @@ class TotalAssetsHeader extends StatelessWidget {
             child: Text(
               LocalStrings.totalAssetValue,
               style: TextStyle(
-                color: Colors.white.withOpacity(0.9),
+                color: Theme.of(context).colorScheme.onPrimary,
                 fontSize: ConstantSizes.textMedium,
                 fontWeight: FontWeight.w500,
               ),

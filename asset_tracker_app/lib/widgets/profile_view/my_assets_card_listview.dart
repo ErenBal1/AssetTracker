@@ -61,6 +61,9 @@ class _MyAssetsCardListViewState extends State<MyAssetsCardListView> {
 
         if (state is MyAssetsLoaded) {
           final assets = state.assets;
+          // Sort assets by creation date in descending order (newest first)
+          assets.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+
           if (assets.isEmpty) {
             return Center(
               child: Column(
@@ -95,23 +98,19 @@ class _MyAssetsCardListViewState extends State<MyAssetsCardListView> {
                   itemCount: assets.length,
                   itemBuilder: (context, index) {
                     final asset = assets[index];
-                    final currentRate = widget.haremAltinState.currentData
-                        .currencies[asset.type.name];
-
-                    if (currentRate == null) {
-                      return const SizedBox.shrink();
-                    }
-
-                    final currentValue = asset.getCurrentValue(currentRate);
-                    final profitLoss = asset.getProfitLoss(currentRate);
-                    final profitLossPercentage =
-                        asset.getProfitLossPercentage(currentRate);
+                    final currentValue = asset.getCurrentValue(
+                        widget.haremAltinState.currentData.currencies);
+                    final profitLoss = asset.getProfitLoss(
+                        widget.haremAltinState.currentData.currencies);
+                    final profitLossPercentage = asset.getProfitLossPercentage(
+                        widget.haremAltinState.currentData.currencies);
 
                     return RecentTransactionsAssetCard(
-                        asset: asset,
-                        currentValue: currentValue,
-                        profitLoss: profitLoss,
-                        profitLossPercentage: profitLossPercentage);
+                      asset: asset,
+                      currentValue: currentValue,
+                      profitLoss: profitLoss,
+                      profitLossPercentage: profitLossPercentage,
+                    );
                   },
                 ),
               ),

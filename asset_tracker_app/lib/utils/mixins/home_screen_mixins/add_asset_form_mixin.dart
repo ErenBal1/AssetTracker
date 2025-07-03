@@ -5,11 +5,13 @@ import 'package:asset_tracker_app/localization/strings.dart';
 import 'package:asset_tracker_app/utils/enums/currency_type_enum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:asset_tracker_app/utils/constants/asset_priority_list.dart';
 
 mixin AddAssetFormMixin<AddAssetFormState extends StatefulWidget>
     on State<AddAssetFormState> {
   final formKey = GlobalKey<FormState>();
   CurrencyType? _selectedType;
+  String? _selectedKarat;
   final _amountController = TextEditingController();
   final _priceController = TextEditingController();
   DateTime? _selectedDate;
@@ -28,23 +30,61 @@ mixin AddAssetFormMixin<AddAssetFormState extends StatefulWidget>
   }
 
   Widget buildTypeDropdown() {
+    final selectableTypes = priorityOrder
+        .where((type) => selectableAssetCodes
+            .map((e) => e.toUpperCase())
+            .contains(type.name.toUpperCase()))
+        .toList();
     return DropdownButtonFormField<CurrencyType>(
       value: _selectedType,
       decoration: const InputDecoration(
         labelText: LocalStrings.assetType,
         border: OutlineInputBorder(),
       ),
-      items: CurrencyType.values
+      items: selectableTypes
           .map((type) => DropdownMenuItem(
                 value: type,
                 child: Text(type.displayName),
               ))
           .toList(),
       onChanged: (value) {
-        setState(() => _selectedType = value);
+        setState(() {
+          _selectedType = value;
+          if (value != CurrencyType.BILEZIK) {
+            _selectedKarat = null;
+          }
+        });
       },
       validator: (value) {
         if (value == null) return LocalStrings.selectType;
+        return null;
+      },
+    );
+  }
+
+  Widget buildKaratDropdown() {
+    if (_selectedType != CurrencyType.BILEZIK) {
+      return const SizedBox.shrink();
+    }
+
+    return DropdownButtonFormField<String>(
+      value: _selectedKarat,
+      decoration: const InputDecoration(
+        labelText: 'Ayar',
+        border: OutlineInputBorder(),
+      ),
+      items: const [
+        DropdownMenuItem(value: '14', child: Text(LocalStrings.dropDown14Ayar)),
+        DropdownMenuItem(value: '22', child: Text(LocalStrings.dropDown22Ayar)),
+      ],
+      onChanged: (value) {
+        setState(() => _selectedKarat = value);
+      },
+      validator: (value) {
+        if (_selectedType == CurrencyType.BILEZIK &&
+            (value == null || value.isEmpty)) {
+          return LocalStrings.pleaseSelectCarat;
+        }
         return null;
       },
     );
@@ -61,6 +101,9 @@ mixin AddAssetFormMixin<AddAssetFormState extends StatefulWidget>
       validator: (value) {
         if (value == null || value.isEmpty) {
           return LocalStrings.enterAmount;
+        }
+        if (value.contains(',')) {
+          return LocalStrings.valueContainsCommaError;
         }
         if (double.tryParse(value) == null || double.parse(value) <= 0) {
           return LocalStrings.enterValidAmount;
@@ -82,6 +125,9 @@ mixin AddAssetFormMixin<AddAssetFormState extends StatefulWidget>
         if (value == null || value.isEmpty) {
           return LocalStrings.enterAssetPrice;
         }
+        if (value.contains(',')) {
+          return LocalStrings.valueContainsCommaError;
+        }
         if (double.tryParse(value) == null || double.parse(value) <= 0) {
           return LocalStrings.enterValidAssetPrice;
         }
@@ -100,7 +146,9 @@ mixin AddAssetFormMixin<AddAssetFormState extends StatefulWidget>
           lastDate: DateTime.now(),
         );
         if (picked != null) {
-          setState(() => _selectedDate = picked);
+          setState(() {
+            _selectedDate = picked;
+          });
         }
       },
       child: InputDecorator(
@@ -109,9 +157,9 @@ mixin AddAssetFormMixin<AddAssetFormState extends StatefulWidget>
           border: OutlineInputBorder(),
         ),
         child: Text(
-          _selectedDate != null
-              ? '${_selectedDate!.day}/${_selectedDate!.month}/${_selectedDate!.year}'
-              : LocalStrings.selectDate,
+          _selectedDate == null
+              ? LocalStrings.selectDate
+              : '${_selectedDate!.day}/${_selectedDate!.month}/${_selectedDate!.year}',
         ),
       ),
     );
@@ -140,6 +188,9 @@ mixin AddAssetFormMixin<AddAssetFormState extends StatefulWidget>
                 amount: double.parse(_amountController.text),
                 purchasePrice: double.parse(_priceController.text),
                 purchaseDate: _selectedDate!,
+                karat: _selectedType == CurrencyType.BILEZIK
+                    ? _selectedKarat
+                    : null,
               ),
             );
 

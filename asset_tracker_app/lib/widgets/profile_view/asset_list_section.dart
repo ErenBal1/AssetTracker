@@ -15,7 +15,7 @@ class AssetListSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Group assets by their types
+    // Group assets by their display names
     final Map<String, List<UserAsset>> groupedAssets = {};
     final Map<String, double> totalAmounts = {};
     final Map<String, double> totalValues = {};
@@ -24,34 +24,32 @@ class AssetListSection extends StatelessWidget {
 
     // Group assets and calculate totals
     for (final asset in assets) {
-      final typeName = asset.type.displayName;
-      if (!groupedAssets.containsKey(typeName)) {
-        groupedAssets[typeName] = [];
-        totalAmounts[typeName] = 0;
-        totalValues[typeName] = 0;
-        totalPurchaseValues[typeName] = 0;
-        totalProfitLoss[typeName] = 0;
+      final displayName = asset.displayName;
+      if (!groupedAssets.containsKey(displayName)) {
+        groupedAssets[displayName] = [];
+        totalAmounts[displayName] = 0;
+        totalValues[displayName] = 0;
+        totalPurchaseValues[displayName] = 0;
+        totalProfitLoss[displayName] = 0;
       }
 
-      groupedAssets[typeName]!.add(asset);
-      totalAmounts[typeName] = (totalAmounts[typeName] ?? 0) + asset.amount;
+      groupedAssets[displayName]!.add(asset);
+      totalAmounts[displayName] =
+          (totalAmounts[displayName] ?? 0) + asset.amount;
 
       // Calculate total purchase value
       final purchaseValue = asset.amount * asset.purchasePrice;
-      totalPurchaseValues[typeName] =
-          (totalPurchaseValues[typeName] ?? 0) + purchaseValue;
+      totalPurchaseValues[displayName] =
+          (totalPurchaseValues[displayName] ?? 0) + purchaseValue;
 
-      final currentRate = currencies[asset.type.name];
-      if (currentRate != null) {
-        // Calculate current total value
-        final currentValue = asset.getCurrentValue(currentRate);
-        totalValues[typeName] = (totalValues[typeName] ?? 0) + currentValue;
+      // Calculate current total value
+      final currentValue = asset.getCurrentValue(currencies);
+      totalValues[displayName] = (totalValues[displayName] ?? 0) + currentValue;
 
-        // Calculate profit/loss
-        final profitLoss = asset.getProfitLoss(currentRate);
-        totalProfitLoss[typeName] =
-            (totalProfitLoss[typeName] ?? 0) + profitLoss;
-      }
+      // Calculate profit/loss
+      final profitLoss = asset.getProfitLoss(currencies);
+      totalProfitLoss[displayName] =
+          (totalProfitLoss[displayName] ?? 0) + profitLoss;
     }
 
     // Return the list of grouped assets
@@ -60,11 +58,11 @@ class AssetListSection extends StatelessWidget {
       physics: const NeverScrollableScrollPhysics(),
       itemCount: groupedAssets.length,
       itemBuilder: (context, index) {
-        final typeName = groupedAssets.keys.elementAt(index);
-        final amount = totalAmounts[typeName] ?? 0;
-        final value = totalValues[typeName] ?? 0;
-        final profitLoss = totalProfitLoss[typeName] ?? 0;
-        final initialValue = totalPurchaseValues[typeName] ?? 0;
+        final displayName = groupedAssets.keys.elementAt(index);
+        final amount = totalAmounts[displayName] ?? 0;
+        final value = totalValues[displayName] ?? 0;
+        final profitLoss = totalProfitLoss[displayName] ?? 0;
+        final initialValue = totalPurchaseValues[displayName] ?? 0;
         final profitLossPercentage =
             initialValue > 0 ? (profitLoss / initialValue) * 100 : 0.0;
 
@@ -73,13 +71,13 @@ class AssetListSection extends StatelessWidget {
         final profitLossColor = isProfitable ? Colors.green : Colors.red;
 
         return AssetCard(
-          typeName: typeName,
+          typeName: displayName,
           amount: amount,
           value: value,
           profitLoss: profitLoss,
           profitLossPercentage: profitLossPercentage,
           profitLossColor: profitLossColor,
-          assets: groupedAssets[typeName]!,
+          assets: groupedAssets[displayName]!,
           currencies: currencies,
         );
       },
